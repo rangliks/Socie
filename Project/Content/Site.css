@@ -1,0 +1,173 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background-color: #c7eae5;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: whitesmoke;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.admin-main-view {
+    padding : 5px 5px 5px 5px;
+    margin : 5px 5px 5px 5px;
+    border-radius : 10px;
+    background-color: #efedf5;
+}
+
+.floating-box {
+    float: left;
+    width: 330px;
+    height: 400px;
+    margin: 10px;
+    cursor : pointer;
+    border-radius : 10px;
+    border-style: solid;
+    border-color: #bcbddc;
+    border-width: thin;
+    background-color: #f5f5f5;
+
+}
+
+.product-image {
+    -webkit-transition: width 10s; /* Safari */
+    transition: width 10s;
+    -webkit-transition: height 10s; /* Safari */
+    transition: height 10s;
+    margin-top : 5px;
+    margin-left:10px;
+    width: 300px;
+    height: 250px;
+}
+
+.product-image:hover {
+    width: 300px;
+    height: 400px;
+}
+
+.product-title {
+    font-family: "Lucida Bright",Georgia,serif;
+    font-weight: bold;
+    color : #00441b;
+}
+
+h3 {
+    padding: 10px;
+    color:#02544e;
+}
+
+h1 {
+    padding: 10px;
+    color:#01665e;
+    text-shadow: 2px 2px #ff0000;
+}
+
+#form-div {
+
+   display:inline-block;
+    width :85%;
+}
+.search-label {
+    margin : 5px;
+}
+
+.search-price {
+    width: 40px;
+}
+
+.search-store-div{
+    clear: right;
+    display:inline-block;
+    width :100%;
+}
+
+.form-horizontal{
+}
+.search-button {
+    margin-right:5%;
+    width: 10%;
+    float:right;
+}
+
+input#criteria.search-text {
+    height : 20px;
+}
+
+aside {
+    background-color: rgba(185, 195, 200, 0.64);
+    margin-top: 10%;
+    float: left;
+    width : 14%;
+    border-radius: 6px;
+    border : 1px solid gray;
+}
+
+.weather-title{
+    font-size:medium;
+}
+
+.weather-city {
+    clear: left;
+    font-weight: bold;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.weather-line {
+    clear: left;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: normal;
+}
+
+.chart {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+  }
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+.bar {
+    fill: steelblue;
+ }
+
+.statistics-info {
+}
+
+.introduction {
+    font-family: myFirstFont;
+    border-radius : 5px;
+    background-color: rgba(185, 195, 200, 0.64);
+    padding: 5px;
+    border : 1px solid gray;
+    -webkit-column-count: 3; /* Chrome, Safari, Opera */
+    -moz-column-count: 3; /* Firefox */
+    column-count: 3;
+}
+
+@font-face {
+   font-family: myFirstFont;
+   src: url(sansation_light.woff);
+}
+
+.arc path {
+  stroke: #fff;
+}

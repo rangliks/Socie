@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Administrator Dashboard</h2>
+
+<div class="admin-main-view">
+    <h3>Manage Database</h3>
+    <p>@Html.ActionLink("Products", "Index", "Products")</p>
+    <p>@Html.ActionLink("Suppliers", "Index", "Suppliers")</p>
+    <p>@Html.ActionLink("Departments", "Index", "Departments")</p>
+    <p>@Html.ActionLink("SalesStatsPerDays", "Index", "SalesStatsPerDays")</p>
+</div>
+

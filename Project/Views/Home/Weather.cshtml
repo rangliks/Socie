@@ -1,0 +1,20 @@
+﻿<section>
+    <p class="weather-title">Weather In Israel</p>
+    @{if (ViewBag.Weather != null)
+      {
+          foreach (var cityWeather in ViewBag.Weather)
+          {
+                <div>
+                    <span class="weather-city">@cityWeather.Value["Location"]</span><br />
+                    <span class="weather-line">Temp. : @cityWeather.Value["Temperature"]</span><br />
+                    <span class="weather-line">Humidity : @cityWeather.Value["RelativeHumidity"]</span><br />
+                    <span class="weather-line">Visibility : @cityWeather.Value["Visibility"]</span><br />
+                    <span class="weather-line">Updated : @cityWeather.Value["Time"]</span><br />
+                </div>
+                <br />
+          }
+      }
+        
+    }
+
+</section>

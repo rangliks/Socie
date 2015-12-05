@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <h1>Welcome to Ran's web store</h1>
+    <p class="introduction">We bring you the freshest products, coming from all across Israel. Ran's web store was found in 2005 and since then we've been serving thousands of happy customers.
+       We specialize in importin great cheese from europe, and bringing the local market into your house door. You can watch the weather all around the country on the aside section.
+        We were established in 2006 to provide shoppers with a wealth of information to make pricing, promotion and product information as transparent as possible for shoppers.
+         As a consumer champion we are proud to work for the customer to ensure they get the best value for their household, on each and every shop.</p>
+    <h3>Total products available in store is @ViewBag.TotalItems</h3>
+    <div class="search-store-div">
+        @Html.Partial("SearchStore")
+    </div>
+    @Html.Partial("ProductsDiv")
+</div>

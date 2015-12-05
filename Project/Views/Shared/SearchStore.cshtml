@@ -1,0 +1,53 @@
+﻿<div>
+    <div id="form-div">
+@using (Html.BeginForm("Search", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "theForm" }))
+{
+    @Html.Label("Search", new { @class = "search-label"})
+    @Html.TextBox("criteria", (string)ViewBag.SelectedSearchCriteria, new { name = "search-criteria", @class = "search-text" })
+    @Html.Label("Department", new { @class = "search-label" })
+    <select name="department-dropdown" class="search-dropdown">
+        <option value="0">All Departments</option>
+        @{foreach (var dep in ViewBag.Departments)
+          {
+                if (ViewBag.SelectedDepartment != null && ViewBag.SelectedDepartment == dep.DepartmentId)
+                {
+                    <option value="@dep.DepartmentId" selected="selected">@dep.Name</option>
+                }
+                else
+                {
+                    <option value="@dep.DepartmentId">@dep.Name</option>
+                }
+            }
+        }
+    </select>
+
+    @Html.Label("Department", new { @class = "search-label" })
+    <select name="supplier-dropdown" class="search-dropdown">
+        <option value="0">All Suppliers</option>
+        @{foreach (var sup in ViewBag.Suppliers)
+        {
+            if (ViewBag.SelectedSupplier != null && ViewBag.SelectedSupplier == sup.SupllierID)
+            {
+                <option value="@sup.SupllierID" selected="selected">@sup.Name</option>
+            }
+            else
+            {
+                <option value="@sup.SupllierID">@sup.Name</option>
+            }
+        }
+        }
+    </select>
+    
+    if (User.IsInRole("Admin"))
+    {
+        @Html.Label("Price: from", new { @class = "search-label" })
+        @Html.TextBox("price-from", (string)ViewBag.SelectedFromPrice, new { name = "price-from", @class = "search-price" })
+        @Html.Label("to", new { @class = "search-label" })
+        @Html.TextBox("price-to", (string)ViewBag.SelectedToPrice, new { name = "price-to", @class = "search-price" })
+    }
+}
+    </div>
+    <div class="search-button">
+        <input type="submit" id="search-button" value="Filter Results >>">
+    </div>
+</div>

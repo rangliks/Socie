@@ -1,0 +1,7 @@
+﻿<div id="products-div">
+    @{ foreach (var p in ViewBag.Products)
+     {
+         ViewBag.CurrentProduct = p;
+        @Html.Partial("Product")
+     }}
+</div>
