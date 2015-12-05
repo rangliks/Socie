@@ -80,7 +80,7 @@ namespace Project.Helpers
         public void GetUserHome()
         {
             var newsFeed = client.Get(string.Format("/{0}/home", userId));
-            //PostsObject pObject = JsonConvert.DeserializeObject<PostsObject>(firstPage.ToString());
+            //PostsObject pObject = JsonConvert.DeserializeObject<PostsObject>(firstPage.ToString()); 
             //foreach (var datum in pObject.data)
             //{ 
             //    var story = datum.story;
