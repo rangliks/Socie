@@ -19,7 +19,8 @@ namespace Project.Helpers
             "email",
             "user_games_activity",
             "user_photos",
-            "user_actions.music"
+            "user_actions.music",
+            "user_relationships"
             //"read_stream",
             //"friend_photos",
             //"friend_status"

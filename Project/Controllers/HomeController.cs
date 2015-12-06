@@ -109,6 +109,7 @@ namespace Project.Controllers
                     helper.GetUserScores();
                     helper.GetUploadedPhotos();
                     helper.GetProfilePicture();
+                    helper.GetFamily();
                 }
             }
 

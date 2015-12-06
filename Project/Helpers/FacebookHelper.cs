@@ -81,7 +81,7 @@ namespace Project.Helpers
         {
             var newsFeed = client.Get(string.Format("/{0}/home", userId));
             //PostsObject pObject = JsonConvert.DeserializeObject<PostsObject>(firstPage.ToString()); 
-            //foreach (var datum in pObject.data)
+            //foreach (var datum in pObject.data) 
             //{ 
             //    var story = datum.story;
             //}
@@ -95,6 +95,12 @@ namespace Project.Helpers
         public void GetProfilePicture()
         {
             var picture = client.Get(string.Format("/{0}/music", userId));
+        }
+
+        public void GetFamily()
+        {
+            var i = 0;
+            var picture = client.Get("me?fields=family");
         }
     }
 }
