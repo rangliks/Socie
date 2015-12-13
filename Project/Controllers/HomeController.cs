@@ -60,7 +60,7 @@ namespace Project.Controllers
 
         public ViewResult Index(List<ProductSupllier> productsInput = null, bool partialViewResult = false)
         {
-            var appId = ConfigurationManager.AppSettings.Get("facebook_app_id");
+            var appId = ConfigurationManager.AppSettings.Get("facebook_app_id"); 
             var appSecret = ConfigurationManager.AppSettings.Get("facebook_app_secret");
             var permissions = new PermissionsScope();
             var scope = permissions.AllPermissionsGetParams();
