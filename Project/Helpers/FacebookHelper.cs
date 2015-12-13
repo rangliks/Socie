@@ -16,6 +16,7 @@ namespace Project.Helpers
     public class FacebookSessionHelper : Controller
     {
         private FacebookClient client = null;
+        int i = 0;
         private string accessToken = string.Empty;
         private string userId = string.Empty;
         private string name = string.Empty;
