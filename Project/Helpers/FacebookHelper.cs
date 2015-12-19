@@ -63,7 +63,7 @@ namespace Project.Helpers
             PostsObject pObject = JsonConvert.DeserializeObject<PostsObject>(firstPage.ToString());
             foreach (var datum in pObject.data)
             {
-                var story = datum.story;
+                break;
             }
         }
 

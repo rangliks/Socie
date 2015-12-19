@@ -332,11 +332,14 @@
     <Content Include="Views\SalesStatsPerDays\Index.cshtml" />
     <Content Include="Views\Admin\AjaxDiv.cshtml" />
     <Content Include="Views\Shared\ProductsDiv.cshtml" />
+    <Content Include="Views\FacebookLogin\Index.cshtml" />
+    <Content Include="Views\FacebookLogin\About.cshtml" />
+    <Content Include="Views\FacebookLogin\Contact.cshtml" />
+    <Content Include="Views\FacebookLogin\Weather.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\videos\" />
-    <Folder Include="Views\FacebookLogin\" />
     <Folder Include="WebServices\" />
   </ItemGroup>
   <ItemGroup>
