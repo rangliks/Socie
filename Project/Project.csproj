@@ -54,6 +54,9 @@
     <Reference Include="Facebook">
       <HintPath>..\packages\Facebook.7.0.6\lib\net45\Facebook.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -191,12 +194,17 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JavaScriptConvert.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\Users\UserController.cs" />
+    <Compile Include="FacebookObjects\Person.cs" />
+    <Compile Include="FacebookObjects\Photo.cs" />
+    <Compile Include="FacebookObjects\Tag.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\FacebookHelper.cs" />
     <Compile Include="Helpers\PermissionsScope.cs" />
     <Compile Include="Helpers\PostsObject.cs" />
+    <Compile Include="Helpers\TheLogger.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -336,6 +344,7 @@
     <Content Include="Views\FacebookLogin\About.cshtml" />
     <Content Include="Views\FacebookLogin\Contact.cshtml" />
     <Content Include="Views\FacebookLogin\Weather.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

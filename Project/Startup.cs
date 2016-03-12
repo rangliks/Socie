@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin;
 using Owin;
+using log4net;
 
 [assembly: OwinStartupAttribute(typeof(Project.Startup))]
 namespace Project

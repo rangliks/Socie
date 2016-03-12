@@ -13,11 +13,8 @@ namespace Project.Controllers.Facebook
 {
     public class FacebookLoginController : Controller
     {
-        public ViewResult Index()
+        public RedirectToRouteResult Index()
         {
-            
-            
-            
             var appId = ConfigurationManager.AppSettings.Get("facebook_app_id");
             var appSecret = ConfigurationManager.AppSettings.Get("facebook_app_secret");
             var permissions = new PermissionsScope();
@@ -63,15 +60,17 @@ namespace Project.Controllers.Facebook
 
                     token = responseParams.ContainsKey("access_token") ? responseParams["access_token"] : string.Empty;
                     FacebookSessionHelper helper = new FacebookSessionHelper(token);
-                    helper.GetUserFeed();
-                    helper.GetUserScores();
-                    helper.GetUploadedPhotos();
-                    helper.GetProfilePicture();
+                   // helper.GetUserHome();
+                    //helper.GetUserFeed();
+                    //helper.GetUserScores();
+                    //helper.GetUploadedPhotos();
+                    //helper.GetFriends();
+                    //helper.GetProfilePicture();
                     helper.GetFamily();
                 }
             }
 
-            return View("Index");
+            return RedirectToAction("Index", "User");
         }
         //
         // GET: /FacebookLogin/

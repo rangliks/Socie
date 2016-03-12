@@ -10,11 +10,14 @@ using Facebook;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Project.Controllers;
+using Project.FacebookObjects;
+using log4net;
 
 namespace Project.Helpers
 {
     public class FacebookSessionHelper : Controller
     {
+        private ILog log = new TheLogger().GetLogger();
         private FacebookClient client = null;
         int i = 0;
         private string accessToken = string.Empty;
@@ -95,13 +98,100 @@ namespace Project.Helpers
 
         public void GetProfilePicture()
         {
-            var picture = client.Get(string.Format("/{0}/music", userId));
+            var url = string.Format("https://graph.facebook.com/me/picture?access_token={0}", client.AccessToken);
+
+            var pictureUrl = GetPictureUrl(userId);
+            DownloadFromUrl(pictureUrl);
+        }
+
+        public void GetFriends()
+        {
+            //dynamic friends = client.Get(string.Format("/{0}/friends", userId));
+            //string nextFriend = friends.paging.next;
+            //while(!string.IsNullOrEmpty(nextFriend))
+            //{
+            //    friends = client.Get(nextFriend);
+            //    nextFriend = friends.paging.next;
+            //}
+
+            var friendListData = client.Get("/me/friends");
+            JObject friendListJson = JObject.Parse(friendListData.ToString());
+
+            List<FbUser> fbUsers = new List<FbUser>();
+            foreach (var friend in friendListJson["data"].Children())
+            {
+                FbUser fbUser = new FbUser();
+                fbUser.Id = friend["id"].ToString().Replace("\"", "");
+                fbUser.Name = friend["name"].ToString().Replace("\"", "");
+                fbUsers.Add(fbUser);
+            }
         }
 
         public void GetFamily()
         {
-            var i = 0;
-            var picture = client.Get("me?fields=family");
+            log.Debug("application.");
+            var family = client.Get("me?fields=family");
+
+            var myPhotos = client.Get("/me/photos");
+            JObject photosJson = JObject.Parse(myPhotos.ToString());
+            Dictionary<string, Photo> photos = new Dictionary<string, Photo>();
+
+            while (photosJson["paging"]["next"] != null)
+            {
+                foreach (var photo in photosJson["data"].Children())
+                {
+                    Photo currentPhoto = new Photo();
+                    currentPhoto.CreationDate = DateTime.Parse(photo["created_time"].ToString());
+                    currentPhoto.PhotoId = photo["id"].ToString();
+
+                    var taggedInMyPhoto = client.Get(string.Format("/{0}/tags", currentPhoto.PhotoId));
+                    JObject taggedJson = JObject.Parse(taggedInMyPhoto.ToString());
+                    foreach (var tag in taggedJson["data"].Children())
+                    {
+                        currentPhoto.Tags.Add(new Tag(tag.ToString()));
+                    }
+
+                    photos.Add(currentPhoto.PhotoId, currentPhoto);
+                }
+
+                myPhotos = client.Get(photosJson["paging"]["next"].ToString());
+                photosJson = JObject.Parse(myPhotos.ToString());
+            }
+            
+
+            //var taggedInMyPhoto = client.Get("/579827528750261/tags");
+           
+            var fr = client.Get("me?fields=friends");
+        }
+
+        public static string GetPictureUrl(string faceBookId)
+        {
+            WebResponse response = null;
+            string pictureUrl = string.Empty;
+            try
+            {
+                WebRequest request = WebRequest.Create(string.Format("https://graph.facebook.com/{0}/picture?height=500", faceBookId));
+                response = request.GetResponse();
+                pictureUrl = response.ResponseUri.ToString();
+            }
+            catch (Exception ex)
+            {
+                //? handle
+            }
+            finally
+            {
+                if (response != null) response.Close();
+            }
+            return pictureUrl;
+        }
+
+        public static void DownloadFromUrl(string url, string fileName = "iamge.jpg")
+        {
+            using (WebClient webClient = new WebClient())
+            {
+                var path = string.Format(@"C:\socie\{0}", fileName);
+                webClient.DownloadFile(url, path);
+            }
         }
     }
 }
