@@ -66,7 +66,7 @@ namespace Project.Controllers.Facebook
                     //helper.GetUploadedPhotos();
                     //helper.GetFriends();
                     //helper.GetProfilePicture();
-                    helper.GetFamily();
+                    //helper.DownloadPhoto("1226029660758446");
                 }
             }
 

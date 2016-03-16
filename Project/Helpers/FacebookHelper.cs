@@ -25,12 +25,17 @@ namespace Project.Helpers
         private string name = string.Empty;
         private string email = string.Empty;
 
+        private Person me;
 
         public FacebookSessionHelper(string accToken)
         {
+            me = new Person();
             accessToken = accToken;
             client = new FacebookClient(accToken);
             userId = getUserId();
+
+            me.PersonId = userId;
+            me.Name = name;
         }
 
         private string getUserId()
@@ -100,7 +105,7 @@ namespace Project.Helpers
         {
             var url = string.Format("https://graph.facebook.com/me/picture?access_token={0}", client.AccessToken);
 
-            var pictureUrl = GetPictureUrl(userId);
+            var pictureUrl = GetProfilePictureUrl(me);
             DownloadFromUrl(pictureUrl);
         }
 
@@ -117,21 +122,18 @@ namespace Project.Helpers
             var friendListData = client.Get("/me/friends");
             JObject friendListJson = JObject.Parse(friendListData.ToString());
 
-            List<FbUser> fbUsers = new List<FbUser>();
+            List<Person> friends = new List<Person>();
             foreach (var friend in friendListJson["data"].Children())
             {
-                FbUser fbUser = new FbUser();
-                fbUser.Id = friend["id"].ToString().Replace("\"", "");
-                fbUser.Name = friend["name"].ToString().Replace("\"", "");
-                fbUsers.Add(fbUser);
+                Person person = new Person(friend.ToString());
+                DownloadProfilePicture(person);
+
+                friends.Add(person);
             }
         }
 
-        public void GetFamily()
+        public void GetMyPhotos()
         {
-            log.Debug("application.");
-            var family = client.Get("me?fields=family");
-
             var myPhotos = client.Get("/me/photos");
             JObject photosJson = JObject.Parse(myPhotos.ToString());
             Dictionary<string, Photo> photos = new Dictionary<string, Photo>();
@@ -148,10 +150,13 @@ namespace Project.Helpers
                     JObject taggedJson = JObject.Parse(taggedInMyPhoto.ToString());
                     foreach (var tag in taggedJson["data"].Children())
                     {
-                        currentPhoto.Tags.Add(new Tag(tag.ToString()));
+                        Tag t = new Tag(tag.ToString());
+                        currentPhoto.Tags.Add(t);
+                        DownloadProfilePicture(t.PersonTagged);
                     }
 
                     photos.Add(currentPhoto.PhotoId, currentPhoto);
+                    DownloadPicture(currentPhoto);
                 }
 
                 myPhotos = client.Get(photosJson["paging"]["next"].ToString());
@@ -164,13 +169,75 @@ namespace Project.Helpers
             var fr = client.Get("me?fields=friends");
         }
 
-        public static string GetPictureUrl(string faceBookId)
+        public void GetFamily()
+        {
+            log.Debug("application.");
+            var family = client.Get("me?fields=family");
+            JObject familyJson = JObject.Parse(family.ToString());
+            foreach (var relative in familyJson["family"]["data"])
+            {
+                try
+                {
+                    Person person = new Person(relative.ToString());
+                    DownloadProfilePicture(person);
+                }
+                catch (Exception ex)
+                {
+                }
+                
+            }
+
+        }
+
+        private void DownloadProfilePicture(Person person)
+        {
+            string fileName = string.Format("profile_{0}.jpg", person.PersonId);
+            var url = GetProfilePictureUrl(person);
+            DownloadFromUrl(url, fileName);
+        }
+
+        private void DownloadPicture(Photo photo)
+        {
+            var url = GetPhotoUrl(photo);
+            string filename = string.Format("image_{0}.jpg", photo.PhotoId);
+            DownloadFromUrl(url, filename);
+        }
+
+        public void DownloadPhoto(string photoId)
+        {
+            Photo photo = new Photo();
+            photo.PhotoId = photoId;
+            DownloadPicture(photo);
+        }
+
+        public static string GetPhotoUrl(Photo photo)
         {
             WebResponse response = null;
             string pictureUrl = string.Empty;
             try
             {
-                WebRequest request = WebRequest.Create(string.Format("https://graph.facebook.com/{0}/picture?height=500", faceBookId));
+                WebRequest request = WebRequest.Create(string.Format("https://facebook.com/photo/download/?fbid={0}", photo.PhotoId));
+                response = request.GetResponse();
+                pictureUrl = response.ResponseUri.ToString();
+            }
+            catch (Exception ex)
+            {
+                //? handle
+            }
+            finally
+            {
+                if (response != null) response.Close();
+            }
+            return pictureUrl;
+        }
+
+        public static string GetProfilePictureUrl(Person person)
+        {
+            WebResponse response = null;
+            string pictureUrl = string.Empty;
+            try
+            {
+                WebRequest request = WebRequest.Create(string.Format("https://graph.facebook.com/{0}/picture?height=500", person.PersonId));
                 response = request.GetResponse();
                 pictureUrl = response.ResponseUri.ToString();
             }
@@ -192,6 +259,14 @@ namespace Project.Helpers
                 var path = string.Format(@"C:\socie\{0}", fileName);
                 webClient.DownloadFile(url, path);
             }
+        }
+
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }
