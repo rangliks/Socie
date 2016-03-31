@@ -3,38 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Ran's Web Store</title>
+    <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script type="text/javascript">
-        function getBody() {
-            $("#theForm").ajaxForm({ url: 'server.php', type: 'post' })
-        }
-
         $(document).ready(function () {
-            $.ajax({
-                url: "/home/GetAside",
-                success: function (result) {
-                    $('#weather-aside-wait').fadeOut(2000);
-                    $('#weather-aside').html(result);
-                }
-            });
-
-            $('#search-button').click(function () {
-                $('#ajax-body-wait').fadeIn(5);
-                $('#products-div').html("");
-                $.ajax({
-                    type: "POST",
-                    url: '/home/search',
-                    data: $("#theForm").serialize(), // serializes the form's elements.
-                    success: function (data) {
-                        $('#ajax-body-wait').fadeOut(5);
-                        $('#products-div').html(data); // show response from the php script.
-                    }
-                });
-            });
             
         });
     </script>

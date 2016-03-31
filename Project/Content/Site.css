@@ -2,6 +2,7 @@
     padding-top: 50px;
     padding-bottom: 20px;
     background-color: #c7eae5;
+    height: 100%;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -9,6 +10,8 @@
     padding-left: 15px;
     padding-right: 15px;
     background-color: whitesmoke;
+    height: 100%;
+    width: 80%;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -24,6 +27,7 @@ select,
 textarea {
     max-width: 280px;
 }
+.navbar-inverse { background-color: #08306b; }
 
 .admin-main-view {
     padding : 5px 5px 5px 5px;

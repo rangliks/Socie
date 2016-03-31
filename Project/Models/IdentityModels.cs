@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Project.Models.Store;
-
+using Project.FacebookObjects;
 namespace Project.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
@@ -21,9 +21,15 @@ namespace Project.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Person> Person { get; set; }
+        public DbSet<Photo> Photos { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+
+
         public DbSet<Product> Products { get; set; }
         public DbSet<Suppliers> Suppliers { get; set; }
         public DbSet<SalesStatsPerDay> StatisticsPerDay { get; set; }
+        public DbSet<Departments> Departments { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
@@ -34,7 +40,5 @@ namespace Project.Models
         {
             return new ApplicationDbContext();
         }
-
-        public System.Data.Entity.DbSet<Project.Models.Store.Departments> Departments { get; set; }
     }
 }
