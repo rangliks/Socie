@@ -107,6 +107,7 @@ namespace Project.Controllers
             ViewBag.Stats = c;
             return;
         }
+
         private void getWeather()
         {
             try

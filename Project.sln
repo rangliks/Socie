@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project", "Project\Project.csproj", "{F90D7AEA-8AD1-40B7-ADD1-1744AF161B22}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookTools", "FacebookTools\FacebookTools.csproj", "{28DB8A1D-C517-4E7F-B336-2B5DB78F4349}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{F90D7AEA-8AD1-40B7-ADD1-1744AF161B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F90D7AEA-8AD1-40B7-ADD1-1744AF161B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F90D7AEA-8AD1-40B7-ADD1-1744AF161B22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28DB8A1D-C517-4E7F-B336-2B5DB78F4349}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28DB8A1D-C517-4E7F-B336-2B5DB78F4349}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28DB8A1D-C517-4E7F-B336-2B5DB78F4349}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28DB8A1D-C517-4E7F-B336-2B5DB78F4349}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

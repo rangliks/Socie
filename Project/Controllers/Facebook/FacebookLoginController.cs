@@ -13,7 +13,7 @@ namespace Project.Controllers.Facebook
 {
     public class FacebookLoginController : Controller
     {
-        public RedirectToRouteResult Index()
+        public void FacebookLogin()
         {
             var appId = ConfigurationManager.AppSettings.Get("facebook_app_id");
             var appSecret = ConfigurationManager.AppSettings.Get("facebook_app_secret");
@@ -66,11 +66,11 @@ namespace Project.Controllers.Facebook
                     //helper.GetUploadedPhotos();
                     //helper.GetFriends();
                     //helper.GetProfilePicture();
-                    //helper.DownloadPhoto("1226029660758446");
+                    helper.DownloadPhoto("941488635950471");
                 }
             }
 
-            return RedirectToAction("Index", "User");
+            RedirectToAction("Index", "User");
         }
         //
         // GET: /FacebookLogin/
