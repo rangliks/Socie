@@ -190,6 +190,7 @@
     <Compile Include="Controllers\Admin\ProductsController.cs" />
     <Compile Include="Controllers\Admin\SalesStatsPerDaysController.cs" />
     <Compile Include="Controllers\Admin\SuppliersController.cs" />
+    <Compile Include="Controllers\Facebook\FacebookController.cs" />
     <Compile Include="Controllers\Facebook\FacebookLoginController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JavaScriptConvert.cs" />
@@ -205,6 +206,10 @@
     <Compile Include="Helpers\PermissionsScope.cs" />
     <Compile Include="Helpers\PostsObject.cs" />
     <Compile Include="Helpers\TheLogger.cs" />
+    <Compile Include="Migrations\201603312006241_Initial.cs" />
+    <Compile Include="Migrations\201603312006241_Initial.Designer.cs">
+      <DependentUpon>201603312006241_Initial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -349,6 +354,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\videos\" />
+    <Folder Include="Views\Facebook\" />
     <Folder Include="WebServices\" />
   </ItemGroup>
   <ItemGroup>
@@ -360,6 +366,17 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\Weather\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201603312006241_Initial.resx">
+      <DependentUpon>201603312006241_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FacebookTools\FacebookTools.csproj">
+      <Project>{28db8a1d-c517-4e7f-b336-2b5db78f4349}</Project>
+      <Name>FacebookTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

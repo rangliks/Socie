@@ -12,6 +12,8 @@ namespace FacebookTools.FacebookObjects
     public class Person
     {
         public string PersonId { get; set; }
+        public string SocieId { get; set; }
+        public string Token { get; set; }
         public string Name { get; set; }
         public string Relation { get; set; }
 

@@ -1,25 +1,26 @@
-﻿using System;
+﻿using Project.Helpers;
+using Project.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Facebook;
-using System.Net;
-using System.IO;
-using Project.Helpers;
+using Microsoft.AspNet.Identity;
+using FacebookTools.FacebookObjects;
 
-namespace Project.Controllers
+namespace Project.Controllers.Facebook
 {
-    [RequireHttps]
-    public class FacebookLoginController : Controller
+    public class FacebookController : Controller
     {
-        private ActionResult Index(string returnUrl)
+        private string facebookToken;
+        // GET: Facebook
+        // Here We Should always redirect to home!!!!
+        public ActionResult Index()
         {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
+            FacebookLogin();
             return RedirectToAction("Index", "Home");
         }
 
@@ -52,7 +53,7 @@ namespace Project.Controllers
                         absUri,
                         code.ToString(),
                         appSecret
-                        ); 
+                        );
 
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(accessTokenUri);
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
@@ -69,43 +70,58 @@ namespace Project.Controllers
                     }
 
                     token = responseParams.ContainsKey("access_token") ? responseParams["access_token"] : string.Empty;
-                    FacebookSessionHelper helper = new FacebookSessionHelper(token);
-                   // helper.GetUserHome();
-                    //helper.GetUserFeed();
-                    //helper.GetUserScores();
-                    //helper.GetUploadedPhotos();
-                    //helper.GetFriends();
-                    //helper.GetProfilePicture();
-                    helper.DownloadPhoto("941488635950471");
+                    facebookToken = token;
+                    bool exists = isUserExist(token);
+                    if(!exists)
+                    {
+                        CreatePerson(token);
+                    }
+                    RedirectToAction("Index", "Home");
                 }
             }
 
-            RedirectToAction("Index", "User");
+            //return RedirectToAction("Index", "User");
         }
-        //
-        // GET: /FacebookLogin/
-    //    public ActionResult Index()
-    //    {
+
+        private bool isUserExist(string token)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            var id = User.Identity.GetUserId();
+            User.Identity.GetUserName();
+            var users = from person 
+                        in db.Person
+                        where person.SocieId == id
+                        select new
+                        {
+                            SocieId = person.SocieId,
+                            PersonId = person.PersonId
+                        };
+
+            return users.Count() > 0;
             
-    //        var fb = new FacebookClient();
-    //        dynamic result = fb.Get("oauth/access_token", new
-    //        {
-    //            /* <add key="Facebook:AppId" value="201303350205233" />
-    //<add key="Facebook:AppSecret" value="94c3effc0f986cb482944496d0c53480" />*/
-    //            client_id = ConfigurationManager.AppSettings.Get("Facebook:AppId"),
-    //            client_secret = ConfigurationManager.AppSettings.Get("Facebook:AppSecret"),
-    //            grant_type = "client_credentials"
-    //        });
-    //        Session["AccessToken"] = result.access_token;
+        }
 
-    //        fb.AccessToken = result.access_token;
-    //        //var client = new FacebookClient(result.access_token);
-    //        dynamic me = fb.Get("me/friends");
-    //        string firstName = me.first_name;
-    //        string lastName = me.last_name;
-    //        string email = me.email;
+        /// <summary>
+        /// Create Person entity for the user in current session
+        /// </summary>
+        /// <param name="token">create with current token</param>
+        /// <returns></returns>
+        private bool CreatePerson(string token)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            FacebookSessionHelper helper = new FacebookSessionHelper(token);
+            Person me = helper.Me;
+            
+            // add the socieid and token to the facebook person object
+            me.SocieId = User.Identity.GetUserId();
+            me.Token = token;
 
-    //        return View();
-    //    }
-	}
+            // add to Person table and save
+            db.Person.Add(me);
+            db.SaveChanges();
+
+            /* TODO: add validation */
+            return true;
+        }
+    }
 }

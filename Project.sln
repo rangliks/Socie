@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project", "Project\Project.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookTools", "FacebookTools\FacebookTools.csproj", "{28DB8A1D-C517-4E7F-B336-2B5DB78F4349}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analyst", "Analyst\Analyst.csproj", "{52EDDF57-43DF-441A-BD5C-9F9822C42B45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{28DB8A1D-C517-4E7F-B336-2B5DB78F4349}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28DB8A1D-C517-4E7F-B336-2B5DB78F4349}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28DB8A1D-C517-4E7F-B336-2B5DB78F4349}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52EDDF57-43DF-441A-BD5C-9F9822C42B45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52EDDF57-43DF-441A-BD5C-9F9822C42B45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52EDDF57-43DF-441A-BD5C-9F9822C42B45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52EDDF57-43DF-441A-BD5C-9F9822C42B45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

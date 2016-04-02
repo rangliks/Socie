@@ -22,10 +22,15 @@ namespace Project.Helpers
         //int i = 0;
         private string accessToken = string.Empty;
         private string userId = string.Empty;
+
         private string name = string.Empty;
+        public string Name { get { return name; } }
+
         private string email = string.Empty;
+        public string Email { get { return email; } }
 
         private Person me;
+        public Person Me { get { return me; } }
 
         public FacebookSessionHelper(string accToken)
         {
@@ -47,7 +52,7 @@ namespace Project.Helpers
             {
                 dynamic me = client.Get("me");
                 uid = me.id;
-                name = me.first_name + " " + me.second_name;
+                name = me.name;
 
                 me = client.Get("me?fields=email");
                 email = me.email;
