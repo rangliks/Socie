@@ -82,6 +82,19 @@ namespace FacebookTools
             //}
         }
 
+        public void GetUserAlbums()
+        {
+            var albums = client.Get(string.Format("/me/albums?fields=id&access_token={0}", accessToken));
+
+            var url = string.Format("https://graph.facebook.com/me/albums?fields=id&access_token={0}", accessToken);
+            var response = callUrl(url);
+            //PostsObject pObject = JsonConvert.DeserializeObject<PostsObject>(firstPage.ToString());
+            //foreach (var datum in pObject.data)
+            //{
+            //    var story = datum.story;
+            //}
+        }
+
         public void GetUserHome()
         {
             var newsFeed = client.Get(string.Format("/{0}/home", userId));
@@ -246,6 +259,28 @@ namespace FacebookTools
                 if (response != null) response.Close();
             }
             return pictureUrl;
+        }
+
+        private WebResponse callUrl(string url)
+        {
+            WebResponse response = null;
+            string pictureUrl = string.Empty;
+            try
+            {
+                WebRequest request = WebRequest.Create(url);
+                response = request.GetResponse();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                //? handle
+            }
+            finally
+            {
+                if (response != null) response.Close();
+            }
+
+            return null;
         }
 
         public static void DownloadFromUrl(string url, string fileName = "iamge.jpg")

@@ -49,8 +49,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Db\DbDriver.cs" />
     <Compile Include="Db\SocieContext.cs" />
     <Compile Include="Facebook\FacebookConnector.cs" />
+    <Compile Include="Migrations\201604022016538_ran4.cs" />
+    <Compile Include="Migrations\201604022016538_ran4.Designer.cs">
+      <DependentUpon>201604022016538_ran4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -64,7 +70,11 @@
       <Name>FacebookTools</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201604022016538_ran4.resx">
+      <DependentUpon>201604022016538_ran4.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

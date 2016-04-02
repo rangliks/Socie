@@ -26,7 +26,7 @@ namespace Project.Models
         public DbSet<Person> Person { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Tag> Tags { get; set; }
-
+        public DbSet<PhotoAlbum> PhotoAlbums { get; set; }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Suppliers> Suppliers { get; set; }

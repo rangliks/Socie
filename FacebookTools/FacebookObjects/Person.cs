@@ -24,6 +24,13 @@ namespace FacebookTools.FacebookObjects
             Relation = string.Empty;
         }
 
+        public Person(string personId, string socieId, string token)
+        {
+            PersonId = string.Empty;
+            Name = string.Empty;
+            Relation = string.Empty;
+        }
+
         public Person(string tag)
         {
             JObject personJson = JObject.Parse(tag);

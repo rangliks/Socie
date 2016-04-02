@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using FacebookTools.FacebookObjects;
+using Analyst.Facebook;
 
 namespace Analyst
 {
@@ -13,22 +15,8 @@ namespace Analyst
     {
         static void Main(string[] args)
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["SocieContext"].ConnectionString;
-            SocieContext db = new SocieContext(connectionString);
-            var users = from person
-                        in db.Person
-                        select new
-                        {
-                            SocieId = person.SocieId,
-                            PersonId = person.PersonId,
-                            Token = person.Token
-                        };
-
-            
-            foreach(var user in users)
-            {
-                var v = user.PersonId;
-            }
+            FacebookConnector connector = new FacebookConnector();
+            connector.FindPhotos();
         }
     }
 }

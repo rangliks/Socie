@@ -10,6 +10,11 @@ namespace Analyst.Db
 {
     public class SocieContext : DbContext
     {
+        public SocieContext()
+        {
+
+        }
+
         public SocieContext(string connString)
             : base(connString)
         {
