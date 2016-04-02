@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Project.Models.Store;
-using Project.FacebookObjects;
+//using Project.FacebookObjects;
+using FacebookTools.FacebookObjects;
+
 namespace Project.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.

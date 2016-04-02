@@ -10,7 +10,7 @@ using Facebook;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Project.Controllers;
-using Project.FacebookObjects;
+using FacebookTools.FacebookObjects;
 using log4net;
 
 namespace Project.Helpers
@@ -19,7 +19,7 @@ namespace Project.Helpers
     {
         private ILog log = new TheLogger().GetLogger();
         private FacebookClient client = null;
-        int i = 0;
+        //int i = 0;
         private string accessToken = string.Empty;
         private string userId = string.Empty;
         private string name = string.Empty;

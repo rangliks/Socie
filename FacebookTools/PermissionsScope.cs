@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Project.Helpers
 {
-    public class PermissionsScopez
+    public class PermissionsScope
     {
         HashSet<string> permissions = new HashSet<string>()
         {

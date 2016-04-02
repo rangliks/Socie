@@ -410,9 +410,6 @@ namespace Project.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            //FacebookLoginController controller = new FacebookLoginController();
-            //controller.FacebookLogin();
-
             FacebookLogin();
 
             var v = Request["code"];

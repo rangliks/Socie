@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Project.Helpers
+namespace FacebookTools.FacebookObjects
 {
-    public class Datumz
+    public class Datum
     {
         public string message { get; set; }
         public string created_time { get; set; }
@@ -13,15 +13,15 @@ namespace Project.Helpers
         public string story { get; set; }
     }
 
-    public class Pagingz
+    public class Paging
     {
         public string previous { get; set; }
         public string next { get; set; }
     }
 
-    public class PostsObjectz
+    public class PostsObject
     {
-        public List<Datumz> data { get; set; }
-        public Pagingz paging { get; set; }
+        public List<Datum> data { get; set; }
+        public Paging paging { get; set; }
     }
 }
