@@ -196,9 +196,6 @@
     <Compile Include="Controllers\JavaScriptConvert.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\Users\UserController.cs" />
-    <Compile Include="FacebookObjects\Person.cs" />
-    <Compile Include="FacebookObjects\Photo.cs" />
-    <Compile Include="FacebookObjects\Tag.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
