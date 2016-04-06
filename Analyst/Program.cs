@@ -16,8 +16,8 @@ namespace Analyst
     {
         static void Main(string[] args)
         {
-            //FacebookConnector connector = new FacebookConnector();
-            //connector.FindPhotos();
+            FacebookConnector connector = new FacebookConnector();
+            connector.FindPhotos();
            // OxfordFaceService service = new OxfordFaceService();
             OxfordFaceService.FindFaces();
             Thread.Sleep(50000);

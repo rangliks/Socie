@@ -44,7 +44,7 @@ namespace FacebookTools
             return JObject.Parse(json);
         }
 
-        public static List<Photo> ParseAlbum(object albumPhotos)
+        public static List<Photo> ParseAlbum(object albumPhotos, PhotoAlbum album)
         {
             List<Photo> photos = new List<Photo>();
             // object to string
@@ -58,6 +58,7 @@ namespace FacebookTools
             foreach (var item in albumData.Children())
             {
                 Photo photo = new Photo();
+                photo.Album = album;
                 var itemProperties = item.Children<JProperty>();
                 foreach (JProperty a in itemProperties)
                 {
@@ -66,7 +67,7 @@ namespace FacebookTools
                     if (a.Name.Equals("name")) photo.Name = a.Value.ToString();
 
                 }
-
+                
                 photos.Add(photo);
             }
 

@@ -85,26 +85,26 @@ namespace Project.Controllers
 
         private void getStatistics()
         {
-            var stats = from st in db.StatisticsPerDay
-                        select new
-                        {
-                            Amount = st.Amount,
-                            Date = st.Date
-                        };
-            var c = stats.ToList();
-            List<SaleStat> dict = new List<SaleStat>();
-            foreach (var v in c)
-            {
-                SaleStat s = new SaleStat()
-                {
-                    date = v.Date,
-                    total = v.Amount
-                };
-                dict.Add(s);
-            }
+            //var stats = from st in db.StatisticsPerDay
+            //            select new
+            //            {
+            //                Amount = st.Amount,
+            //                Date = st.Date
+            //            };
+            //var c = stats.ToList();
+            //List<SaleStat> dict = new List<SaleStat>();
+            //foreach (var v in c)
+            //{
+            //    SaleStat s = new SaleStat()
+            //    {
+            //        date = v.Date,
+            //        total = v.Amount
+            //    };
+            //    dict.Add(s);
+            //}
 
-            ViewBag.StatsJson = dict;
-            ViewBag.Stats = c;
+            //ViewBag.StatsJson = dict;
+            //ViewBag.Stats = c;
             return;
         }
 
@@ -155,22 +155,22 @@ namespace Project.Controllers
         }
         private List<ProductSupllier> generalProductsQuery()
         {
-            var v = from product in db.Products
-                    join supplier in db.Suppliers
-                    on product.SupplierId equals supplier.SupllierID
-                    select new ProductSupllier
-                    {
-                        Image = product.Image,
-                        Price = product.Price,
-                        Title = product.Title,
-                        Productid = product.ProductId,
-                        Type = product.Type,
-                        Description = product.Description,
-                        SupplierName = supplier.Name,
-                        SupplierAddress = supplier.address
-                    };
+            //var v = from product in db.Products
+            //        join supplier in db.Suppliers
+            //        on product.SupplierId equals supplier.SupllierID
+            //        select new ProductSupllier
+            //        {
+            //            Image = product.Image,
+            //            Price = product.Price,
+            //            Title = product.Title,
+            //            Productid = product.ProductId,
+            //            Type = product.Type,
+            //            Description = product.Description,
+            //            SupplierName = supplier.Name,
+            //            SupplierAddress = supplier.address
+            //        };
 
-            return v.ToList();
+            return new List<ProductSupllier> ();
         }
 
         private int getDepartmentsInput()
@@ -211,123 +211,123 @@ namespace Project.Controllers
         private List<ProductSupllier> searchDB(string criteria, int departmentId, int supplierId, float fromPrice, float toPrice)
         {
             List<ProductSupllier> output = new List<ProductSupllier>();
-            if (departmentId == 0 && supplierId == 0)
-            {
-                output = generalProductsQuery();
-            }
-            else if(supplierId == 0)
-            {
-                var prods = from product in db.Products
-                            join supplier in db.Suppliers
-                            on product.SupplierId equals supplier.SupllierID
-                            where product.DepartmentId == departmentId
-                            select new ProductSupllier
-                            {
-                                Image = product.Image,
-                                Price = product.Price,
-                                Title = product.Title,
-                                Productid = product.ProductId,
-                                Type = product.Type,
-                                Description = product.Description,
-                                SupplierName = supplier.Name,
-                                SupplierAddress = supplier.address
-                            };
-                output = prods.ToList();
+            //if (departmentId == 0 && supplierId == 0)
+            //{
+            //    output = generalProductsQuery();
+            //}
+            //else if(supplierId == 0)
+            //{
+            //    var prods = from product in db.Products
+            //                join supplier in db.Suppliers
+            //                on product.SupplierId equals supplier.SupllierID
+            //                where product.DepartmentId == departmentId
+            //                select new ProductSupllier
+            //                {
+            //                    Image = product.Image,
+            //                    Price = product.Price,
+            //                    Title = product.Title,
+            //                    Productid = product.ProductId,
+            //                    Type = product.Type,
+            //                    Description = product.Description,
+            //                    SupplierName = supplier.Name,
+            //                    SupplierAddress = supplier.address
+            //                };
+            //    output = prods.ToList();
 
-            }
-            else if(departmentId == 0)
-            {
-                var prods = from product in db.Products
-                            join supplier in db.Suppliers
-                            on product.SupplierId equals supplier.SupllierID
-                            where supplier.SupllierID == supplierId
-                            select new ProductSupllier
-                            {
-                                Image = product.Image,
-                                Price = product.Price,
-                                Title = product.Title,
-                                Productid = product.ProductId,
-                                Type = product.Type,
-                                Description = product.Description,
-                                SupplierName = supplier.Name,
-                                SupplierAddress = supplier.address
-                            };
-                output = prods.ToList();
-            }
-            else
-            {
-                var prods = from product in db.Products
-                            join supplier in db.Suppliers
-                            on product.SupplierId equals supplier.SupllierID
-                            where supplier.SupllierID == supplierId && product.DepartmentId == departmentId
-                            select new ProductSupllier
-                            {
-                                Image = product.Image,
-                                Price = product.Price,
-                                Title = product.Title,
-                                Productid = product.ProductId,
-                                Type = product.Type,
-                                Description = product.Description,
-                                SupplierName = supplier.Name,
-                                SupplierAddress = supplier.address
-                            };
-                output = prods.ToList();
-            }
+            //}
+            //else if(departmentId == 0)
+            //{
+            //    var prods = from product in db.Products
+            //                join supplier in db.Suppliers
+            //                on product.SupplierId equals supplier.SupllierID
+            //                where supplier.SupllierID == supplierId
+            //                select new ProductSupllier
+            //                {
+            //                    Image = product.Image,
+            //                    Price = product.Price,
+            //                    Title = product.Title,
+            //                    Productid = product.ProductId,
+            //                    Type = product.Type,
+            //                    Description = product.Description,
+            //                    SupplierName = supplier.Name,
+            //                    SupplierAddress = supplier.address
+            //                };
+            //    output = prods.ToList();
+            //}
+            //else
+            //{
+            //    var prods = from product in db.Products
+            //                join supplier in db.Suppliers
+            //                on product.SupplierId equals supplier.SupllierID
+            //                where supplier.SupllierID == supplierId && product.DepartmentId == departmentId
+            //                select new ProductSupllier
+            //                {
+            //                    Image = product.Image,
+            //                    Price = product.Price,
+            //                    Title = product.Title,
+            //                    Productid = product.ProductId,
+            //                    Type = product.Type,
+            //                    Description = product.Description,
+            //                    SupplierName = supplier.Name,
+            //                    SupplierAddress = supplier.address
+            //                };
+            //    output = prods.ToList();
+            //}
 
-            if(!string.IsNullOrEmpty(criteria))
-            {
-                output = output.Where(x => x.Title.ToLower().Contains(criteria.ToLower())).ToList();
-            }
+            //if(!string.IsNullOrEmpty(criteria))
+            //{
+            //    output = output.Where(x => x.Title.ToLower().Contains(criteria.ToLower())).ToList();
+            //}
 
-            output = output.Where(x => x.Price >= fromPrice && x.Price <= toPrice).ToList();
+            //output = output.Where(x => x.Price >= fromPrice && x.Price <= toPrice).ToList();
             return output;
         }
 
         private List<Suppliers> getSuppliers(ApplicationDbContext db)
         {
-            var suppliers = from sup in db.Suppliers
-                              select new
-                              {
-                                  SupllierID = sup.SupllierID,
-                                  Name = sup.Name,
-                                  Address = sup.address
-                              };
+            //var suppliers = from sup in db.Suppliers
+            //                  select new
+            //                  {
+            //                      SupllierID = sup.SupllierID,
+            //                      Name = sup.Name,
+            //                      Address = sup.address
+            //                  };
 
             List<Suppliers> l = new List<Suppliers>();
-            foreach (var d in suppliers)
-            {
-                Suppliers su = new Suppliers()
-                {
-                    SupllierID = d.SupllierID,
-                    Name = d.Name,
-                    address = d.Address
-                };
-                l.Add(su);
-            }
+            //foreach (var d in suppliers)
+            //{
+            //    Suppliers su = new Suppliers()
+            //    {
+            //        SupllierID = d.SupllierID,
+            //        Name = d.Name,
+            //        address = d.Address
+            //    };
+            //    l.Add(su);
+            //}
             return l;
         }
 
         private List<Departments> getDepartments(ApplicationDbContext db)
         {
-            var departments = from dep in db.Departments
-                              select new
-                              {
-                                  DepartmentId = dep.DepartmentId,
-                                  Name = dep.Name,
-                                  ManagerName = dep.Name
-                              };
+            //var departments = from dep in db.Departments
+            //                  select new
+            //                  {
+            //                      DepartmentId = dep.DepartmentId,
+            //                      Name = dep.Name,
+            //                      ManagerName = dep.Name
+            //                  };
 
             List<Departments> l = new List<Departments>();
-            foreach (var d in departments)
-            {
-                Departments de = new Departments()
-                {
-                    DepartmentId = d.DepartmentId,
-                    Name = d.Name,
-                    ManagerName = d.ManagerName
-                };
-                l.Add(de);
-            }
+            //foreach (var d in departments)
+            //{
+            //    Departments de = new Departments()
+            //    {
+            //        DepartmentId = d.DepartmentId,
+            //        Name = d.Name,
+            //        ManagerName = d.ManagerName
+            //    };
+            //    l.Add(de);
+            //}
             return l;
         }
 

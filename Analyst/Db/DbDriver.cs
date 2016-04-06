@@ -49,5 +49,47 @@ namespace Analyst.Db
 
             return persons;
         }
+
+        public void SaveAlbums(List<PhotoAlbum> albums)
+        {
+            var currentAlbums = from photoAlbum
+                                in db.PhotoAlbum
+                                select new { AlbumId = photoAlbum.AlbumId, Name = photoAlbum.Name, PersonId = photoAlbum.PersonId };
+            var currentAlbumsDictionary = currentAlbums.ToDictionary(x => x.AlbumId);
+            foreach (var album in albums)
+            {
+                if(currentAlbumsDictionary.ContainsKey(album.AlbumId))
+                {
+                    /*/ UPDATE EXISTING /*/
+                }
+                else
+                {
+                    db.PhotoAlbum.Add(album);
+                }
+            }
+
+            db.SaveChanges();
+        }
+
+        internal void SavePhotos(List<Photo> albumPhotos)
+        {
+            var currentPhotos = from photo
+                                in db.Photo
+                                select new { PhotoId = photo.PhotoId, Name = photo.Name, Tags = photo.Tags, CreationDate = photo.CreationDate };
+            var currentPhotosDictionary = currentPhotos.ToDictionary(x => x.PhotoId);
+            foreach (var photo in albumPhotos)
+            {
+                if (currentPhotosDictionary.ContainsKey(photo.PhotoId))
+                {
+                    /*/ UPDATE EXISTING /*/
+                }
+                else
+                {
+                    db.Photo.Add(photo);
+                }
+            }
+
+            db.SaveChanges();
+        }
     }
 }

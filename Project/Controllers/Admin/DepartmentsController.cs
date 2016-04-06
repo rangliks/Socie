@@ -18,22 +18,22 @@ namespace Project.Controllers.Admin
         // GET: Departments
         public ActionResult Index()
         {
-            return View(db.Departments.ToList());
+            return View();
         }
 
         // GET: Departments/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Departments departments = db.Departments.Find(id);
-            if (departments == null)
-            {
-                return HttpNotFound();
-            }
-            return View(departments);
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Departments departments = db.Departments.Find(id);
+            //if (departments == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            return View();
         }
 
         // GET: Departments/Create
@@ -51,8 +51,8 @@ namespace Project.Controllers.Admin
         {
             if (ModelState.IsValid)
             {
-                db.Departments.Add(departments);
-                db.SaveChanges();
+                //db.Departments.Add(departments);
+                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -62,16 +62,16 @@ namespace Project.Controllers.Admin
         // GET: Departments/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Departments departments = db.Departments.Find(id);
-            if (departments == null)
-            {
-                return HttpNotFound();
-            }
-            return View(departments);
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Departments departments = db.Departments.Find(id);
+            //if (departments == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            return View();
         }
 
         // POST: Departments/Edit/5
@@ -93,16 +93,16 @@ namespace Project.Controllers.Admin
         // GET: Departments/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Departments departments = db.Departments.Find(id);
-            if (departments == null)
-            {
-                return HttpNotFound();
-            }
-            return View(departments);
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Departments departments = db.Departments.Find(id);
+            //if (departments == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            return View();
         }
 
         // POST: Departments/Delete/5
@@ -110,9 +110,9 @@ namespace Project.Controllers.Admin
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Departments departments = db.Departments.Find(id);
-            db.Departments.Remove(departments);
-            db.SaveChanges();
+            //Departments departments = db.Departments.Find(id);
+            //db.Departments.Remove(departments);
+            //db.SaveChanges();
             return RedirectToAction("Index");
         }
 

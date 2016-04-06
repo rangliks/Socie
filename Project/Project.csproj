@@ -203,11 +203,6 @@
     <Compile Include="Helpers\PermissionsScope.cs" />
     <Compile Include="Helpers\PostsObject.cs" />
     <Compile Include="Helpers\TheLogger.cs" />
-    <Compile Include="Migrations\201603312006241_Initial.cs" />
-    <Compile Include="Migrations\201603312006241_Initial.Designer.cs">
-      <DependentUpon>201603312006241_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -363,11 +358,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\Weather\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201603312006241_Initial.resx">
-      <DependentUpon>201603312006241_Initial.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FacebookTools\FacebookTools.csproj">

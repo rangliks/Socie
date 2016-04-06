@@ -61,11 +61,6 @@
     <Compile Include="Db\DbDriver.cs" />
     <Compile Include="Db\SocieContext.cs" />
     <Compile Include="Facebook\FacebookConnector.cs" />
-    <Compile Include="Migrations\201604022016538_ran4.cs" />
-    <Compile Include="Migrations\201604022016538_ran4.Designer.cs">
-      <DependentUpon>201604022016538_ran4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -82,11 +77,6 @@
       <Project>{eb91648c-54f8-4ea0-bc97-eeec264ae29e}</Project>
       <Name>OxfordTools</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201604022016538_ran4.resx">
-      <DependentUpon>201604022016538_ran4.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

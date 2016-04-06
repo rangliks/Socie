@@ -18,22 +18,22 @@ namespace Project.Controllers.Admin
         // GET: Suppliers
         public ActionResult Index()
         {
-            return View(db.Suppliers.ToList());
+            return View();
         }
 
         // GET: Suppliers/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Suppliers suppliers = db.Suppliers.Find(id);
-            if (suppliers == null)
-            {
-                return HttpNotFound();
-            }
-            return View(suppliers);
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Suppliers suppliers = db.Suppliers.Find(id);
+            //if (suppliers == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            return View();
         }
 
         // GET: Suppliers/Create
@@ -51,8 +51,8 @@ namespace Project.Controllers.Admin
         {
             if (ModelState.IsValid)
             {
-                db.Suppliers.Add(suppliers);
-                db.SaveChanges();
+                //db.Suppliers.Add(suppliers);
+                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -62,16 +62,16 @@ namespace Project.Controllers.Admin
         // GET: Suppliers/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Suppliers suppliers = db.Suppliers.Find(id);
-            if (suppliers == null)
-            {
-                return HttpNotFound();
-            }
-            return View(suppliers);
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Suppliers suppliers = db.Suppliers.Find(id);
+            //if (suppliers == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            return View();
         }
 
         // POST: Suppliers/Edit/5
@@ -93,16 +93,16 @@ namespace Project.Controllers.Admin
         // GET: Suppliers/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Suppliers suppliers = db.Suppliers.Find(id);
-            if (suppliers == null)
-            {
-                return HttpNotFound();
-            }
-            return View(suppliers);
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Suppliers suppliers = db.Suppliers.Find(id);
+            //if (suppliers == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            return View();
         }
 
         // POST: Suppliers/Delete/5
@@ -110,9 +110,9 @@ namespace Project.Controllers.Admin
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Suppliers suppliers = db.Suppliers.Find(id);
-            db.Suppliers.Remove(suppliers);
-            db.SaveChanges();
+            //Suppliers suppliers = db.Suppliers.Find(id);
+            //db.Suppliers.Remove(suppliers);
+           // db.SaveChanges();
             return RedirectToAction("Index");
         }
 

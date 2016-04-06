@@ -28,10 +28,10 @@ namespace Project.Models
         public DbSet<Tag> Tags { get; set; }
         public DbSet<PhotoAlbum> PhotoAlbums { get; set; }
 
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Suppliers> Suppliers { get; set; }
-        public DbSet<SalesStatsPerDay> StatisticsPerDay { get; set; }
-        public DbSet<Departments> Departments { get; set; }
+        //public DbSet<Product> Products { get; set; }
+        //public DbSet<Suppliers> Suppliers { get; set; }
+        //public DbSet<SalesStatsPerDay> StatisticsPerDay { get; set; }
+        //public DbSet<Departments> Departments { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

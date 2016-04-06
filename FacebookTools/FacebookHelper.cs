@@ -88,13 +88,26 @@ namespace FacebookTools
             return ObjectParser.ParseAlbums(albums, me.PersonId);
         }
 
+        public List<Photo> GetAlbumsPhotos(List<PhotoAlbum> albums)
+        {
+            List<Photo> photos = new List<Photo>();
+            foreach (var album in albums)
+            {
+                /* TODO : update db with name parameter (add field to the class PhotoAlbum */
+                var albumPhotos = client.Get(string.Format("/{0}/photos", album.AlbumId));
+                photos.AddRange(ObjectParser.ParseAlbum(albumPhotos, album));
+            }
+
+            return photos;
+        }
+
         public void DownloadAlbums(List<PhotoAlbum> albums)
         {
             foreach (var album in albums)
             {
                 /* TODO : update db with name parameter (add field to the class PhotoAlbum */
                 var albumPhotos = client.Get(string.Format("/{0}/photos", album.AlbumId));
-                List<Photo> photos = ObjectParser.ParseAlbum(albumPhotos);
+                List<Photo> photos = ObjectParser.ParseAlbum(albumPhotos, album);
                 DownloadPics(photos);
             }
         }
@@ -319,6 +332,11 @@ namespace FacebookTools
             var random = new Random();
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        public void SaveAlbumsToDB(List<PhotoAlbum> albums)
+        {
+            
         }
     }
 }

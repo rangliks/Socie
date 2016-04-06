@@ -17,6 +17,11 @@ namespace FacebookTools.FacebookObjects
         public float X { get; set; }
         public float Y { get; set; }
 
+        public Tag()
+        {
+
+        }
+
         public Tag(string tag)
         {
             JObject taggedJson = JObject.Parse(tag);
