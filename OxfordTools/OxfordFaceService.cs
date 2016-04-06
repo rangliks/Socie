@@ -8,7 +8,7 @@ using System.IO;
 
 namespace OxfordTools
 {
-    public class OxfordFaceService
+    public static class OxfordFaceService
     {
         public static async void FindFaces()
         {

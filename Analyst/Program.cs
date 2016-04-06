@@ -9,6 +9,7 @@ using System.Configuration;
 using FacebookTools.FacebookObjects;
 using Analyst.Facebook;
 using OxfordTools;
+using System.Threading;
 namespace Analyst
 {
     class Program
@@ -17,8 +18,9 @@ namespace Analyst
         {
             //FacebookConnector connector = new FacebookConnector();
             //connector.FindPhotos();
-            OxfordFaceService service = new OxfordFaceService();
+           // OxfordFaceService service = new OxfordFaceService();
             OxfordFaceService.FindFaces();
+            Thread.Sleep(50000);
         }
     }
 }
