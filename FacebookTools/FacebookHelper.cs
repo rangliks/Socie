@@ -82,17 +82,29 @@ namespace FacebookTools
             //}
         }
 
-        public void GetUserAlbums()
+        public List<PhotoAlbum> GetUserAlbums()
         {
             var albums = client.Get(string.Format("/me/albums?fields=id&access_token={0}", accessToken));
+            return ObjectParser.ParseAlbums(albums, me.PersonId);
+        }
 
-            var url = string.Format("https://graph.facebook.com/me/albums?fields=id&access_token={0}", accessToken);
-            var response = callUrl(url);
-            //PostsObject pObject = JsonConvert.DeserializeObject<PostsObject>(firstPage.ToString());
-            //foreach (var datum in pObject.data)
-            //{
-            //    var story = datum.story;
-            //}
+        public void DownloadAlbums(List<PhotoAlbum> albums)
+        {
+            foreach (var album in albums)
+            {
+                /* TODO : update db with name parameter (add field to the class PhotoAlbum */
+                var albumPhotos = client.Get(string.Format("/{0}/photos", album.AlbumId));
+                List<Photo> photos = ObjectParser.ParseAlbum(albumPhotos);
+                DownloadPics(photos);
+            }
+        }
+
+        public void DownloadPics(List<Photo> photos)
+        {
+            foreach (var photo in photos)
+            {
+                DownloadPicture(photo);
+            }
         }
 
         public void GetUserHome()
@@ -120,7 +132,7 @@ namespace FacebookTools
 
         public void GetFriends()
         {
-            //dynamic friends = client.Get(string.Format("/{0}/friends", userId));
+            //dynamic friends = client.Get(string.Format("/{0}/friends", personId));
             //string nextFriend = friends.paging.next;
             //while(!string.IsNullOrEmpty(nextFriend))
             //{
@@ -208,8 +220,11 @@ namespace FacebookTools
         private void DownloadPicture(Photo photo)
         {
             var url = GetPhotoUrl(photo);
-            string filename = string.Format("image_{0}.jpg", photo.PhotoId);
-            DownloadFromUrl(url, filename);
+            if(!string.IsNullOrEmpty(url))
+            {
+                string filename = string.Format("image_{0}.jpg", photo.PhotoId);
+                DownloadFromUrl(url, filename);
+            }
         }
 
         public void DownloadPhoto(string photoId)
@@ -225,9 +240,15 @@ namespace FacebookTools
             string pictureUrl = string.Empty;
             try
             {
-                WebRequest request = WebRequest.Create(string.Format("https://facebook.com/photo/download/?fbid={0}", photo.PhotoId));
+                WebRequest request = WebRequest.Create(string.Format("https://www.facebook.com/photo/download/?fbid={0}", photo.PhotoId));
                 response = request.GetResponse();
+                if (response != null && request.RequestUri.Equals(response.ResponseUri))
+                {
+                    response.Close();
+                    return null;
+                }
                 pictureUrl = response.ResponseUri.ToString();
+
             }
             catch (Exception ex)
             {

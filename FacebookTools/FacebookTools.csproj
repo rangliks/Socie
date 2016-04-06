@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="FacebookHelper.cs" />
     <Compile Include="FacebookObjects\PhotoAlbum.cs" />
+    <Compile Include="ObjectParser.cs" />
     <Compile Include="PermissionsScope.cs" />
     <Compile Include="FacebookObjects\Person.cs" />
     <Compile Include="FacebookObjects\Photo.cs" />

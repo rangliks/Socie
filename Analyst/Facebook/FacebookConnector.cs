@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FacebookTools;
 using Analyst.Db;
+using FacebookTools.FacebookObjects;
 
 namespace Analyst.Facebook
 {
@@ -18,6 +19,10 @@ namespace Analyst.Facebook
 
         public void FindPhotos()
         {
+            FacebookHelper myHelper = new FacebookHelper("CAAC3FZAauWzEBALPZC2Tj2VGQRs5ZAHIq0D4N0ZCDZAaQ0ALlJoV44lyYF0CULENKwq4ioiYKWmgV1Bn91MH7o6adQY9TEzW7ZAoBRkku2aZBuZA7ZAcZCKZBL0oGXdcjp7iyVB2qlgy6xgjAgU0mdLQMnO9ZAIYYh7t1JuDTj8Tx77ZBPNylSZBsFMuAybp4dMxtp9DDeOxn62NSRgAZDZD");
+            List<PhotoAlbum> albums = myHelper.GetUserAlbums();
+            myHelper.DownloadAlbums(albums);
+
             var persons = driver.getPersons();
             foreach(var person in persons)
             {

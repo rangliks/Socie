@@ -116,7 +116,7 @@ namespace Project.Helpers
 
         public void GetFriends()
         {
-            //dynamic friends = client.Get(string.Format("/{0}/friends", userId));
+            //dynamic friends = client.Get(string.Format("/{0}/friends", personId));
             //string nextFriend = friends.paging.next;
             //while(!string.IsNullOrEmpty(nextFriend))
             //{

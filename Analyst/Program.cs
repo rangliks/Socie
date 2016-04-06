@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 using System.Configuration;
 using FacebookTools.FacebookObjects;
 using Analyst.Facebook;
-
+using OxfordTools;
 namespace Analyst
 {
     class Program
     {
         static void Main(string[] args)
         {
-            FacebookConnector connector = new FacebookConnector();
-            connector.FindPhotos();
+            //FacebookConnector connector = new FacebookConnector();
+            //connector.FindPhotos();
+            OxfordFaceService service = new OxfordFaceService();
+            OxfordFaceService.FindFaces();
         }
     }
 }
