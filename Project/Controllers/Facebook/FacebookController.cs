@@ -10,6 +10,8 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using FacebookTools.FacebookObjects;
+using DbHandler.Db;
+using FacebookTools;
 
 namespace Project.Controllers.Facebook
 {
@@ -109,16 +111,9 @@ namespace Project.Controllers.Facebook
         private bool CreatePerson(string token)
         {
             ApplicationDbContext db = new ApplicationDbContext();
-            FacebookSessionHelper helper = new FacebookSessionHelper(token);
-            Person me = helper.Me;
-            
-            // add the socieid and token to the facebook person object
-            me.SocieId = User.Identity.GetUserId();
-            me.Token = token;
-
-            // add to Person table and save
-            db.Person.Add(me);
-            db.SaveChanges();
+            FacebookHelper helper = new FacebookHelper(token, User.Identity.GetUserId());
+            DbDriver driver = new DbDriver();
+            driver.SavePerson(helper.Me);
 
             /* TODO: add validation */
             return true;

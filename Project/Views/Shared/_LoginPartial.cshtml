@@ -1,4 +1,12 @@
 ﻿@using Microsoft.AspNet.Identity
+@{
+    var db = new DbHandler.Db.DbDriver();
+    string Name = db.getSocieUserRealName(User.Identity.GetUserId());
+    if(string.IsNullOrEmpty(Name))
+    {
+        Name = User.Identity.GetUserName();
+    }
+}
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
@@ -12,7 +20,7 @@
         </li>
         }
         <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            @Html.ActionLink("Hello " + Name + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
         </li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>

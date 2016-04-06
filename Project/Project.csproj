@@ -360,6 +360,10 @@
     <WCFMetadataStorage Include="Service References\Weather\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DbHandler\DbHandler.csproj">
+      <Project>{1c64e62b-dc9b-403f-84b5-cf4c6f5873d1}</Project>
+      <Name>DbHandler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FacebookTools\FacebookTools.csproj">
       <Project>{28db8a1d-c517-4e7f-b336-2b5db78f4349}</Project>
       <Name>FacebookTools</Name>

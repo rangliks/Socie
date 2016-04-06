@@ -22,8 +22,15 @@ namespace FacebookTools
         private string email = string.Empty;
 
         private Person me;
+        public Person Me 
+        { 
+            get 
+            {
+                return me;
+            } 
+        }
 
-        public FacebookHelper(string accToken)
+        public FacebookHelper(string accToken, string socieId = "")
         {
             me = new Person();
             accessToken = accToken;
@@ -32,6 +39,14 @@ namespace FacebookTools
 
             me.PersonId = userId;
             me.Name = name;
+            me.Token = accessToken;
+            
+            // not all persons are socie users
+            // if it's a socie user set the SocieId
+            if(!string.IsNullOrEmpty(socieId))
+            {
+                me.SocieId = socieId;
+            }
         }
 
         private string getUserId()
@@ -43,7 +58,7 @@ namespace FacebookTools
             {
                 dynamic me = client.Get("me");
                 uid = me.id;
-                name = me.first_name + " " + me.second_name;
+                name = me.name;
 
                 me = client.Get("me?fields=email");
                 email = me.email;

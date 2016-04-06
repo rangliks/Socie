@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Analyst.Db
+namespace DbHandler.Db
 {
     public class DbDriver
     {
@@ -15,8 +15,32 @@ namespace Analyst.Db
 
         public DbDriver()
         {
-            connectionString = ConfigurationManager.ConnectionStrings["SocieContext"].ConnectionString;
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["SocieContext"].ConnectionString;
+            }
+            catch (Exception ex)
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            }
+            
             db = new SocieContext(connectionString);
+        }
+
+        public string getSocieUserRealName(string socieId)
+        {
+            var user = from usr
+                       in db.Person
+                       where usr.SocieId == socieId
+                       select new { Name = usr.Name };
+
+            if(user.Any())
+            {
+                return user.First().Name;
+            }
+
+            return string.Empty;
+            
         }
 
         /// <summary>
