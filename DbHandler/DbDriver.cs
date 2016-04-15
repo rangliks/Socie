@@ -1,4 +1,5 @@
 ﻿using FacebookTools.FacebookObjects;
+using OxfordTools.OxfordObjects;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -26,6 +27,19 @@ namespace DbHandler.Db
             
             db = new SocieContext(connectionString);
         }
+
+        public void SaveEmotion(EmotionScores emo)
+        {
+            db.EmotionScores.Add(emo);
+            db.SaveChanges();
+        }
+        //public Photo GetPhoto(string photoId)
+        //{
+        //    var photos = from photo
+        //                 in db.Photo
+        //                 where photo.PhotoId == photoId
+        //                 select new { }
+        //}
 
         public string getSocieUserRealName(string socieId)
         {

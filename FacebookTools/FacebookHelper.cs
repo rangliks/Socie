@@ -9,6 +9,7 @@ using Project.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net;
+using System.IO;
 
 namespace FacebookTools
 {
@@ -332,12 +333,22 @@ namespace FacebookTools
             return null;
         }
 
-        public static void DownloadFromUrl(string url, string fileName = "iamge.jpg")
+        public void DownloadFromUrl(string url, string fileName = "iamge.jpg")
         {
+            makeSureTheresAlreadyUserDirectory();
             using (WebClient webClient = new WebClient())
             {
-                var path = string.Format(@"C:\socie\{0}", fileName);
+                var path = string.Format(@"C:\socie\{0}\{1}", Me.PersonId, fileName);
                 webClient.DownloadFile(url, path);
+            }
+        }
+
+        private void makeSureTheresAlreadyUserDirectory()
+        {
+            string directory = string.Format(@"C:\socie\{0}", Me.PersonId);
+            if(!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(string.Format(@"C:\socie\{0}", Me.PersonId));
             }
         }
 

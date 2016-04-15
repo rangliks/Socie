@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FacebookTools.FacebookObjects;
+using OxfordTools.OxfordObjects;
 
 namespace DbHandler.Db
 {
@@ -23,5 +24,6 @@ namespace DbHandler.Db
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<Photo> Photo { get; set; }
         public virtual DbSet<PhotoAlbum> PhotoAlbum { get; set; }
+        public virtual DbSet<EmotionScores> EmotionScores { get; set; }
     }
 }

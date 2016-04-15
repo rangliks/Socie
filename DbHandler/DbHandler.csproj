@@ -57,6 +57,10 @@
       <Project>{28db8a1d-c517-4e7f-b336-2b5db78f4349}</Project>
       <Name>FacebookTools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OxfordTools\OxfordTools.csproj">
+      <Project>{eb91648c-54f8-4ea0-bc97-eeec264ae29e}</Project>
+      <Name>OxfordTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

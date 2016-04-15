@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Project.Models.Store;
 //using Project.FacebookObjects;
 using FacebookTools.FacebookObjects;
+using OxfordTools.OxfordObjects;
 
 namespace Project.Models
 {
@@ -27,11 +28,7 @@ namespace Project.Models
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<PhotoAlbum> PhotoAlbums { get; set; }
-
-        //public DbSet<Product> Products { get; set; }
-        //public DbSet<Suppliers> Suppliers { get; set; }
-        //public DbSet<SalesStatsPerDay> StatisticsPerDay { get; set; }
-        //public DbSet<Departments> Departments { get; set; }
+        public DbSet<EmotionScores> EmotionScores { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

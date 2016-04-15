@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analyser.cs" />
     <Compile Include="Db\DbDriver.cs" />
     <Compile Include="Db\SocieContext.cs" />
     <Compile Include="Facebook\FacebookConnector.cs" />
@@ -65,10 +66,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DbHandler\DbHandler.csproj">
+      <Project>{1c64e62b-dc9b-403f-84b5-cf4c6f5873d1}</Project>
+      <Name>DbHandler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FacebookTools\FacebookTools.csproj">
       <Project>{28db8a1d-c517-4e7f-b336-2b5db78f4349}</Project>
       <Name>FacebookTools</Name>

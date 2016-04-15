@@ -119,5 +119,11 @@ namespace Analyst.Db
 
             db.SaveChanges();
         }
+
+        public void SaveEmotions(List<OxfordTools.OxfordObjects.EmotionScores> v)
+        {
+            db.EmotionScores.AddRange(v);
+            db.SaveChanges();
+        }
     }
 }

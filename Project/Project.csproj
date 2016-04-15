@@ -203,6 +203,31 @@
     <Compile Include="Helpers\PermissionsScope.cs" />
     <Compile Include="Helpers\PostsObject.cs" />
     <Compile Include="Helpers\TheLogger.cs" />
+    <Compile Include="Migrations\201604131411343_Initial.cs" />
+    <Compile Include="Migrations\201604131411343_Initial.Designer.cs">
+      <DependentUpon>201604131411343_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604131419388_PhotoIdInEmotionsScores.cs" />
+    <Compile Include="Migrations\201604131419388_PhotoIdInEmotionsScores.Designer.cs">
+      <DependentUpon>201604131419388_PhotoIdInEmotionsScores.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604131526446_SomeFixes.cs" />
+    <Compile Include="Migrations\201604131526446_SomeFixes.Designer.cs">
+      <DependentUpon>201604131526446_SomeFixes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604131530471_ScoreIdToInt.cs" />
+    <Compile Include="Migrations\201604131530471_ScoreIdToInt.Designer.cs">
+      <DependentUpon>201604131530471_ScoreIdToInt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604151526534_IdInScores.cs" />
+    <Compile Include="Migrations\201604151526534_IdInScores.Designer.cs">
+      <DependentUpon>201604151526534_IdInScores.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604151541442_PhotoIdInScoresToString.cs" />
+    <Compile Include="Migrations\201604151541442_PhotoIdInScoresToString.Designer.cs">
+      <DependentUpon>201604151541442_PhotoIdInScoresToString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -368,6 +393,30 @@
       <Project>{28db8a1d-c517-4e7f-b336-2b5db78f4349}</Project>
       <Name>FacebookTools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OxfordTools\OxfordTools.csproj">
+      <Project>{eb91648c-54f8-4ea0-bc97-eeec264ae29e}</Project>
+      <Name>OxfordTools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201604131411343_Initial.resx">
+      <DependentUpon>201604131411343_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604131419388_PhotoIdInEmotionsScores.resx">
+      <DependentUpon>201604131419388_PhotoIdInEmotionsScores.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604131526446_SomeFixes.resx">
+      <DependentUpon>201604131526446_SomeFixes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604131530471_ScoreIdToInt.resx">
+      <DependentUpon>201604131530471_ScoreIdToInt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604151526534_IdInScores.resx">
+      <DependentUpon>201604151526534_IdInScores.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604151541442_PhotoIdInScoresToString.resx">
+      <DependentUpon>201604151541442_PhotoIdInScoresToString.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

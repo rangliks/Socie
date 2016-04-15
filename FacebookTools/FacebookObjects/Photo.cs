@@ -19,6 +19,7 @@ namespace FacebookTools.FacebookObjects
         public Photo()
         {
             Tags = new List<Tag>();
+            CreationDate = DateTime.Now;
         }
     }
 }

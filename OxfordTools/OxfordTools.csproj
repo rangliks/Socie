@@ -72,12 +72,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OxfordFaceService.cs" />
+    <Compile Include="OxfordObjects\EmotionScores.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FacebookTools\FacebookTools.csproj">
+      <Project>{28db8a1d-c517-4e7f-b336-2b5db78f4349}</Project>
+      <Name>FacebookTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

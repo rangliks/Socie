@@ -25,7 +25,7 @@ namespace Analyst.Facebook
             List<PhotoAlbum> albums = myHelper.GetUserAlbums();
             //myHelper.SaveAlbumsToDB(albums);
             driver.SaveAlbums(albums);
-            //myHelper.DownloadAlbums(albums);
+            myHelper.DownloadAlbums(albums);
             var albumPhotos = myHelper.GetAlbumsPhotos(albums);
             driver.SavePhotos(albumPhotos);
 
