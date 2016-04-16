@@ -372,6 +372,7 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Home\HomeSocieAdvantages.cshtml" />
     <Content Include="Views\Home\LoginHomeMain.cshtml" />
+    <Content Include="Views\Shared\SmiliesLine.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

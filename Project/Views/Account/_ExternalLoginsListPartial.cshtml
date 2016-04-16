@@ -1,30 +1,43 @@
 ﻿@model Project.Models.ExternalLoginListViewModel
 @using Microsoft.Owin.Security
 
-<div style="width:70%;margin:0 auto;">
-<h4>Please log in using Facebook</h4>
-<hr />
-@{
-    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
-    if (loginProviders.Count() == 0) {
+<div style="width:100%;margin:0 auto;background-color:#2c7fb8;border-radius:5px;padding:5px;">
+    @Html.Partial("SmiliesLine")
+    <div style="" class="facebook-redirect-div">
+        <br />
         <div>
-            <p>
-                There are no external authentication services configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=313242">this article</a>
-                for details on setting up this ASP.NET application to support logging in via external services.
-            </p>
+            <ul>
+                <li><a style="width: 100%;" href="#">We are redirecting you to facebook for an authentication</a></li>
+                <li><a style="width: 100%;" href="#">This will take 5 seconds</a></li>
+                <li><a style="width: 100%;" href="#">Once you are logged in, Socie will start analysing your images</a></li>
+                <li><a style="width: 100%;" href="#">First insights will be ready in 10 seconds</a></li>
+            </ul>
         </div>
-    }
-    else {
-        using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = Model.ReturnUrl })) {
-            @Html.AntiForgeryToken()
-            <div id="socialLoginList">
-                <p>
-                    @foreach (AuthenticationDescription p in loginProviders) {
-                        <button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>
-                    }
-                </p>
-            </div>
+        <hr />
+        @{
+            var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+            if (loginProviders.Count() == 0)
+            {
+                <div>
+                    <p>
+                        There are no external authentication services configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=313242">this article</a>
+                        for details on setting up this ASP.NET application to support logging in via external services.
+                    </p>
+                </div>
+            }
+            else
+            {
+                using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = Model.ReturnUrl }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div id="socialLoginList" style="width:50%;margin:0 auto;">
+                        @foreach (AuthenticationDescription p in loginProviders)
+                        {
+                            <button type="submit" style="margin: 0 20% 0.8em 20%;" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">Go to @p.AuthenticationType</button>
+                        }
+                    </div>
+                }
+            }
         }
-    }
-}
+    </div>
 </div>
