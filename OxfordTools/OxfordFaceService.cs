@@ -89,7 +89,7 @@ namespace OxfordTools
                                 foreach (var emo in emotions)
                                 {
                                     var v = emo.Scores;
-                                    EmotionScores scoresObj = new EmotionScores(emo, file.Name.Split('_')[1]);
+                                    EmotionScores scoresObj = new EmotionScores(emo, file.Name.Split('_')[1].Split('.')[0]);
                                     var msg = string.Format("-------------\n happy [{0}]\n surprise [{1}]\n sad[{2}]\n neutral [{3}]\n anger [{4}]\n disguast [{5}]\n", v.Happiness, v.Surprise, v.Sadness, v.Neutral, v.Anger, v.Disgust);
                                     Console.Write(msg);
                                     System.Threading.Thread.Sleep(3000);

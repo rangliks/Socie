@@ -14,6 +14,11 @@ namespace OxfordTools.OxfordObjects
     {
         private Emotion emo;
 
+        public EmotionScores()
+        {
+
+        }
+
         public EmotionScores(Emotion emo, string photoId)
         {
             Photo photo = new Photo();

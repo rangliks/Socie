@@ -154,5 +154,45 @@ namespace DbHandler.Db
 
             db.SaveChanges();
         }
+
+        public List<Photo> GetUserPhotosByHappiness(string socieId)
+        {
+            var socieUser = from usr in db.Person
+                            where usr.SocieId == socieId
+                            select usr;
+
+            Person user = socieUser.FirstOrDefault();
+
+            var albums = from photoAlbums in db.PhotoAlbum
+                         where photoAlbums.PersonId == user.PersonId
+                         select photoAlbums;
+
+            List<string> albumIds = albums.Select(x => x.AlbumId).ToList();
+
+            var photos = from photo in db.Photo
+                         join album in db.PhotoAlbum on photo.Album.AlbumId equals album.AlbumId
+                         where albumIds.Contains(album.AlbumId)
+                         select photo;
+
+            List<string> photoIds = photos.Select(x => x.PhotoId).ToList();
+            var photosEmotions = from emotion in db.EmotionScores
+                                          where photoIds.Contains(emotion.PhotoId)
+                                          select emotion;
+
+            Dictionary<string, List<EmotionScores>> emotionsDictionary = new Dictionary<string, List<EmotionScores>>();
+            foreach(EmotionScores emotion in photosEmotions)
+            {
+                if(!emotionsDictionary.ContainsKey(emotion.PhotoId))
+                {
+                    emotionsDictionary.Add(emotion.PhotoId, new List<EmotionScores>());
+                }
+
+                emotionsDictionary[emotion.PhotoId].Add(emotion);
+            }
+
+            var ordered = emotionsDictionary.OrderBy(x => x.Value.Average(r => r.happiness)).ToList();
+
+            return new List<Photo>();
+        }
     }
 }
