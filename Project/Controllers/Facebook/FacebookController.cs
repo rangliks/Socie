@@ -113,7 +113,7 @@ namespace Project.Controllers.Facebook
             ApplicationDbContext db = new ApplicationDbContext();
             FacebookHelper helper = new FacebookHelper(token, User.Identity.GetUserId());
             DbDriver driver = new DbDriver();
-            driver.SavePerson(helper.Me);
+            driver.SavePerson(helper.Me, User.Identity.GetUserId());
 
             /* TODO: add validation */
             return true;

@@ -130,20 +130,13 @@ namespace DbHandler.Db
             db.SaveChanges();
         }
 
-        public void SavePerson(Person person)
+        public void SavePerson(Person person, string socieId)
         {
-            var personInDB =    from me
-                                in db.Person
-                                where me.PersonId == person.PersonId
-                                select new 
-                                {
-                                    PersonID = me.PersonId,
-                                    Name = me.Name,
-                                    Relation = me.Relation,
-                                    SocieId = me.SocieId, 
-                                    Token = me.Token
-                                };
-            
+            var personInDB = from me
+                             in db.Person
+                             where me.PersonId == person.PersonId
+                             select me;
+
             // if not exist in db save it
             // else update record
             if(!personInDB.Any())
@@ -152,7 +145,11 @@ namespace DbHandler.Db
             }
             else
             {
-
+                foreach (Person p in personInDB)
+                {
+                    p.SocieId = socieId;
+                    break;
+                }
             }
 
             db.SaveChanges();
