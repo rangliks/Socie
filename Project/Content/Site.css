@@ -175,3 +175,72 @@ aside {
 .arc path {
   stroke: #fff;
 }
+
+/* List of advantages */
+.advantage-div {
+  margin: 0 10% 0 10%;
+}
+ 
+.advantage-div-text-box {
+    width:40%;
+    display: inline-block;
+}
+
+.advantage-div-smiley-box {
+    width:20%; 
+    display: inline-block;
+}
+
+.advantage-div ul {
+  list-style-type: none;
+  width: 100%;
+}
+ 
+.advantage-div h3 {
+  font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
+}
+ 
+.advantage-div li img {
+  float: left;
+  margin: 0 15px 0 0;
+}
+ 
+.advantage-div li p {
+  font: 200 12px/1.5 Georgia, Times New Roman, serif;
+}
+ 
+.advantage-div li {
+  padding: 10px;
+  overflow: auto;
+  border-radius: 30px;
+  width: 100%;
+}
+ 
+.advantage-div li:hover {
+  background: #1d91c0;
+  cursor: pointer;
+}
+
+/*/ LOGIN LINK /*/
+#login-link-home {
+	background-color:#44c767;
+	-moz-border-radius:28px;
+	-webkit-border-radius:28px;
+	border-radius:28px;
+	border:1px solid #18ab29;
+	display:inline-block;
+	cursor:pointer;
+	color:#525252;
+	font-family:Arial;
+	font-size:17px;
+	padding:16px 31px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+}
+#login-link-home:hover {
+	background-color:#5cbf2a;
+}
+#login-link-home:active {
+	position:relative;
+	top:1px;
+}

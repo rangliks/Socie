@@ -57,11 +57,23 @@ namespace Project.Controllers
             return PartialView("ProductsDiv");
         }
 
-        public ViewResult Index()
+        public ActionResult Index()
+        {
+            if(User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "User");
+            }
+            else
+            {
+                return RedirectToAction("Home", "Home");
+            }
+        }
+
+        public ViewResult Home()
         {
             return View("Index");
         }
-
+        
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Search()

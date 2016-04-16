@@ -23,7 +23,7 @@ namespace Project.Controllers.Facebook
         public ActionResult Index()
         {
             FacebookLogin();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "User");
         }
 
         public void FacebookLogin()
@@ -78,7 +78,7 @@ namespace Project.Controllers.Facebook
                     {
                         CreatePerson(token);
                     }
-                    RedirectToAction("Index", "Home");
+                    RedirectToAction("Index", "User");
                 }
             }
 
