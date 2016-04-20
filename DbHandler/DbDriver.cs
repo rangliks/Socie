@@ -190,9 +190,24 @@ namespace DbHandler.Db
                 emotionsDictionary[emotion.PhotoId].Add(emotion);
             }
 
-            var ordered = emotionsDictionary.OrderBy(x => x.Value.Average(r => r.happiness)).ToList();
+            var ordered = emotionsDictionary.OrderByDescending(x => x.Value.Average(r => r.happiness)).Take(5).Select(x => x.Key).ToList();
 
-            return new List<Photo>();
+            var best = from happiestPhoto
+                       in db.Photo
+                       where ordered.Contains(happiestPhoto.PhotoId)
+                       select happiestPhoto;
+
+            return best.ToList();
+        }
+
+        public string getPersonId(string p)
+        {
+            var person = from user
+                       in db.Person
+                       where user.SocieId == p
+                       select user;
+
+            return person.FirstOrDefault().PersonId;
         }
     }
 }

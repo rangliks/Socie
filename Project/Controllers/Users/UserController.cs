@@ -15,7 +15,10 @@ namespace Project.Controllers.Users
         // GET: User
         public ActionResult Index()
         {
-            List<Photo> happiestPhotos = driver.GetUserPhotosByHappiness(User.Identity.GetUserId());
+            var socieId = User.Identity.GetUserId();
+            ViewBag.personId = driver.getPersonId(socieId);
+            ViewBag.topHappiest = driver.GetUserPhotosByHappiness(socieId);
+
             return View();
         }
     }
