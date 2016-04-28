@@ -35,6 +35,11 @@ namespace OxfordTools.OxfordObjects
             neutral = emo.Scores.Neutral;
             sadness = emo.Scores.Sadness;
             surprise = emo.Scores.Surprise;
+
+            left = emo.FaceRectangle.Left;
+            top = emo.FaceRectangle.Top;
+            width = emo.FaceRectangle.Width;
+            height = emo.FaceRectangle.Height;
         }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -48,5 +53,12 @@ namespace OxfordTools.OxfordObjects
         public double neutral { get; set; }
         public double sadness { get; set; }
         public double surprise { get; set; }
+
+        // Emotion rectangle
+        public double left { get; set; }
+        public double top { get; set; }
+        public double width { get; set; }
+        public double height { get; set; }
+
     }
 }
