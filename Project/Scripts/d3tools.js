@@ -1,20 +1,30 @@
 ﻿function DrawCircleImage(userid, images) {
+
+
+    var margin = { top: 10, right: 5, bottom: 10, left: 5 };
+
     var svg = d3.select("#happiest-div")
         .append("svg")
-        .attr("width", 1000)
-        .attr("height", 500);
+        .attr("width", "100%")
+        .attr("height", 500)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var defs = svg.append('svg:defs');
-    var config = { "avatar_size": 250 };
+    var config = { "avatar_size": 450 };
 
     var currentX = 150;
     var currentY = 70;
+
+    
+
     for (var v in images) {
         var imageid = images[v].photoId;
         var patternId = "ptr_img_" + imageid;
         console.log("--------");
         console.log(imageid + " ==== " + patternId);
         console.log("--------");
+
 
         defs.append("svg:pattern")
             .attr("id", patternId)
@@ -26,16 +36,20 @@
             .attr("width", config.avatar_size)
             .attr("height", config.avatar_size)
             .attr("x", 0)
-            .attr("y", -40);
+            .attr("y", 0)
+            .attr("viewBox", "0 0 450 450")
+            .attr("preserveAspectRatio","xMinYMin meet");
 
         svg.append("circle")
         .style("stroke", "gray")
         .style("fill", "url(#" + patternId + ")")
-        .attr("r", 100)
+        .attr("r", 120)
         .attr("cx", currentX)
-        .attr("cy", 100);
+        .attr("cy", 130)
+        .attr("width", 300)
+        .attr("height", 300);
 
-        currentX += 180;
+        currentX += 250;
     }
     
 
