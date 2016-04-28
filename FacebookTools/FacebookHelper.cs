@@ -159,16 +159,8 @@ namespace FacebookTools
             DownloadFromUrl(pictureUrl);
         }
 
-        public void GetFriends()
+        public List<Person> GetFriends()
         {
-            //dynamic friends = client.Get(string.Format("/{0}/friends", personId));
-            //string nextFriend = friends.paging.next;
-            //while(!string.IsNullOrEmpty(nextFriend))
-            //{
-            //    friends = client.Get(nextFriend);
-            //    nextFriend = friends.paging.next;
-            //}
-
             var friendListData = client.Get("/me/friends");
             JObject friendListJson = JObject.Parse(friendListData.ToString());
 
@@ -180,6 +172,8 @@ namespace FacebookTools
 
                 friends.Add(person);
             }
+
+            return friends;
         }
 
         public void GetMyPhotos()
@@ -243,7 +237,7 @@ namespace FacebookTools
         {
             string fileName = string.Format("profile_{0}.jpg", person.PersonId);
             var url = GetProfilePictureUrl(person);
-            DownloadFromUrl(url, fileName);
+            DownloadFromUrl(url, fileName, person);
         }
 
         private void DownloadPicture(Photo photo)
@@ -333,22 +327,42 @@ namespace FacebookTools
             return null;
         }
 
-        public void DownloadFromUrl(string url, string fileName = "iamge.jpg")
+        public void DownloadFromUrl(string url, string fileName = "iamge.jpg", Person person = null)
         {
-            makeSureTheresAlreadyUserDirectory();
+            var personid = string.Empty;
+            if(person == null)
+            {
+                personid = Me.PersonId;
+            }
+            else
+            {
+                personid = person.PersonId;
+            }
+
+            makeSureTheresAlreadyUserDirectory(personid);
             using (WebClient webClient = new WebClient())
             {
-                var path = string.Format(@"C:\socie\{0}\{1}", Me.PersonId, fileName);
+                var path = string.Format(@"C:\socie\{0}\{1}", personid, fileName);
                 webClient.DownloadFile(url, path);
             }
         }
 
-        private void makeSureTheresAlreadyUserDirectory()
+        private void makeSureTheresAlreadyUserDirectory(string personId = null)
         {
-            string directory = string.Format(@"C:\socie\{0}", Me.PersonId);
+            string personid = string.Empty;
+            if(string.IsNullOrEmpty(personId))
+            {
+                personid = Me.PersonId;
+            }
+            else
+            {
+                personid = personId;
+            }
+
+            string directory = string.Format(@"C:\socie\{0}", personid);
             if(!Directory.Exists(directory))
             {
-                Directory.CreateDirectory(string.Format(@"C:\socie\{0}", Me.PersonId));
+                Directory.CreateDirectory(string.Format(@"C:\socie\{0}", personid));
             }
         }
 

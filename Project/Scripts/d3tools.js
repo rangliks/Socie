@@ -1,4 +1,4 @@
-﻿function DrawCircleImage(userid, images) {
+﻿function DrawCircleImage(userid, images, imagesScores) {
 
 
     var margin = { top: 10, right: 5, bottom: 10, left: 5 };
@@ -19,8 +19,11 @@
     
 
     for (var v in images) {
+        var score = imagesScores[v]*100;
         var imageid = images[v].photoId;
         var patternId = "ptr_img_" + imageid;
+        console.log(images[v]);
+
         console.log("--------");
         console.log(imageid + " ==== " + patternId);
         console.log("--------");
@@ -38,7 +41,7 @@
             .attr("x", 0)
             .attr("y", 0)
             .attr("viewBox", "0 0 450 450")
-            .attr("preserveAspectRatio","xMinYMin meet");
+            .attr("preserveAspectRatio", "xMinYMin meet");
 
         svg.append("circle")
         .style("stroke", "gray")
@@ -48,6 +51,22 @@
         .attr("cy", 130)
         .attr("width", 300)
         .attr("height", 300);
+
+        var group = svg.append("g");
+        var rect = group.append("rect")
+        .attr("x", currentX - 20)
+        .attr("y", 200)
+        .attr("rx", 10)
+        .attr("ry", 12)
+        .style("fill", "gray")
+        .style("fill-opacity", 0.4)
+        .attr("width", 60)
+        .attr("height", 35)
+        group.append("text")
+        .text("%" + score.toFixed(2))
+        .style("stroke", "black")
+        .attr("x", currentX - 15)
+        .attr("y", 220);
 
         currentX += 250;
     }

@@ -15,9 +15,10 @@
     $(document).ready(function () {
         var personid = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.personId);
         var images = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.topHappiest);
-        console.log(JSON.stringify(images));
+        var imagesScores = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.topHappiestScores);
+        console.log(JSON.stringify(imagesScores));
         var imageid = "18265223792";
-        DrawCircleImage(personid, images);
+        DrawCircleImage(personid, images, imagesScores);
         });
 </script>
 </head>

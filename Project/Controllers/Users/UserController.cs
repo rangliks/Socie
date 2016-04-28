@@ -16,9 +16,18 @@ namespace Project.Controllers.Users
         public ActionResult Index()
         {
             var socieId = User.Identity.GetUserId();
-            ViewBag.personId = driver.getPersonId(socieId);
-            ViewBag.topHappiest = driver.GetUserPhotosByHappiness(socieId);
+            Person person = driver.GetPerson(socieId);
+            ViewBag.personId = person.PersonId;
+            var top = driver.GetUserPhotosByHappiness(socieId);
+            ViewBag.topHappiest = top.Keys;
+            ViewBag.topHappiestScores = top.Values;
 
+            if(!string.IsNullOrEmpty(person.Token))
+            {
+                FacebookTools.FacebookHelper helper = new FacebookTools.FacebookHelper(person.Token, socieId);
+                var userFriends = helper.GetFriends();
+            }
+            
             return View();
         }
     }

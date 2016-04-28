@@ -155,8 +155,9 @@ namespace DbHandler.Db
             db.SaveChanges();
         }
 
-        public List<Photo> GetUserPhotosByHappiness(string socieId)
+        public Dictionary<Photo, double> GetUserPhotosByHappiness(string socieId)
         {
+            Dictionary<Photo, double> bestHappiest = new Dictionary<Photo, double>();
             var socieUser = from usr in db.Person
                             where usr.SocieId == socieId
                             select usr;
@@ -191,13 +192,20 @@ namespace DbHandler.Db
             }
 
             var ordered = emotionsDictionary.OrderByDescending(x => x.Value.Average(r => r.happiness)).Take(5).Select(x => x.Key).ToList();
-
+            var orderedAvgs = emotionsDictionary.OrderByDescending(x => x.Value.Average(r => r.happiness)).Take(5).Select(x => x.Value.Average(r => r.happiness)).ToList();
+            
             var best = from happiestPhoto
                        in db.Photo
                        where ordered.Contains(happiestPhoto.PhotoId)
                        select happiestPhoto;
 
-            return best.ToList();
+            var numbersAndWords = orderedAvgs.Zip(best, (n, w) => new KeyValuePair<Photo, double>(w, n));
+            foreach(var nw in numbersAndWords)
+            {
+                bestHappiest.Add(nw.Key, nw.Value);
+            }
+
+            return bestHappiest;
         }
 
         public string getPersonId(string p)
@@ -208,6 +216,16 @@ namespace DbHandler.Db
                        select user;
 
             return person.FirstOrDefault().PersonId;
+        }
+
+        public Person GetPerson(string socieid)
+        {
+           var person = from user
+                       in db.Person
+                        where user.SocieId == socieid
+                       select user;
+
+            return person.FirstOrDefault();
         }
     }
 }

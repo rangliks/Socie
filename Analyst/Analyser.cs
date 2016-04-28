@@ -16,8 +16,8 @@ namespace Analyst
             //FacebookConnector connector = new FacebookConnector();
             //connector.FindPhotos();
             var v = await OxfordFaceService.FindFaces();
-            //DbDriver driver = new DbDriver();
-            //driver.SaveEmotions(v);
+            DbDriver driver = new DbDriver();
+            driver.SaveEmotions(v);
         }
     }
 }
