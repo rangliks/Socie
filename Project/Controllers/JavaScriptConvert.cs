@@ -25,7 +25,8 @@ namespace Project.Controllers
                 jsonWriter.QuoteName = false;
                 serializer.Serialize(jsonWriter, value);
 
-                return new HtmlString(stringWriter.ToString());
+                var ht = new HtmlString(stringWriter.ToString());
+                return ht;
             }
         }
     }

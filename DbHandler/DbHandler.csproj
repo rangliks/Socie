@@ -49,6 +49,9 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="DbDriver.cs" />
+    <Compile Include="Extensions\DynamicExtensions.cs" />
+    <Compile Include="Objects\PhotoAndEmotions.cs" />
+    <Compile Include="Objects\UserPhotosEmotions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SocieContext.cs" />
   </ItemGroup>

@@ -312,3 +312,20 @@ aside {
   color: black;
   display: block;
 }
+
+.happiest-wrapper {
+    height: 320px;
+    background-color:#c7eae5;
+	border-radius:28px;
+    border:none;
+	cursor:pointer;
+	color:#525252;
+	font-family:Arial;
+	font-size:17px;
+	text-decoration:none;
+    font-weight:bold;
+}
+
+.happiest-title {
+    padding-left : 30px;
+}

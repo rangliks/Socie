@@ -1,9 +1,10 @@
-﻿function DrawCircleImage(userid, images, imagesScores) {
+﻿function DrawCircleImage(userid, images) {
 
 
     var margin = { top: 10, right: 5, bottom: 10, left: 5 };
-
-    var svg = d3.select("#happiest-div")
+    console.log("type [" + typeof userid + "]");
+    console.log("selecting [#happiest-div" + parseInt(userid) + "]");
+    var svg = d3.select("#happiest-div" + userid)
         .append("svg")
         .attr("width", "100%")
         .attr("height", 500)
@@ -19,10 +20,12 @@
     
 
     for (var v in images) {
-        var score = imagesScores[v]*100;
-        var imageid = images[v].photoId;
+        var currentImage = images[v];
+        
+        var score = currentImage.emotions.happiness * 100;
+        var imageid = currentImage.photo.photoId;
         var patternId = "ptr_img_" + imageid;
-        console.log(images[v]);
+        //console.log(images[v]);
 
         console.log("--------");
         console.log(imageid + " ==== " + patternId);

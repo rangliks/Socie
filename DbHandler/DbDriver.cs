@@ -6,6 +6,8 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DbHandler.Extensions;
+using DbHandler.Objects;
 
 namespace DbHandler.Db
 {
@@ -65,27 +67,22 @@ namespace DbHandler.Db
         {
             var users = from person
                         in db.Person
-                        select new
-                        {
-                            SocieId = person.SocieId,
-                            PersonId = person.PersonId,
-                            Token = person.Token,
-                            Name = person.Name
-                        };
+                        select person;
 
-            List<Person> persons = new List<Person>();
-            foreach (var user in users)
-            {
-                Person person = new Person();
-                person.Name = user.Name;
-                person.Token = user.Token;
-                person.PersonId = user.PersonId;
-                person.SocieId = user.PersonId;
+            return users.ToList();
+            //List<Person> persons = new List<Person>();
+            //foreach (var user in users)
+            //{
+            //    Person person = new Person();
+            //    person.Name = user.Name;
+            //    person.Token = user.Token;
+            //    person.PersonId = user.PersonId;
+            //    person.SocieId = user.PersonId;
 
-                persons.Add(person);
-            }
+            //    persons.Add(person);
+            //}
 
-            return persons;
+            //return persons;
         }
 
         public void SaveAlbums(List<PhotoAlbum> albums)
@@ -109,7 +106,7 @@ namespace DbHandler.Db
             db.SaveChanges();
         }
 
-        internal void SavePhotos(List<Photo> albumPhotos)
+        public void SavePhotos(List<Photo> albumPhotos)
         {
             var currentPhotos = from photo
                                 in db.Photo
@@ -155,31 +152,40 @@ namespace DbHandler.Db
             db.SaveChanges();
         }
 
-        public Dictionary<Photo, double> GetUserPhotosByHappiness(string socieId)
+        public List<PhotoAndEmotions> GetUserPhotosByHappiness(string socieId)
         {
             Dictionary<Photo, double> bestHappiest = new Dictionary<Photo, double>();
+            
+            // get current user from Person table
             var socieUser = from usr in db.Person
                             where usr.SocieId == socieId
                             select usr;
 
             Person user = socieUser.FirstOrDefault();
 
+            // get the current user photo albums
             var albums = from photoAlbums in db.PhotoAlbum
                          where photoAlbums.PersonId == user.PersonId
                          select photoAlbums;
 
             List<string> albumIds = albums.Select(x => x.AlbumId).ToList();
 
+            // with the albumids get the photos
             var photos = from photo in db.Photo
                          join album in db.PhotoAlbum on photo.Album.AlbumId equals album.AlbumId
                          where albumIds.Contains(album.AlbumId)
                          select photo;
 
+            // put only ids of all photos into list
             List<string> photoIds = photos.Select(x => x.PhotoId).ToList();
+            List<Photo> allPhotos = photos.ToList();
+
+            // get all emotions connected to the photo ids
             var photosEmotions = from emotion in db.EmotionScores
                                           where photoIds.Contains(emotion.PhotoId)
                                           select emotion;
 
+            // map emotions to a < photoid => list of emotions > dictionary
             Dictionary<string, List<EmotionScores>> emotionsDictionary = new Dictionary<string, List<EmotionScores>>();
             foreach(EmotionScores emotion in photosEmotions)
             {
@@ -191,21 +197,23 @@ namespace DbHandler.Db
                 emotionsDictionary[emotion.PhotoId].Add(emotion);
             }
 
-            var ordered = emotionsDictionary.OrderByDescending(x => x.Value.Average(r => r.happiness)).Take(5).Select(x => x.Key).ToList();
-            var orderedAvgs = emotionsDictionary.OrderByDescending(x => x.Value.Average(r => r.happiness)).Take(5).Select(x => x.Value.Average(r => r.happiness)).ToList();
-            
-            var best = from happiestPhoto
-                       in db.Photo
-                       where ordered.Contains(happiestPhoto.PhotoId)
-                       select happiestPhoto;
-
-            var numbersAndWords = orderedAvgs.Zip(best, (n, w) => new KeyValuePair<Photo, double>(w, n));
-            foreach(var nw in numbersAndWords)
+            List<PhotoAndEmotions> dynamicPhotos = new List<PhotoAndEmotions>();
+            foreach (var emotions in emotionsDictionary)
             {
-                bestHappiest.Add(nw.Key, nw.Value);
+                EmotionScores generalEmotions = emotions.Value.FirstOrDefault();
+
+                Photo photo = allPhotos.Where(x => x.PhotoId == emotions.Key).FirstOrDefault();
+                PhotoAndEmotions photoEmo = new PhotoAndEmotions();
+                photoEmo.photo = photo;
+                generalEmotions.happiness = emotions.Value.Average(x => x.happiness);
+                photoEmo.emotions = generalEmotions;
+
+                dynamicPhotos.Add(photoEmo);
             }
 
-            return bestHappiest;
+
+            List<PhotoAndEmotions> finalEmotions = dynamicPhotos.OrderByDescending(r => r.emotions.happiness).Take(5).ToList();
+            return finalEmotions;
         }
 
         public string getPersonId(string p)
@@ -226,6 +234,16 @@ namespace DbHandler.Db
                        select user;
 
             return person.FirstOrDefault();
+        }
+
+        public Person getSocieUser(string personId)
+        {
+            var result = from user
+                         in db.Person
+                         where user.PersonId == personId
+                         select user;
+
+            return result.FirstOrDefault();
         }
     }
 }

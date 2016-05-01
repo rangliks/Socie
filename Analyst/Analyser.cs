@@ -13,8 +13,8 @@ namespace Analyst
     {
         public static async void Run()
         {
-            //FacebookConnector connector = new FacebookConnector();
-            //connector.FindPhotos();
+            FacebookConnector connector = new FacebookConnector();
+            connector.FindPhotos();
             var v = await OxfordFaceService.FindFaces();
             DbDriver driver = new DbDriver();
             driver.SaveEmotions(v);

@@ -71,7 +71,7 @@ namespace Analyst.Db
             db.SaveChanges();
         }
 
-        internal void SavePhotos(List<Photo> albumPhotos)
+        public void SavePhotos(List<Photo> albumPhotos)
         {
             var currentPhotos = from photo
                                 in db.Photo

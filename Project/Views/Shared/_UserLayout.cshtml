@@ -15,10 +15,19 @@
     $(document).ready(function () {
         var personid = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.personId);
         var images = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.topHappiest);
-        var imagesScores = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.topHappiestScores);
-        console.log(JSON.stringify(imagesScores));
-        var imageid = "18265223792";
-        DrawCircleImage(personid, images, imagesScores);
+        var topFriendsImages = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.topFriends);
+        console.log("================================");
+        console.log(topFriendsImages);
+        console.log("********************************");
+
+        DrawCircleImage(personid, images);
+        for(var v in topFriendsImages) {
+            var friendPhotosEmotions = topFriendsImages[v];
+            console.log("friendPhotosEmotions");
+            console.log(friendPhotosEmotions);
+            var photos = topFriendsImages[v];
+            DrawCircleImage(friendPhotosEmotions.userId, friendPhotosEmotions.photosEmotions);
+        }
         });
 </script>
 </head>
