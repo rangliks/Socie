@@ -22,6 +22,7 @@ namespace DbHandler.Db
 
         }
         public virtual DbSet<Person> Person { get; set; }
+        public virtual DbSet<Tag> Tag { get; set; }
         public virtual DbSet<Photo> Photo { get; set; }
         public virtual DbSet<PhotoAlbum> PhotoAlbum { get; set; }
         public virtual DbSet<EmotionScores> EmotionScores { get; set; }

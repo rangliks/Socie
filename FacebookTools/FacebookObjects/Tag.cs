@@ -12,8 +12,9 @@ namespace FacebookTools.FacebookObjects
     public class Tag
     {
         public string TagId { get; set; }
+        public string PhotoId { get; set; }
         public DateTime CreationDate { get; set; }
-        public Person PersonTagged { get; set; }
+        public string PersonId { get; set; }
         public float X { get; set; }
         public float Y { get; set; }
 
@@ -22,8 +23,10 @@ namespace FacebookTools.FacebookObjects
 
         }
 
-        public Tag(string tag)
+        public Tag(string tag, string photoid)
         {
+            PhotoId = photoid;
+
             JObject taggedJson = JObject.Parse(tag);
             try
             {
@@ -36,12 +39,13 @@ namespace FacebookTools.FacebookObjects
 
             CreationDate = DateTime.Parse(taggedJson["created_time"].ToString());
 
-            PersonTagged = new Person();
-            PersonTagged.Name = taggedJson["name"].ToString();
-            PersonTagged.PersonId = taggedJson["id"].ToString();
+            PersonId = taggedJson["id"] != null ? taggedJson["id"].ToString() : null;
 
-            Y = float.Parse(taggedJson["y"].ToString());
-            X = float.Parse(taggedJson["x"].ToString());
+            if (taggedJson["y"] != null && taggedJson["x"] != null)
+            {
+                Y = float.Parse(taggedJson["y"].ToString());
+                X = float.Parse(taggedJson["x"].ToString());
+            }
         }
     }
 }

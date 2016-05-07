@@ -12,24 +12,35 @@
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var defs = svg.append('svg:defs');
-    var config = { "avatar_size": 450 };
+    var config = { "avatar_size": "450" };
 
     var currentX = 150;
     var currentY = 70;
 
     
-
+    var index = 0;
     for (var v in images) {
         var currentImage = images[v];
+        
         
         var score = currentImage.emotions.happiness * 100;
         var imageid = currentImage.photo.photoId;
         var patternId = "ptr_img_" + imageid;
-        //console.log(images[v]);
+        console.log(images[v]);
 
         console.log("--------");
         console.log(imageid + " ==== " + patternId);
         console.log("--------");
+
+        var scale = currentImage.emotions.left / config.avatar_size;
+        var scaledCenter = currentImage.emotions.left / 2 * scale;
+        var scaledLeft = currentImage.emotions.left * scale;
+        var scaledWidth = currentImage.emotions.width * scale;
+        var possibleX = scaledLeft - ((scaledLeft - scaledWidth));
+        if (possibleX < 0)
+        {
+            possibleX = 0;
+        }
 
 
         defs.append("svg:pattern")
@@ -66,12 +77,13 @@
         .attr("width", 60)
         .attr("height", 35)
         group.append("text")
-        .text("%" + score.toFixed(2))
+        .text(score.toFixed(2) + "%")
         .style("stroke", "black")
         .attr("x", currentX - 15)
         .attr("y", 220);
 
         currentX += 250;
+        ++index;
     }
     
 

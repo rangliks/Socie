@@ -110,7 +110,7 @@ namespace DbHandler.Db
         {
             var currentPhotos = from photo
                                 in db.Photo
-                                select new { PhotoId = photo.PhotoId, Name = photo.Name, Tags = photo.Tags, CreationDate = photo.CreationDate };
+                                select new { PhotoId = photo.PhotoId, Name = photo.Name, CreationDate = photo.CreationDate };
             var currentPhotosDictionary = currentPhotos.ToDictionary(x => x.PhotoId);
             foreach (var photo in albumPhotos)
             {
@@ -244,6 +244,62 @@ namespace DbHandler.Db
                          select user;
 
             return result.FirstOrDefault();
+        }
+
+        public void SavePersons(List<Person> taggedPeersons)
+        {
+            var allPersons = from person
+                             in db.Person
+                             select person;
+
+            var personsIds = allPersons.Select(x => x.PersonId).Distinct().ToList();
+            var taggedDistinct = taggedPeersons.Distinct().ToList();
+            foreach (var tagged in taggedDistinct)
+            {
+                if(!string.IsNullOrEmpty(tagged.PersonId) && !personsIds.Contains(tagged.PersonId))
+                {
+                    db.Person.Add(tagged);
+                }
+            }
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException ex)
+            {
+                
+                throw;
+            }
+            
+
+        }
+
+        public void SaveTags(List<Tag> tags)
+        {
+            foreach(var tag in tags)
+            {
+                var p = from existingTag
+                        in db.Tag
+                        where existingTag.TagId == tag.TagId
+                        select existingTag;
+                
+                bool exists = p.Any();
+                if(!exists)
+                {
+                    db.Tag.Add(tag);
+                }
+            }
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException ex)
+            {
+
+                throw;
+            }
         }
     }
 }

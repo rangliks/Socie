@@ -137,42 +137,42 @@ namespace Project.Helpers
             }
         }
 
-        public void GetMyPhotos()
-        {
-            var myPhotos = client.Get("/me/photos");
-            JObject photosJson = JObject.Parse(myPhotos.ToString());
-            Dictionary<string, Photo> photos = new Dictionary<string, Photo>();
+        //public void GetMyPhotos()
+        //{
+        //    var myPhotos = client.Get("/me/photos");
+        //    JObject photosJson = JObject.Parse(myPhotos.ToString());
+        //    Dictionary<string, Photo> photos = new Dictionary<string, Photo>();
 
-            while (photosJson["paging"]["next"] != null)
-            {
-                foreach (var photo in photosJson["data"].Children())
-                {
-                    Photo currentPhoto = new Photo();
-                    currentPhoto.CreationDate = DateTime.Parse(photo["created_time"].ToString());
-                    currentPhoto.PhotoId = photo["id"].ToString();
+        //    while (photosJson["paging"]["next"] != null)
+        //    {
+        //        foreach (var photo in photosJson["data"].Children())
+        //        {
+        //            Photo currentPhoto = new Photo();
+        //            currentPhoto.CreationDate = DateTime.Parse(photo["created_time"].ToString());
+        //            currentPhoto.PhotoId = photo["id"].ToString();
 
-                    var taggedInMyPhoto = client.Get(string.Format("/{0}/tags", currentPhoto.PhotoId));
-                    JObject taggedJson = JObject.Parse(taggedInMyPhoto.ToString());
-                    foreach (var tag in taggedJson["data"].Children())
-                    {
-                        Tag t = new Tag(tag.ToString());
-                        currentPhoto.Tags.Add(t);
-                        DownloadProfilePicture(t.PersonTagged);
-                    }
+        //            var taggedInMyPhoto = client.Get(string.Format("/{0}/tags", currentPhoto.PhotoId));
+        //            JObject taggedJson = JObject.Parse(taggedInMyPhoto.ToString());
+        //            foreach (var tag in taggedJson["data"].Children())
+        //            {
+        //                Tag t = new Tag(tag.ToString());
+        //                currentPhoto.Tags.Add(t);
+        //                DownloadProfilePicture(t.PersonTagged);
+        //            }
 
-                    photos.Add(currentPhoto.PhotoId, currentPhoto);
-                    DownloadPicture(currentPhoto);
-                }
+        //            photos.Add(currentPhoto.PhotoId, currentPhoto);
+        //            DownloadPicture(currentPhoto);
+        //        }
 
-                myPhotos = client.Get(photosJson["paging"]["next"].ToString());
-                photosJson = JObject.Parse(myPhotos.ToString());
-            }
+        //        myPhotos = client.Get(photosJson["paging"]["next"].ToString());
+        //        photosJson = JObject.Parse(myPhotos.ToString());
+        //    }
             
 
-            //var taggedInMyPhoto = client.Get("/579827528750261/tags");
+        //    //var taggedInMyPhoto = client.Get("/579827528750261/tags");
            
-            var fr = client.Get("me?fields=friends");
-        }
+        //    var fr = client.Get("me?fields=friends");
+        //}
 
         public void GetFamily()
         {

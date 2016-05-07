@@ -75,7 +75,7 @@ namespace Analyst.Db
         {
             var currentPhotos = from photo
                                 in db.Photo
-                                select new { PhotoId = photo.PhotoId, Name = photo.Name, Tags = photo.Tags, CreationDate = photo.CreationDate };
+                                select new { PhotoId = photo.PhotoId, Name = photo.Name, CreationDate = photo.CreationDate };
             var currentPhotosDictionary = currentPhotos.ToDictionary(x => x.PhotoId);
             foreach (var photo in albumPhotos)
             {
@@ -122,7 +122,20 @@ namespace Analyst.Db
 
         public void SaveEmotions(List<OxfordTools.OxfordObjects.EmotionScores> v)
         {
-            db.EmotionScores.AddRange(v);
+            var emotions = from emo
+                           in db.EmotionScores
+                           select emo;
+            
+            var photoIds = emotions.Select(x => x.PhotoId).ToList();
+            foreach (var item in v)
+            {
+                if(!photoIds.Contains(item.PhotoId))
+                {
+                    db.EmotionScores.Add(item);
+                }
+            }
+
+            //db.EmotionScores.AddRange(v);
             db.SaveChanges();
         }
     }

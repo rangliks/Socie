@@ -231,6 +231,14 @@
     <Compile Include="Migrations\201604281352069_RectangleToEmotions.Designer.cs">
       <DependentUpon>201604281352069_RectangleToEmotions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605021957196_PhotoIdAndPersonIdToTag.cs" />
+    <Compile Include="Migrations\201605021957196_PhotoIdAndPersonIdToTag.Designer.cs">
+      <DependentUpon>201605021957196_PhotoIdAndPersonIdToTag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605022000442_RemoveTagsListInPhoto.cs" />
+    <Compile Include="Migrations\201605022000442_RemoveTagsListInPhoto.Designer.cs">
+      <DependentUpon>201605022000442_RemoveTagsListInPhoto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -431,6 +439,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604281352069_RectangleToEmotions.resx">
       <DependentUpon>201604281352069_RectangleToEmotions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605021957196_PhotoIdAndPersonIdToTag.resx">
+      <DependentUpon>201605021957196_PhotoIdAndPersonIdToTag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605022000442_RemoveTagsListInPhoto.resx">
+      <DependentUpon>201605022000442_RemoveTagsListInPhoto.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

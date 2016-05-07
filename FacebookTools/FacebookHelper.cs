@@ -151,11 +151,18 @@ namespace FacebookTools
             var photos = client.Get(string.Format("/{0}/photos/uploaded", userId));
         }
 
+        /// <summary>
+        /// get profile picture for current session user
+        /// </summary>
         public void GetProfilePicture()
         {
+            // api endpoint for getting profile pictures
             var url = string.Format("https://graph.facebook.com/me/picture?access_token={0}", client.AccessToken);
 
+            // a call to get the picture download url
             var pictureUrl = GetProfilePictureUrl(me);
+
+            // do actual download using the picture download url
             DownloadFromUrl(pictureUrl);
         }
 
@@ -176,64 +183,126 @@ namespace FacebookTools
             return friends;
         }
 
-        public void GetMyPhotos()
+        /// <summary>
+        /// get list of person of tagged users
+        /// </summary>
+        /// <param name="inputPhotos"></param>
+        /// <returns></returns>
+        public List<Person> GetMyPhotosTagsPersons(List<Photo> inputPhotos)
         {
-            var myPhotos = client.Get("/me/photos");
-            JObject photosJson = JObject.Parse(myPhotos.ToString());
-            Dictionary<string, Photo> photos = new Dictionary<string, Photo>();
-
-            while (photosJson["paging"]["next"] != null)
+            List<Person> persons = new List<Person>();
+            foreach (var photo in inputPhotos)
             {
-                foreach (var photo in photosJson["data"].Children())
+                var taggedInMyPhoto = client.Get(string.Format("/{0}/tags", photo.PhotoId));
+                JObject taggedJson = JObject.Parse(taggedInMyPhoto.ToString());
+                foreach (var tag in taggedJson["data"].Children())
                 {
-                    Photo currentPhoto = new Photo();
-                    currentPhoto.CreationDate = DateTime.Parse(photo["created_time"].ToString());
-                    currentPhoto.PhotoId = photo["id"].ToString();
+                    Person p = new Person(tag.ToString());
 
-                    var taggedInMyPhoto = client.Get(string.Format("/{0}/tags", currentPhoto.PhotoId));
-                    JObject taggedJson = JObject.Parse(taggedInMyPhoto.ToString());
-                    foreach (var tag in taggedJson["data"].Children())
+                    if (!persons.Any(x => x.PersonId == p.PersonId))
                     {
-                        Tag t = new Tag(tag.ToString());
-                        currentPhoto.Tags.Add(t);
-                        DownloadProfilePicture(t.PersonTagged);
+                        persons.Add(p);
                     }
-
-                    photos.Add(currentPhoto.PhotoId, currentPhoto);
-                    DownloadPicture(currentPhoto);
                 }
-
-                myPhotos = client.Get(photosJson["paging"]["next"].ToString());
-                photosJson = JObject.Parse(myPhotos.ToString());
             }
 
-
-            //var taggedInMyPhoto = client.Get("/579827528750261/tags");
-
-            var fr = client.Get("me?fields=friends");
+            return persons;
         }
 
-        public void GetFamily()
+        public List<Tag> GetMyPhotosTags(List<Photo> inputPhotos)
         {
+            List<Tag> tags = new List<Tag>();
+            foreach(var photo in inputPhotos)
+            {
+                var taggedInMyPhoto = client.Get(string.Format("/{0}/tags", photo.PhotoId));
+                JObject taggedJson = JObject.Parse(taggedInMyPhoto.ToString());
+                foreach (var tag in taggedJson["data"].Children())
+                {
+                    Tag t = new Tag(tag.ToString(), photo.PhotoId);
+
+                    if (!string.IsNullOrEmpty(t.TagId))
+                    {
+                        tags.Add(t);
+                    }
+                }
+            }
+
+            return tags;
+        }
+
+        //public void GetMyPhotos()
+        //{
+        //    var myPhotos = client.Get("/me/photos");
+        //    JObject photosJson = JObject.Parse(myPhotos.ToString());
+        //    Dictionary<string, Photo> photos = new Dictionary<string, Photo>();
+
+        //    while (photosJson["paging"]["next"] != null)
+        //    {
+        //        foreach (var photo in photosJson["data"].Children())
+        //        {
+        //            Photo currentPhoto = new Photo();
+        //            currentPhoto.CreationDate = DateTime.Parse(photo["created_time"].ToString());
+        //            currentPhoto.PhotoId = photo["id"].ToString();
+
+        //            var taggedInMyPhoto = client.Get(string.Format("/{0}/tags", currentPhoto.PhotoId));
+        //            JObject taggedJson = JObject.Parse(taggedInMyPhoto.ToString());
+        //            foreach (var tag in taggedJson["data"].Children())
+        //            {
+        //                Tag t = new Tag(tag.ToString());
+        //                currentPhoto.Tags.Add(t);
+        //                DownloadProfilePicture(t.PersonTagged);
+        //            }
+
+        //            photos.Add(currentPhoto.PhotoId, currentPhoto);
+        //            DownloadPicture(currentPhoto);
+        //        }
+
+        //        myPhotos = client.Get(photosJson["paging"]["next"].ToString());
+        //        photosJson = JObject.Parse(myPhotos.ToString());
+        //    }
+
+
+        //    //var taggedInMyPhoto = client.Get("/579827528750261/tags");
+
+        //    var fr = client.Get("me?fields=friends");
+        //}
+
+        public List<Person> GetFamily()
+        {
+            var results = new List<Person>();
+
             //log.Debug("application.");
             var family = client.Get("me?fields=family");
             JObject familyJson = JObject.Parse(family.ToString());
-            foreach (var relative in familyJson["family"]["data"])
+            if(familyJson["family"] != null)
             {
-                try
+                foreach (var relative in familyJson["family"]["data"])
                 {
-                    Person person = new Person(relative.ToString());
-                    DownloadProfilePicture(person);
-                }
-                catch (Exception ex)
-                {
-                }
+                    try
+                    {
+                        Person person = new Person(relative.ToString());
+                        results.Add(person);
+                    }
+                    catch (Exception ex)
+                    {
+                    }
 
+                }
             }
+            
 
+            return results;
         }
 
-        private void DownloadProfilePicture(Person person)
+        public void DownloadProfilePictures(List<Person> persons)
+        {
+            foreach (var person in persons)
+            {
+                DownloadProfilePicture(person);
+            }
+        }
+
+        public void DownloadProfilePicture(Person person)
         {
             string fileName = string.Format("profile_{0}.jpg", person.PersonId);
             var url = GetProfilePictureUrl(person);
@@ -263,7 +332,7 @@ namespace FacebookTools
             string pictureUrl = string.Empty;
             try
             {
-                WebRequest request = WebRequest.Create(string.Format("https://www.facebook.com/photo/download/?fbid={0}", photo.PhotoId));
+                WebRequest request = WebRequest.Create(string.Format("https://www.facebook.com/photo/download/?fbid={0}&width=300&height=300", photo.PhotoId));
                 response = request.GetResponse();
                 if (response != null && request.RequestUri.Equals(response.ResponseUri))
                 {
@@ -327,6 +396,12 @@ namespace FacebookTools
             return null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url">the url of the image to download</param>
+        /// <param name="fileName">the filename to save</param>
+        /// <param name="person">using person to add to it's own directory</param>
         public void DownloadFromUrl(string url, string fileName = "iamge.jpg", Person person = null)
         {
             var personid = string.Empty;
@@ -372,11 +447,6 @@ namespace FacebookTools
             var random = new Random();
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
-        public void SaveAlbumsToDB(List<PhotoAlbum> albums)
-        {
-            
         }
     }
 }

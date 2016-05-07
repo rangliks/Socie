@@ -327,5 +327,15 @@ aside {
 }
 
 .happiest-title {
-    padding-left : 30px;
+    padding-left : 1em;
+    padding-top : 0.5em;
+}
+
+.header {
+    font-size:30px;
+}
+
+.centered {
+  position: absolute;
+  left: 43%;
 }

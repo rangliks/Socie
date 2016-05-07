@@ -12,13 +12,11 @@ namespace FacebookTools.FacebookObjects
     {
         public string PhotoId { get; set; }
         public DateTime CreationDate { get; set; }
-        public List<Tag> Tags { set; get; }
         public PhotoAlbum Album { set; get; }
         public string Name { set; get; }
 
         public Photo()
         {
-            Tags = new List<Tag>();
             CreationDate = DateTime.Now;
         }
     }
