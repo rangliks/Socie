@@ -12,6 +12,32 @@
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript">
+        function draw(sortby) {
+            $(".emotion-str").html(sortby);
+            var personid = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.personId);
+            var myImages = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.allPhotos);
+            var topFriendsImages = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.topF);
+        
+            console.log("********************************");
+            console.log(myImages);
+            console.log("================================");
+            console.log(topFriendsImages);
+            console.log("********************************");
+
+            var top = sortEmotionsPhotos(myImages.photosEmotions, sortby);
+            DrawCircleImage(personid, top.slice(0, 5));
+
+            for(var v in topFriendsImages) {
+                var friendPhotosEmotions = topFriendsImages[v];
+                console.log("friendPhotosEmotions length[" + friendPhotosEmotions.photosEmotions.length + "]");
+                console.log(friendPhotosEmotions);
+                if(friendPhotosEmotions.photosEmotions.length > 0) {
+                    console.log("Drawing " + friendPhotosEmotions.userName + "'s top pics");
+                    var top = sortEmotionsPhotos(friendPhotosEmotions.photosEmotions, sortby);
+                    DrawCircleImage(friendPhotosEmotions.userId, top.slice(0,5));
+                }
+            }
+        }
         function sortEmotionsPhotos(photosEmotions, sortby) {
             if(!sortby) 
                 sortby = "happiness";
@@ -19,51 +45,42 @@
             switch (sortby) {
                 case "happiness":
                     return photosEmotions.sort(function(a, b) { return (a.emotions.happiness < b.emotions.happiness) ? 1 : (a.emotions.happiness > b.emotions.happiness) ? -1 : 0; });
+                case "surprised":
+                    return photosEmotions.sort(function(a, b) { return (a.emotions.surprise < b.emotions.surprise) ? 1 : (a.emotions.surprise > b.emotions.surprise) ? -1 : 0; });
+                case "neutral":
+                    return photosEmotions.sort(function(a, b) { return (a.emotions.neutral < b.emotions.neutral) ? 1 : (a.emotions.neutral > b.emotions.neutral) ? -1 : 0; });
                 default:
-                    return photosEmotions.sort(function(a, b) { return (a.emotions.happiness < b.emotions.happiness) ? 1 : (a.emotions.happiness > b.emotions.happiness) ? -1 : 0; });
+                    return photosEmotions.sort(function(a, b) { return (a.emotions.surprise < b.emotions.surprise) ? 1 : (a.emotions.surprise > b.emotions.surprise) ? -1 : 0; });
         
             }
         }
         $(document).ready(function () {
-        var personid = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.personId);
-        var myImages = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.allPhotos);
-        var topFriendsImages = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.topF);
-        
-        console.log("********************************");
-        console.log(myImages);
-        console.log("================================");
-        console.log(topFriendsImages);
-        console.log("********************************");
+            draw("happiness");
 
-        var top = sortEmotionsPhotos(myImages.photosEmotions);
-        DrawCircleImage(personid, top.slice(0, 5));
-
-        for(var v in topFriendsImages) {
-            var friendPhotosEmotions = topFriendsImages[v];
-            console.log("friendPhotosEmotions length[" + friendPhotosEmotions.photosEmotions.length + "]");
-            console.log(friendPhotosEmotions);
-            if(friendPhotosEmotions.photosEmotions.length > 0) {
-                console.log("Drawing " + friendPhotosEmotions.userName + "'s top pics");
-                DrawCircleImage(friendPhotosEmotions.userId, friendPhotosEmotions.photosEmotions.slice(0,5));
-            }
-        }
+        $("a[rel='click-emotions']").click(function(){
+            var emotion = $(this).attr('id').split('-')[1];
+            //alert(emotion);
+            $(".happy-div").empty();
+            draw(emotion);
+           
+        });
     });
 </script>
 </head>
 
 <body>
-    <aside style="margin-left:25px;width:40px;">
-        <div>
-            <a><img src="@Url.Content("~/Content/Images/smilies/SunGlasses.png")" height="35" width="35" /></a>
+    <aside style="margin-left:80px;width:85px;">
+        <div class="side-emotions">
+            <a rel="click-emotions" id="emotions-neutral" href="javascript:void(0);"><img src="@Url.Content("~/Content/Images/smilies/SunGlasses.png")" height="50" width="50" class="emotions-click-img"/></a>
         </div>
-        <div>
-            <a><img src="@Url.Content("~/Content/Images/smilies/SunGlasses.png")" height="35" width="35" /></a>
+        <div class="side-emotions">
+            <a rel="click-emotions" id="emotions-surprised" href="javascript:void(0);" ><img src="@Url.Content("~/Content/Images/smilies/Surprised.png")" height="50" width="50" class="emotions-click-img" /></a>
         </div>
-        <div>
-            <a><img src="@Url.Content("~/Content/Images/smilies/SunGlasses.png")" height="35" width="35" /></a>
+        <div class="side-emotions">
+            <a rel="click-emotions" id="emotions-happiness" href="javascript:void(0);"><img src="@Url.Content("~/Content/Images/smilies/Blue.png")" height="50" width="50" class="emotions-click-img" /></a>
         </div>
-        <div>
-            <a><img src="@Url.Content("~/Content/Images/smilies/SunGlasses.png")" height="35" width="35" /></a>
+        <div class="side-emotions">
+            <a rel="click-emotions" id="emotions-angry" href="javascript:void(0);"><img src="@Url.Content("~/Content/Images/smilies/Red.png")" height="50" width="50" class="emotions-click-img" /></a>
         </div>
     </aside>
     <div class="navbar navbar-inverse navbar-fixed-top">

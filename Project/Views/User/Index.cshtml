@@ -7,20 +7,20 @@
 <script type="text/javascript">
 </script>
 <div id="heppiest-section">
-    <div class="header centered">Your top happiest images</div>
+    <div class="header centered">Your top <span class="emotion-str">happiest</span> images</div>
     <br />
     <br />
     <div class="happiest-wrapper">
-        <div class="happiest-title">Your top happiest photos</div>
-        <div id="happiest-div-@(ViewBag.personId)"></div>
+        <div class="happiest-title">Your top <span class="emotion-str">happiest</span> photos</div>
+        <div id="happiest-div-@(ViewBag.personId)" class="happy-div"></div>
     </div>
 
     </div>
     @foreach (var v in ViewBag.topF)
     {
         <div class="happiest-wrapper">
-            <div class="happiest-title">@(v.userName)'s happiest photos</div>
-            <div id="happiest-div-@(v.userId)"></div>
+            <div class="happiest-title">@(v.userName)'s <span class="emotion-str">happiest</span> photos</div>
+            <div id="happiest-div-@(v.userId)" class="happy-div"></div>
         </div>
     }
 </div>
