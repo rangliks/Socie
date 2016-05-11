@@ -203,18 +203,19 @@ namespace DbHandler.Db
             List<PhotoAndEmotions> dynamicPhotos = new List<PhotoAndEmotions>();
             foreach (var emotions in emotionsDictionary)
             {
-                EmotionScores generalEmotions = emotions.Value.FirstOrDefault();
+                List<EmotionScores> generalEmotions = emotions.Value;
                 if (generalEmotions != null)
                 {
+                    EmotionScores avg = new EmotionScores();
                     Photo photo = photos.FirstOrDefault(x => x.PhotoId == emotions.Key);
-                    generalEmotions.happiness = emotions.Value.Average(x => x.happiness);
-                    generalEmotions.anger = emotions.Value.Average(x => x.anger);
-                    generalEmotions.contempt = emotions.Value.Average(x => x.contempt);
-                    generalEmotions.disgust = emotions.Value.Average(x => x.disgust);
-                    generalEmotions.fear = emotions.Value.Average(x => x.fear);
-                    generalEmotions.sadness = emotions.Value.Average(x => x.sadness);
-                    generalEmotions.surprise = emotions.Value.Average(x => x.surprise);
-                    dynamicPhotos.Add(new PhotoAndEmotions {photo = photo, emotions = generalEmotions});
+                    avg.happiness = emotions.Value.Average(x => x.happiness);
+                    avg.anger = emotions.Value.Average(x => x.anger);
+                    avg.contempt = emotions.Value.Average(x => x.contempt);
+                    avg.disgust = emotions.Value.Average(x => x.disgust);
+                    avg.fear = emotions.Value.Average(x => x.fear);
+                    avg.sadness = emotions.Value.Average(x => x.sadness);
+                    avg.surprise = emotions.Value.Average(x => x.surprise);
+                    dynamicPhotos.Add(new PhotoAndEmotions { photo = photo, emotions = avg });
                 }
             }
 
