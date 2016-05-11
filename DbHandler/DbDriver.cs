@@ -153,8 +153,10 @@ namespace DbHandler.Db
             db.SaveChanges();
         }
 
-        public List<PhotoAndEmotions> GetUserPhotos(string socieId)
+        public UserPhotosEmotions GetUserPhotos(string socieId)
         {
+            UserPhotosEmotions userPhotosEmotions = new UserPhotosEmotions();
+
             //Dictionary<Photo, double> bestHappiest = new Dictionary<Photo, double>();
 
             // get current user from Person table
@@ -163,6 +165,8 @@ namespace DbHandler.Db
                 select usr;
 
             Person user = socieUser.FirstOrDefault();
+            userPhotosEmotions.userId = user.PersonId;
+            userPhotosEmotions.userName = user.Name;
 
             // get the current user photo albums
             //var albums = from photoAlbums in db.PhotoAlbum
@@ -219,7 +223,28 @@ namespace DbHandler.Db
                 }
             }
 
-            return dynamicPhotos;
+            userPhotosEmotions.photosEmotions = dynamicPhotos;
+
+            var totalImages = userPhotosEmotions.photosEmotions.Count();
+            if (totalImages < 5)
+            {
+                var photosList = photos.ToList().Take(6);
+                foreach (var item in photosList)
+                {
+                    if(!userPhotosEmotions.photosEmotions.Any(x => x.photo.PhotoId == item.PhotoId))
+                    {
+                        PhotoAndEmotions photoAndEmo = new PhotoAndEmotions();
+                        photoAndEmo.emotions = new EmotionScores();
+                        photoAndEmo.photo = item;
+
+                        userPhotosEmotions.photosEmotions.Add(photoAndEmo);
+                    }
+                }
+                
+            }
+
+            return userPhotosEmotions;
+            //return dynamicPhotos;
             //List<PhotoAndEmotions> finalEmotions = dynamicPhotos.OrderByDescending(r => r.emotions.happiness).Take(5).ToList();
             //return finalEmotions;
         }
@@ -285,18 +310,33 @@ namespace DbHandler.Db
 
         public void SaveTags(List<Tag> tags)
         {
+            var allTagsInDb = from existingTag
+                    in db.Tag
+                    select existingTag;
+            var keys = allTagsInDb.Select(x => x.TagId).ToList();
+
+            HashSet<string> insertedKeys = new HashSet<string>();
             foreach (var tag in tags)
             {
-                var p = from existingTag
-                    in db.Tag
-                    where existingTag.TagId == tag.TagId
-                    select existingTag;
-
-                bool exists = p.Any();
-                if (!exists)
+                //var p = from existingTag
+                //    in db.Tag
+                //    where existingTag.TagId == tag.TagId
+                //    select existingTag;
+                if (!insertedKeys.Contains(tag.TagId) && !keys.Contains(tag.TagId))
                 {
                     db.Tag.Add(tag);
+                    insertedKeys.Add(tag.TagId);
                 }
+                else
+                {
+                    var v = 0;
+                    var t = v;
+                }
+                //bool exists = p.Any();
+                //if (!exists)
+                //{
+                //    db.Tag.Add(tag);
+                //}
             }
 
             try
@@ -317,25 +357,25 @@ namespace DbHandler.Db
             switch (emotion)
             {
                     case Emotion.Anger:
-                    orderedPhotos = GetUserPhotos(socieId).OrderByDescending(p => p.emotions.anger);
+                    orderedPhotos = GetUserPhotos(socieId).photosEmotions.OrderByDescending(p => p.emotions.anger);
                     break;
                     case Emotion.Contempt:
-                    orderedPhotos = GetUserPhotos(socieId).OrderByDescending(p => p.emotions.contempt);
+                    orderedPhotos = GetUserPhotos(socieId).photosEmotions.OrderByDescending(p => p.emotions.contempt);
                     break;
                     case Emotion.Disgust:
-                    orderedPhotos = GetUserPhotos(socieId).OrderByDescending(p => p.emotions.disgust);
+                    orderedPhotos = GetUserPhotos(socieId).photosEmotions.OrderByDescending(p => p.emotions.disgust);
                     break;
                     case Emotion.Fear:
-                    orderedPhotos = GetUserPhotos(socieId).OrderByDescending(p => p.emotions.fear);
+                    orderedPhotos = GetUserPhotos(socieId).photosEmotions.OrderByDescending(p => p.emotions.fear);
                     break;
                     case Emotion.Happiness:
-                    orderedPhotos = GetUserPhotos(socieId).OrderByDescending(p => p.emotions.happiness);
+                    orderedPhotos = GetUserPhotos(socieId).photosEmotions.OrderByDescending(p => p.emotions.happiness);
                     break;
                     case Emotion.Sadness:
-                    orderedPhotos = GetUserPhotos(socieId).OrderByDescending(p => p.emotions.sadness);
+                    orderedPhotos = GetUserPhotos(socieId).photosEmotions.OrderByDescending(p => p.emotions.sadness);
                     break;
                     case Emotion.Surprise:
-                    orderedPhotos = GetUserPhotos(socieId).OrderByDescending(p => p.emotions.surprise);
+                    orderedPhotos = GetUserPhotos(socieId).photosEmotions.OrderByDescending(p => p.emotions.surprise);
                     break;
             }
             return orderedPhotos.Take(takeCount).ToList();

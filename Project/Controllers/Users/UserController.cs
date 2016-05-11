@@ -27,29 +27,22 @@ namespace Project.Controllers.Users
             if (!string.IsNullOrEmpty(person.Token))
             {
                 FacebookTools.FacebookHelper helper = new FacebookTools.FacebookHelper(person.Token, socieId);
-                var userFriends = helper.GetFriends();
+                var userFriends = helper.GetFriends(false);
+                /*/ TODO : Get imaginary friends /*/
+
                 foreach (var userFriend in userFriends)
                 {
                     Person socieUser = driver.getSocieUser(userFriend.PersonId);
+                    /*/ TODO : Handle imaginary friends /*/
                     if (socieUser != null)
                     {
-                        var userPhotos = driver.GetUserPhotosByEmotion(socieUser.SocieId, Emotion.Happiness, 5);
-                        var fr = new UserPhotosEmotions
-                        {
-                            userId = userFriend.PersonId,
-                            userName = userFriend.Name,
-                            photosEmotions = userPhotos
-                        };
-                        topF.Add(fr);
-
-                        var key = string.Format("\"{0}\"", userFriend.PersonId);
-                        topFriends.Add(key, new List<PhotoAndEmotions>());
-                        topFriends[key] = userPhotos;
+                        var friendPhotosEmotions = driver.GetUserPhotos(socieUser.SocieId);
+                        topF.Add(friendPhotosEmotions);
                     }
                 }
             }
 
-            ViewBag.topFriends = topF;
+            ViewBag.topF = topF;
             return View();
         }
     }

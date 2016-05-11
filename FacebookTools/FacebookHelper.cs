@@ -163,10 +163,10 @@ namespace FacebookTools
             var pictureUrl = GetProfilePictureUrl(me);
 
             // do actual download using the picture download url
-            DownloadFromUrl(pictureUrl);
+            DownloadFromUrl(pictureUrl, "image.jpg");
         }
 
-        public List<Person> GetFriends()
+        public List<Person> GetFriends(bool downloadProfilePics = true)
         {
             var friendListData = client.Get("/me/friends");
             JObject friendListJson = JObject.Parse(friendListData.ToString());
@@ -175,8 +175,11 @@ namespace FacebookTools
             foreach (var friend in friendListJson["data"].Children())
             {
                 Person person = new Person(friend.ToString());
-                DownloadProfilePicture(person);
-
+                if(downloadProfilePics)
+                {
+                    DownloadProfilePicture(person);
+                }
+                
                 friends.Add(person);
             }
 
@@ -304,9 +307,38 @@ namespace FacebookTools
 
         public void DownloadProfilePicture(Person person)
         {
-            string fileName = string.Format("profile_{0}.jpg", person.PersonId);
+            var picId = string.Empty;
             var url = GetProfilePictureUrl(person);
-            DownloadFromUrl(url, fileName, person);
+            try
+            {
+                var splitted = url.Split('/');
+                try
+                {
+                    foreach (var item in splitted)
+                    {
+                        var innerSplit = item.Split('_');
+                        if (innerSplit.Count() >= 2)
+                        {
+                            picId = innerSplit[1];
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    picId = splitted[6].Split('_')[1];
+                }
+                
+                string fileName = string.Format("image_{0}.jpg", picId);
+                DownloadFromUrl(url, fileName, person);
+                Console.WriteLine("not fuck!");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("fuck!");
+                string fileName = string.Format("profile_{0}.jpg", person.PersonId);
+                DownloadFromUrl(url, fileName, person);
+            }
+           
         }
 
         private void DownloadPicture(Photo photo)
@@ -316,6 +348,32 @@ namespace FacebookTools
             {
                 string filename = string.Format("image_{0}.jpg", photo.PhotoId);
                 DownloadFromUrl(url, filename);
+
+                var path = string.Format(@"C:\socie\{0}\{1}", Me.PersonId, filename);
+
+                string newFilename = string.Format("image_{0}_small.jpg", photo.PhotoId);
+                var pathNew = string.Format(@"C:\socie\{0}\{1}", Me.PersonId, newFilename);
+                //Resize(path, pathNew, 0.1);
+            }
+        }
+
+        public void Resize(string imageFile, string outputFile, double scaleFactor)
+        {
+            using (var srcImage = System.Drawing.Image.FromFile(imageFile))
+            {
+                var newWidth = 200;// (int)(srcImage.Width * scaleFactor);
+                var newHeight = 200; // (int)(srcImage.Height * scaleFactor);
+                using (var newImage = new System.Drawing.Bitmap(newWidth, newHeight))
+                {
+                    using (var graphics = System.Drawing.Graphics.FromImage(newImage))
+                    {
+                        graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                        graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                        graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                        graphics.DrawImage(srcImage, new System.Drawing.Rectangle(0, 0, newWidth, newHeight));
+                        newImage.Save(outputFile, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    }
+                }
             }
         }
 
@@ -332,7 +390,9 @@ namespace FacebookTools
             string pictureUrl = string.Empty;
             try
             {
-                WebRequest request = WebRequest.Create(string.Format("https://www.facebook.com/photo/download/?fbid={0}&width=300&height=300", photo.PhotoId));
+                var reqUrl = string.Format("https://www.facebook.com/photo/download/?fbid={0}&width=300&height=300", photo.PhotoId);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(reqUrl);
+                request.UserAgent = "my user agent";
                 response = request.GetResponse();
                 if (response != null && request.RequestUri.Equals(response.ResponseUri))
                 {
@@ -402,7 +462,7 @@ namespace FacebookTools
         /// <param name="url">the url of the image to download</param>
         /// <param name="fileName">the filename to save</param>
         /// <param name="person">using person to add to it's own directory</param>
-        public void DownloadFromUrl(string url, string fileName = "iamge.jpg", Person person = null)
+        public void DownloadFromUrl(string url, string fileName, Person person = null)
         {
             var personid = string.Empty;
             if(person == null)

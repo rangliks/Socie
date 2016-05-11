@@ -12,30 +12,60 @@
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript">
-    $(document).ready(function () {
-        var personid = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.personId);
-        var images = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.allPhotos);
-        var topFriendsImages = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.topFriends);
-        images.sort(function(a, b) { return (a.emotions.happiness < b.emotions.happiness) ? 1 : (a.emotions.happiness > b.emotions.happiness) ? -1 : 0; });
+        function sortEmotionsPhotos(photosEmotions, sortby) {
+            if(!sortby) 
+                sortby = "happiness";
 
-        console.log("================================");
-        console.log(images);
+            switch (sortby) {
+                case "happiness":
+                    return photosEmotions.sort(function(a, b) { return (a.emotions.happiness < b.emotions.happiness) ? 1 : (a.emotions.happiness > b.emotions.happiness) ? -1 : 0; });
+                default:
+                    return photosEmotions.sort(function(a, b) { return (a.emotions.happiness < b.emotions.happiness) ? 1 : (a.emotions.happiness > b.emotions.happiness) ? -1 : 0; });
+        
+            }
+        }
+        $(document).ready(function () {
+        var personid = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.personId);
+        var myImages = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.allPhotos);
+        var topFriendsImages = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.topF);
+        
         console.log("********************************");
-        
-        DrawCircleImage(personid, images.slice(0,5));
-        
-        
+        console.log(myImages);
+        console.log("================================");
+        console.log(topFriendsImages);
+        console.log("********************************");
+
+        var top = sortEmotionsPhotos(myImages.photosEmotions);
+        DrawCircleImage(personid, top.slice(0, 5));
+
         for(var v in topFriendsImages) {
             var friendPhotosEmotions = topFriendsImages[v];
-            console.log("friendPhotosEmotions");
+            console.log("friendPhotosEmotions length[" + friendPhotosEmotions.photosEmotions.length + "]");
             console.log(friendPhotosEmotions);
-            DrawCircleImage(friendPhotosEmotions.userId, friendPhotosEmotions.photosEmotions);
+            if(friendPhotosEmotions.photosEmotions.length > 0) {
+                console.log("Drawing " + friendPhotosEmotions.userName + "'s top pics");
+                DrawCircleImage(friendPhotosEmotions.userId, friendPhotosEmotions.photosEmotions.slice(0,5));
+            }
         }
-        });
+    });
 </script>
 </head>
 
 <body>
+    <aside style="margin-left:25px;width:40px;">
+        <div>
+            <a><img src="@Url.Content("~/Content/Images/smilies/SunGlasses.png")" height="35" width="35" /></a>
+        </div>
+        <div>
+            <a><img src="@Url.Content("~/Content/Images/smilies/SunGlasses.png")" height="35" width="35" /></a>
+        </div>
+        <div>
+            <a><img src="@Url.Content("~/Content/Images/smilies/SunGlasses.png")" height="35" width="35" /></a>
+        </div>
+        <div>
+            <a><img src="@Url.Content("~/Content/Images/smilies/SunGlasses.png")" height="35" width="35" /></a>
+        </div>
+    </aside>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">

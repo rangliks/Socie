@@ -10,14 +10,17 @@
     <div class="header centered">Your top happiest images</div>
     <br />
     <br />
-    <div id="happiest-div">
+    <div class="happiest-wrapper">
+        <div class="happiest-title">Your top happiest photos</div>
+        <div id="happiest-div-@(ViewBag.personId)"></div>
+    </div>
 
     </div>
-    @foreach (var v in ViewBag.topFriends)
+    @foreach (var v in ViewBag.topF)
     {
         <div class="happiest-wrapper">
             <div class="happiest-title">@(v.userName)'s happiest photos</div>
-            <div id="happiest-div@(v.userId)"></div>
+            <div id="happiest-div-@(v.userId)"></div>
         </div>
     }
 </div>

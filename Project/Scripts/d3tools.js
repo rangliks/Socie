@@ -1,10 +1,11 @@
-﻿function DrawCircleImage(userid, images) {
+﻿/*/ d3tools for sociew using d3.js library /*/
+function DrawCircleImage(userid, images) {
 
 
     var margin = { top: 10, right: 5, bottom: 10, left: 5 };
     console.log("type [" + typeof userid + "]");
-    console.log("selecting [#happiest-div" + parseInt(userid) + "]");
-    var svg = d3.select("#happiest-div" + userid)
+    console.log("selecting [#happiest-div-" + parseInt(userid) + "]");
+    var svg = d3.select("#happiest-div-" + userid)
         .append("svg")
         .attr("width", "100%")
         .attr("height", 500)
@@ -12,7 +13,7 @@
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var defs = svg.append('svg:defs');
-    var config = { "avatar_size": "450" };
+    var config = { "avatar_size": "250" };
 
     var currentX = 150;
     var currentY = 70;
@@ -49,18 +50,18 @@
             .attr("height", config.avatar_size)
             .attr("patternUnits", "userSpaceOnUse")
             .append("svg:image")
-            .attr("xlink:href", '/Content/images/' + userid + "/image_" + imageid + ".jpg")
+            .attr("xlink:href", '/Content/images/' + userid + "/image_" + imageid + "_small.jpg")
             .attr("width", config.avatar_size)
             .attr("height", config.avatar_size)
-            .attr("x", 0)
-            .attr("y", 0)
+            .attr("x", 50)
+            .attr("y", 10)
             .attr("viewBox", "0 0 450 450")
             .attr("preserveAspectRatio", "xMinYMin meet");
 
         svg.append("circle")
         .style("stroke", "gray")
         .style("fill", "url(#" + patternId + ")")
-        .attr("r", 120)
+        .attr("r", 90)
         .attr("cx", currentX)
         .attr("cy", 130)
         .attr("width", 300)
@@ -73,12 +74,14 @@
             .attr("rx", 10)
             .attr("ry", 12)
             .style("fill", "gray")
-            .style("fill-opacity", 0.4)
+            .style("fill-opacity", 0.5)
             .attr("width", 60)
             .attr("height", 35);
-        rect.append("text")
+
+        group.append("text")
         .text(score.toFixed(2) + "%")
-        .style("stroke", "black")
+        //.style("stroke", "black")
+        .style("font-size", "small")
         .attr("x", currentX - 15)
         .attr("y", 220);
 

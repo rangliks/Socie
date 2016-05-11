@@ -9,6 +9,7 @@ using Microsoft.ProjectOxford.Emotion;
 using System.Reflection;
 using System.Threading;
 using OxfordTools.OxfordObjects;
+using MyLogger;
 
 namespace OxfordTools
 {
@@ -22,85 +23,73 @@ namespace OxfordTools
 
         public static async Task<List<EmotionScores>> FindFaces(bool viewPicturesInPaint = false)
         {
+            Logger.Info("OxfordTools : Starting find faces and emotions");
+            // object to return
             List<EmotionScores> scores = new List<EmotionScores>();
 
+            // open connection to microsoft services
             EmotionServiceClient emotionClient = new EmotionServiceClient("4c37362995694b17b93e259ba9087bbf");
             FaceServiceClient client = new FaceServiceClient("8a0b69482d234dffa7d425acc5b06ecc");
 
-            //string imageUrl = "http://news.microsoft.com/ceo/assets/photos/06_web.jpg";
-            //var faces = await client.DetectAsync(imageUrl, true, true);
- 
-            //foreach (var face in faces)
-            //{
-            //    var rect = face.FaceRectangle;
-            //    var landmarks = face.FaceLandmarks;
-            //}
-
+            // foreach of the pics directories pass over and recognize feelings
             DirectoryInfo info = new DirectoryInfo(@"C:\socie");
             var subDirectories = info.GetDirectories();
             foreach (var dir in subDirectories)
             {
                 var userId = dir.Name;
+                Logger.Info(string.Format("OxfordTools : Analysing user [{0}]", userId));
+
                 var files = dir.GetFiles();
                 foreach (var file in files)
                 {
-                    //try
-                    //{
-                    //    using (Stream s = file.OpenRead())
-                    //    {
-                    //        var faces = await client.DetectAsync(s, true, true);
-                    //        foreach (var face in faces)
-                    //        {
-                    //            var rect = face.FaceRectangle;
-                    //            var landmarks = face.FaceLandmarks;
-
-                    //            double noseX = landmarks.NoseTip.X;
-                    //            double noseY = landmarks.NoseTip.Y;
-
-                    //            var attributes = face.FaceAttributes;
-
-                    //            Console.Write(face.ToString());
-                    //        }
-                    //    }
-                    //}
-                    //catch (Exception)
-                    //{
-
-                    //    throw;
-                    //}
-                    
+                    if (file.Name.Contains("small")) continue;
                     try
                     {
                         using (Stream s = file.OpenRead())
                         {
-                            var emotions = await emotionClient.RecognizeAsync(s);
-                            if (emotions.Any())
+                            var isImage = file.Name.Split('_')[0] == "image";
+                            if (isImage)
                             {
-                                System.Diagnostics.Process paint = null;
+                                var emotions = await emotionClient.RecognizeAsync(s);
 
-                                if (viewPicturesInPaint)
+                                if (emotions.Any())
                                 {
-                                    System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
-                                    procInfo.FileName = ("mspaint.exe");
-                                    procInfo.Arguments = file.FullName;
-                                    paint = System.Diagnostics.Process.Start(procInfo);
-                                }
+                                    var photoId = file.Name.Split('_')[1].Split('.')[0];
+                                    Logger.Info(string.Format("OxfordTools : Found {0} emotions for photoId [{1}] user [{2}] ", emotions.Count(), photoId, userId));
+                                    System.Diagnostics.Process paint = null;
 
-                                foreach (var emo in emotions)
-                                {
-                                    var v = emo.Scores;
-                                    EmotionScores scoresObj = new EmotionScores(emo, file.Name.Split('_')[1].Split('.')[0]);
-                                    var msg = string.Format("-------------\n happy [{0}]\n surprise [{1}]\n sad[{2}]\n neutral [{3}]\n anger [{4}]\n disguast [{5}]\n", v.Happiness, v.Surprise, v.Sadness, v.Neutral, v.Anger, v.Disgust);
-                                    Console.Write(msg);
-                                    System.Threading.Thread.Sleep(3000);
-                                    scores.Add(scoresObj);
-                                }
+                                    if (viewPicturesInPaint)
+                                    {
+                                        System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
+                                        procInfo.FileName = ("mspaint.exe");
+                                        procInfo.Arguments = file.FullName;
+                                        paint = System.Diagnostics.Process.Start(procInfo);
+                                    }
 
-                                if(paint != null)
-                                {
-                                    paint.Kill();
-                                    Thread.Sleep(2000);
+                                    foreach (var emo in emotions)
+                                    {
+                                        var v = emo.Scores;
+                                        EmotionScores scoresObj = new EmotionScores(emo, photoId);
+                                        var msg = string.Format("-------------\n happy [{0}]\n surprise [{1}]\n sad[{2}]\n neutral [{3}]\n anger [{4}]\n disguast [{5}]\n", v.Happiness, v.Surprise, v.Sadness, v.Neutral, v.Anger, v.Disgust);
+                                        Logger.Info(msg);
+                                        System.Threading.Thread.Sleep(3000);
+                                        scores.Add(scoresObj);
+                                    }
+
+                                    if (paint != null)
+                                    {
+                                        paint.Kill();
+                                        Thread.Sleep(2000);
+                                    }
                                 }
+                                else
+                                {
+                                    Logger.Info(string.Format("No Emotions found. file [{0}]", file.Name));
+                                }
+                            }
+                            else
+                            {
+                                Logger.Info(string.Format("Not valid image!!!!! [{0}]", file.Name));
                             }
                         }
                     }
@@ -109,6 +98,7 @@ namespace OxfordTools
                     }
                 }
             }
+
             return scores;
         }
     }

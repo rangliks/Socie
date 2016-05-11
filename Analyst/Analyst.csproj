@@ -43,6 +43,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Extensions">
       <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
@@ -62,6 +63,8 @@
     <Compile Include="Db\DbDriver.cs" />
     <Compile Include="Db\SocieContext.cs" />
     <Compile Include="Facebook\FacebookConnector.cs" />
+    <Compile Include="Facebook\PhotoCsvRecord.cs" />
+    <Compile Include="Facebook\PhotoResizer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -79,6 +82,10 @@
     <ProjectReference Include="..\FacebookTools\FacebookTools.csproj">
       <Project>{28db8a1d-c517-4e7f-b336-2b5db78f4349}</Project>
       <Name>FacebookTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyLogger\MyLogger.csproj">
+      <Project>{c5613582-1441-4111-ac8b-eb507731e329}</Project>
+      <Name>MyLogger</Name>
     </ProjectReference>
     <ProjectReference Include="..\OxfordTools\OxfordTools.csproj">
       <Project>{eb91648c-54f8-4ea0-bc97-eeec264ae29e}</Project>

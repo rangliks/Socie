@@ -85,6 +85,10 @@
       <Project>{28db8a1d-c517-4e7f-b336-2b5db78f4349}</Project>
       <Name>FacebookTools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MyLogger\MyLogger.csproj">
+      <Project>{c5613582-1441-4111-ac8b-eb507731e329}</Project>
+      <Name>MyLogger</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

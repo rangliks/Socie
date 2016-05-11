@@ -135,7 +135,6 @@ namespace Analyst.Db
                 }
             }
 
-            //db.EmotionScores.AddRange(v);
             db.SaveChanges();
         }
     }
