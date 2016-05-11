@@ -44,12 +44,19 @@
 
             switch (sortby) {
                 case "happiness":
+                    console.log("sorting by happiness");
                     return photosEmotions.sort(function(a, b) { return (a.emotions.happiness < b.emotions.happiness) ? 1 : (a.emotions.happiness > b.emotions.happiness) ? -1 : 0; });
                 case "surprised":
+                    console.log("sorting by surprised");
                     return photosEmotions.sort(function(a, b) { return (a.emotions.surprise < b.emotions.surprise) ? 1 : (a.emotions.surprise > b.emotions.surprise) ? -1 : 0; });
                 case "neutral":
+                    console.log("sorting by neutral");
                     return photosEmotions.sort(function(a, b) { return (a.emotions.neutral < b.emotions.neutral) ? 1 : (a.emotions.neutral > b.emotions.neutral) ? -1 : 0; });
+                case "angry":
+                    console.log("sorting by angry");
+                    return photosEmotions.sort(function(a, b) { return (a.emotions.anger < b.emotions.anger) ? 1 : (a.emotions.anger > b.emotions.anger) ? -1 : 0; });
                 default:
+                    console.log("sorting by defualt");
                     return photosEmotions.sort(function(a, b) { return (a.emotions.surprise < b.emotions.surprise) ? 1 : (a.emotions.surprise > b.emotions.surprise) ? -1 : 0; });
         
             }
@@ -59,7 +66,7 @@
 
         $("a[rel='click-emotions']").click(function(){
             var emotion = $(this).attr('id').split('-')[1];
-            //alert(emotion);
+            console.log(emotion);
             $(".happy-div").empty();
             draw(emotion);
            
