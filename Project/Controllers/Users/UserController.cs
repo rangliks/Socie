@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using OxfordTools;
 
 namespace Project.Controllers.Users
 {
@@ -19,8 +20,7 @@ namespace Project.Controllers.Users
             var socieId = User.Identity.GetUserId();
             Person person = driver.GetPerson(socieId);
             ViewBag.personId = person.PersonId;
-            var top = driver.GetUserPhotosByHappiness(socieId);
-            ViewBag.topHappiest = top;
+            ViewBag.allPhotos = driver.GetUserPhotos(socieId);
 
             Dictionary<string, List<PhotoAndEmotions>> topFriends = new Dictionary<string, List<PhotoAndEmotions>>();
             List<UserPhotosEmotions> topF = new List<UserPhotosEmotions>();
@@ -33,18 +33,18 @@ namespace Project.Controllers.Users
                     Person socieUser = driver.getSocieUser(userFriend.PersonId);
                     if (socieUser != null)
                     {
-                        var fr = new UserPhotosEmotions();
-                        fr.userId = userFriend.PersonId;
-                        fr.userName = userFriend.Name;
-                        fr.photosEmotions = driver.GetUserPhotosByHappiness(socieUser.SocieId);
-
+                        var userPhotos = driver.GetUserPhotosByEmotion(socieUser.SocieId, Emotion.Happiness, 5);
+                        var fr = new UserPhotosEmotions
+                        {
+                            userId = userFriend.PersonId,
+                            userName = userFriend.Name,
+                            photosEmotions = userPhotos
+                        };
                         topF.Add(fr);
 
                         var key = string.Format("\"{0}\"", userFriend.PersonId);
                         topFriends.Add(key, new List<PhotoAndEmotions>());
-                        var topCurrentFriend = driver.GetUserPhotosByHappiness(socieUser.SocieId);
-
-                        topFriends[key] = topCurrentFriend;
+                        topFriends[key] = userPhotos;
                     }
                 }
             }

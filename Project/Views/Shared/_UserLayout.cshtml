@@ -14,18 +14,21 @@
     <script type="text/javascript">
     $(document).ready(function () {
         var personid = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.personId);
-        var images = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.topHappiest);
+        var images = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.allPhotos);
         var topFriendsImages = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.topFriends);
-        console.log("================================");
-        console.log(topFriendsImages);
-        console.log("********************************");
+        images.sort(function(a, b) { return (a.emotions.happiness < b.emotions.happiness) ? 1 : (a.emotions.happiness > b.emotions.happiness) ? -1 : 0; });
 
-        DrawCircleImage(personid, images);
+        console.log("================================");
+        console.log(images);
+        console.log("********************************");
+        
+        DrawCircleImage(personid, images.slice(0,5));
+        
+        
         for(var v in topFriendsImages) {
             var friendPhotosEmotions = topFriendsImages[v];
             console.log("friendPhotosEmotions");
             console.log(friendPhotosEmotions);
-            var photos = topFriendsImages[v];
             DrawCircleImage(friendPhotosEmotions.userId, friendPhotosEmotions.photosEmotions);
         }
         });
