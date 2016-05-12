@@ -1,15 +1,12 @@
-﻿using MyLogger;
-using System;
-using System.Collections.Generic;
+﻿using log4net;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Analyst.Facebook
 {
     class PhotoResizer
     {
+        private static readonly ILog logger = LogManager.GetLogger(typeof(PhotoResizer));
+
         public void ResizePhotos()
         {
             DirectoryInfo info = new DirectoryInfo(@"C:\socie");
@@ -17,7 +14,7 @@ namespace Analyst.Facebook
             foreach (var dir in subDirectories)
             {
                 var userId = dir.Name;
-                Logger.Info(string.Format("OxfordTools : Analysing user [{0}]", userId));
+                logger.Info(string.Format("OxfordTools : Analysing user [{0}]", userId));
 
                 var files = dir.GetFiles();
                 foreach (var file in files)
