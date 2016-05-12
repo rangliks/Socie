@@ -239,6 +239,10 @@
     <Compile Include="Migrations\201605022000442_RemoveTagsListInPhoto.Designer.cs">
       <DependentUpon>201605022000442_RemoveTagsListInPhoto.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605121216339_AlbumIdToStringInPhoto.cs" />
+    <Compile Include="Migrations\201605121216339_AlbumIdToStringInPhoto.Designer.cs">
+      <DependentUpon>201605121216339_AlbumIdToStringInPhoto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -446,6 +450,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605022000442_RemoveTagsListInPhoto.resx">
       <DependentUpon>201605022000442_RemoveTagsListInPhoto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605121216339_AlbumIdToStringInPhoto.resx">
+      <DependentUpon>201605121216339_AlbumIdToStringInPhoto.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

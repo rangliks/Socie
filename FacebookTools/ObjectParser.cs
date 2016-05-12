@@ -58,7 +58,7 @@ namespace FacebookTools
             foreach (var item in albumData.Children())
             {
                 Photo photo = new Photo();
-                photo.Album = album;
+                photo.AlbumId = album.AlbumId;
                 var itemProperties = item.Children<JProperty>();
                 foreach (JProperty a in itemProperties)
                 {

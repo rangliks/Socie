@@ -15,6 +15,7 @@ namespace FacebookTools
 {
     public class FacebookHelper
     {
+        private string imagesBase = @"C:\socie\";
         private FacebookClient client = null;
         int i = 0;
         private string accessToken = string.Empty;
@@ -154,16 +155,14 @@ namespace FacebookTools
         /// <summary>
         /// get profile picture for current session user
         /// </summary>
-        public void GetProfilePicture()
+        public string GetProfilePictureId(Person person)
         {
             // api endpoint for getting profile pictures
             var url = string.Format("https://graph.facebook.com/me/picture?access_token={0}", client.AccessToken);
 
             // a call to get the picture download url
-            var pictureUrl = GetProfilePictureUrl(me);
-
-            // do actual download using the picture download url
-            DownloadFromUrl(pictureUrl, "image.jpg");
+            var pictureUrl = GetProfilePictureUrl(person);
+            return extractPicIdFromUrl(pictureUrl);
         }
 
         public List<Person> GetFriends(bool downloadProfilePics = true)
@@ -311,22 +310,7 @@ namespace FacebookTools
             var url = GetProfilePictureUrl(person);
             try
             {
-                var splitted = url.Split('/');
-                try
-                {
-                    foreach (var item in splitted)
-                    {
-                        var innerSplit = item.Split('_');
-                        if (innerSplit.Count() >= 2)
-                        {
-                            picId = innerSplit[1];
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    picId = splitted[6].Split('_')[1];
-                }
+                picId = extractPicIdFromUrl(url);
                 
                 string fileName = string.Format("image_{0}.jpg", picId);
                 DownloadFromUrl(url, fileName, person);
@@ -341,6 +325,30 @@ namespace FacebookTools
            
         }
 
+        private string extractPicIdFromUrl(string url)
+        {
+            string picId = string.Empty;
+
+            var splitted = url.Split('/');
+            try
+            {
+                foreach (var item in splitted)
+                {
+                    var innerSplit = item.Split('_');
+                    if (innerSplit.Count() >= 2)
+                    {
+                        picId = innerSplit[1];
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                picId = splitted[6].Split('_')[1];
+            }
+
+            return picId;
+        }
+
         private void DownloadPicture(Photo photo)
         {
             var url = GetPhotoUrl(photo);
@@ -348,12 +356,6 @@ namespace FacebookTools
             {
                 string filename = string.Format("image_{0}.jpg", photo.PhotoId);
                 DownloadFromUrl(url, filename);
-
-                var path = string.Format(@"C:\socie\{0}\{1}", Me.PersonId, filename);
-
-                string newFilename = string.Format("image_{0}_small.jpg", photo.PhotoId);
-                var pathNew = string.Format(@"C:\socie\{0}\{1}", Me.PersonId, newFilename);
-                //Resize(path, pathNew, 0.1);
             }
         }
 
@@ -477,7 +479,7 @@ namespace FacebookTools
             makeSureTheresAlreadyUserDirectory(personid);
             using (WebClient webClient = new WebClient())
             {
-                var path = string.Format(@"C:\socie\{0}\{1}", personid, fileName);
+                var path = string.Format(@"{0}\{1}\{2}", imagesBase, personid, fileName);
                 webClient.DownloadFile(url, path);
             }
         }
@@ -494,10 +496,10 @@ namespace FacebookTools
                 personid = personId;
             }
 
-            string directory = string.Format(@"C:\socie\{0}", personid);
+            string directory = string.Format(@"{0}\{1}", imagesBase, personid);
             if(!Directory.Exists(directory))
             {
-                Directory.CreateDirectory(string.Format(@"C:\socie\{0}", personid));
+                Directory.CreateDirectory(string.Format(@"{0}\{1}", imagesBase, personid));
             }
         }
 
@@ -507,6 +509,11 @@ namespace FacebookTools
             var random = new Random();
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        public void SetDownloadPath(string imagesBase)
+        {
+            this.imagesBase = imagesBase;
         }
     }
 }

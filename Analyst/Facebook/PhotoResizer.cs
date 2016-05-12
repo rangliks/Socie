@@ -7,9 +7,9 @@ namespace Analyst.Facebook
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(PhotoResizer));
 
-        public void ResizePhotos()
+        public void ResizePhotos(string imagesBase)
         {
-            DirectoryInfo info = new DirectoryInfo(@"C:\socie");
+            DirectoryInfo info = new DirectoryInfo(imagesBase);
             var subDirectories = info.GetDirectories();
             foreach (var dir in subDirectories)
             {
@@ -46,7 +46,15 @@ namespace Analyst.Facebook
                         graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                         graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
                         graphics.DrawImage(srcImage, new System.Drawing.Rectangle(0, 0, newWidth, newHeight));
-                        newImage.Save(outputFile, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        try
+                        {
+                            newImage.Save(outputFile, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        }
+                        catch (System.Exception)
+                        {
+                            return;
+                        }
+                        
                     }
                 }
             }

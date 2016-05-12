@@ -3,20 +3,23 @@ using System.Linq;
 using FacebookTools;
 using FacebookTools.FacebookObjects;
 using log4net;
+using System.IO;
 
 namespace Analyst.Facebook
 {
     public class FacebookConnector
     {
         DbHandler.Db.DbDriver driver;
-        private static readonly ILog logger = LogManager.GetLogger(typeof(FacebookConnector));
+        private static ILog logger;// = LogManager.GetLogger(typeof(FacebookConnector));
+        
 
         public FacebookConnector()
         {
+            logger = LogManager.GetLogger(typeof(FacebookConnector));
             driver = new DbHandler.Db.DbDriver();
         }
 
-        public void FindPhotos()
+        public void FindPhotos(string imagesBase)
         {
             var persons = driver.getPersons();
             foreach (var person in persons)
@@ -28,6 +31,7 @@ namespace Analyst.Facebook
                     logger.Info(string.Format("Found socie user [{0}] id [{1}]", person.Name, person.PersonId));
                     logger.Info(string.Format("Creating Facebook Helper for [{0}]", person.Name));
                     FacebookHelper myHelper = new FacebookHelper(person.Token);
+                    myHelper.SetDownloadPath(imagesBase);
 
                     // update user credentials
                     logger.Info(string.Format("Saving person name [{0}]", person.Name));
@@ -61,12 +65,12 @@ namespace Analyst.Facebook
                     logger.Info(string.Format("Getting tags of all photo albums. name [{0}]", person.Name));
                     var tags = myHelper.GetMyPhotosTags(albumPhotos);
 
-                    logger.Info(string.Format("Saving tags to db. name [{0}]", person.Name));
-                    driver.SaveTags(tags);
-
                     // save the pics to db if not already exists
                     logger.Info(string.Format("Saving all photos to db. name [{0}]", person.Name));
                     driver.SavePhotos(albumPhotos);
+
+                    logger.Info(string.Format("Saving tags to db. name [{0}]", person.Name));
+                    driver.SaveTags(tags);
 
                     // download current user profile pic
                     logger.Info(string.Format("Downloading {0}'s profile pic", person.Name));
@@ -120,7 +124,7 @@ namespace Analyst.Facebook
                     Photo photo = new Photo();
                     photo.PhotoId = record.PhotoId;
                     photo.Name = record.Name;
-                    photo.Album = album;
+                    photo.AlbumId = album.AlbumId;
 
                     photosByAlbumId.Add(photo);
                 }

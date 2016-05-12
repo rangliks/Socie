@@ -9,6 +9,7 @@ namespace DbHandler.Objects
     public class UserPhotosEmotions
     {
         public string userId { get; set; }
+        public string profilePicId { get; set; }
         public string userName { get; set; }
         public List<PhotoAndEmotions> photosEmotions { get; set; }
     }

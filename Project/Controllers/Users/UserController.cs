@@ -20,13 +20,19 @@ namespace Project.Controllers.Users
             var socieId = User.Identity.GetUserId();
             Person person = driver.GetPerson(socieId);
             ViewBag.personId = person.PersonId;
-            ViewBag.allPhotos = driver.GetUserPhotos(socieId);
-
+            
             Dictionary<string, List<PhotoAndEmotions>> topFriends = new Dictionary<string, List<PhotoAndEmotions>>();
             List<UserPhotosEmotions> topF = new List<UserPhotosEmotions>();
             if (!string.IsNullOrEmpty(person.Token))
             {
                 FacebookTools.FacebookHelper helper = new FacebookTools.FacebookHelper(person.Token, socieId);
+                
+                // get profilepicId for session user
+                UserPhotosEmotions sessionUserEmotions = driver.GetUserPhotos(socieId);
+                var profilePicId = helper.GetProfilePictureId(person);
+                sessionUserEmotions.profilePicId = profilePicId;
+                ViewBag.allPhotos = sessionUserEmotions;
+
                 var userFriends = helper.GetFriends(false);
                 /*/ TODO : Get imaginary friends /*/
 
@@ -37,6 +43,8 @@ namespace Project.Controllers.Users
                     if (socieUser != null)
                     {
                         var friendPhotosEmotions = driver.GetUserPhotos(socieUser.SocieId);
+                        var friendProfilePicId = helper.GetProfilePictureId(socieUser);
+                        friendPhotosEmotions.profilePicId = friendProfilePicId;
                         topF.Add(friendPhotosEmotions);
                     }
                 }

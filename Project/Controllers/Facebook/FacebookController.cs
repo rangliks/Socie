@@ -73,11 +73,9 @@ namespace Project.Controllers.Facebook
 
                     token = responseParams.ContainsKey("access_token") ? responseParams["access_token"] : string.Empty;
                     facebookToken = token;
-                    bool exists = isUserExist(token);
-                    if(!exists)
-                    {
-                        CreatePerson(token);
-                    }
+                    
+                    // will create the user or update token in db
+                    CreatePerson(token);
                     RedirectToAction("Index", "User");
                 }
             }

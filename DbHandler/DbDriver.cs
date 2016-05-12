@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DbHandler.Extensions;
 using DbHandler.Objects;
+using log4net;
 
 namespace DbHandler.Db
 {
@@ -15,6 +16,7 @@ namespace DbHandler.Db
     {
         private readonly string connectionString;
         private SocieContext db;
+        private static ILog logger;
 
         public DbDriver()
         {
@@ -28,6 +30,7 @@ namespace DbHandler.Db
             }
 
             db = new SocieContext(connectionString);
+            logger = LogManager.GetLogger(typeof(DbDriver));
         }
 
         public void SaveEmotion(EmotionScores emo)
@@ -51,10 +54,17 @@ namespace DbHandler.Db
                 where usr.SocieId == socieId
                 select new {Name = usr.Name};
 
-            if (user.Any())
+            try
             {
-                return user.First().Name;
+                if (user.Any())
+                {
+                    return user.First().Name;
+                }
             }
+            catch (Exception ex)
+            {
+            }
+            
 
             return string.Empty;
 
@@ -118,6 +128,11 @@ namespace DbHandler.Db
                 if (currentPhotosDictionary.ContainsKey(photo.PhotoId))
                 {
                     /*/ UPDATE EXISTING /*/
+                    Photo photoTemp = db.Photo.Where(x => x.PhotoId == photo.PhotoId).FirstOrDefault();
+                    if(photo != null)
+                    {
+                        photoTemp.AlbumId = photo.AlbumId;
+                    }
                 }
                 else
                 {
@@ -145,6 +160,11 @@ namespace DbHandler.Db
             {
                 foreach (Person p in personInDB)
                 {
+                    if (!string.IsNullOrEmpty(person.Token))
+                    {
+                        p.Token = person.Token;
+                    }
+                    
                     p.SocieId = socieId;
                     break;
                 }
@@ -177,7 +197,7 @@ namespace DbHandler.Db
 
             // with the albumids get the photos
             var photos = from photo in db.Photo
-                join album in db.PhotoAlbum on photo.Album.AlbumId equals album.AlbumId
+                join album in db.PhotoAlbum on photo.AlbumId equals album.AlbumId
                 where album.PersonId == user.PersonId
                 select photo;
 
@@ -310,6 +330,11 @@ namespace DbHandler.Db
 
         public void SaveTags(List<Tag> tags)
         {
+            var allPhotos = from photo
+                            in db.Photo
+                            select photo;
+            var allphotosList = allPhotos.ToList();
+
             var allTagsInDb = from existingTag
                     in db.Tag
                     select existingTag;
@@ -322,21 +347,18 @@ namespace DbHandler.Db
                 //    in db.Tag
                 //    where existingTag.TagId == tag.TagId
                 //    select existingTag;
-                if (!insertedKeys.Contains(tag.TagId) && !keys.Contains(tag.TagId))
+                bool photoExist = allphotosList.Any(x => x.PhotoId == tag.PhotoId);
+                bool tagAlreadyInserted = insertedKeys.Contains(tag.TagId);
+                bool tagAlreadyInDb = keys.Contains(tag.TagId);
+                if (photoExist && !tagAlreadyInserted && !tagAlreadyInDb)
                 {
                     db.Tag.Add(tag);
                     insertedKeys.Add(tag.TagId);
                 }
                 else
                 {
-                    var v = 0;
-                    var t = v;
+                    logger.Info(string.Format("DbDriver tag will not be inserted. photoExist [{0}] tagAlreadyInserted [{1}] tagAlreadyInDb [{2}]", photoExist, tagAlreadyInserted, tagAlreadyInDb));
                 }
-                //bool exists = p.Any();
-                //if (!exists)
-                //{
-                //    db.Tag.Add(tag);
-                //}
             }
 
             try

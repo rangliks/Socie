@@ -12,7 +12,7 @@ namespace FacebookTools.FacebookObjects
     {
         public string PhotoId { get; set; }
         public DateTime CreationDate { get; set; }
-        public PhotoAlbum Album { set; get; }
+        public string AlbumId { set; get; }
         public string Name { set; get; }
 
         public Photo()
