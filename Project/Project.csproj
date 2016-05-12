@@ -275,9 +275,13 @@
     <Content Include="Content\images\fruits\lettuce.jpg" />
     <Content Include="Content\images\fruits\oranges.jpg" />
     <Content Include="Content\images\fruits\tomatos.jpg" />
+    <Content Include="Content\images\smilies\Blue.png" />
     <Content Include="Content\images\smilies\favicon.png" />
     <Content Include="Content\images\smilies\FullBanner.png" />
     <None Include="favicon.ico.old" />
+    <Content Include="Content\images\smilies\Red.png" />
+    <Content Include="Content\images\smilies\SunGlasses.png" />
+    <Content Include="Content\images\smilies\Surprised.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
