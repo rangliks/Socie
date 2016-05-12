@@ -19,6 +19,7 @@
     @foreach (var v in ViewBag.topF)
     {
         <div class="happiest-wrapper">
+            <img src="@Url.Content("~/Content/Images/" + v.userId + "/image_" + v.profilePicId + "_small.jpg")" height="50" width="50" class="emotions-click-img" />
             <div class="happiest-title">@(v.userName)'s <span class="emotion-str">happiest</span> photos</div>
             <div id="happiest-div-@(v.userId)" class="happy-div"></div>
         </div>
