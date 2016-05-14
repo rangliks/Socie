@@ -1,0 +1,8 @@
+﻿@foreach (var v in ViewBag.userFriends)
+{
+    <div class="happiest-wrapper">
+        <img src="@Url.Content("~/Content/Images/" + v.PersonId + "/image_" + v.ProfilePicId + "_small.jpg")" height="50" width="50" class="emotions-click-img" />
+        <div class="happiest-title">@(v.Name)'s <span class="emotion-str">happiest</span> photos</div>
+        <div id="happiest-div-@(v.PersonId)" class="happy-div"></div>
+    </div>
+}

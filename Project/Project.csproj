@@ -243,6 +243,10 @@
     <Compile Include="Migrations\201605121216339_AlbumIdToStringInPhoto.Designer.cs">
       <DependentUpon>201605121216339_AlbumIdToStringInPhoto.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605141640516_AddPictureidToPerson.cs" />
+    <Compile Include="Migrations\201605141640516_AddPictureidToPerson.Designer.cs">
+      <DependentUpon>201605141640516_AddPictureidToPerson.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -396,6 +400,7 @@
     <Content Include="Views\Home\LoginHomeMain.cshtml" />
     <Content Include="Views\Shared\SmiliesLine.cshtml" />
     <Content Include="Views\Shared\_UserLayout.cshtml" />
+    <Content Include="Views\User\TopFriends.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -457,6 +462,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605121216339_AlbumIdToStringInPhoto.resx">
       <DependentUpon>201605121216339_AlbumIdToStringInPhoto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605141640516_AddPictureidToPerson.resx">
+      <DependentUpon>201605141640516_AddPictureidToPerson.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

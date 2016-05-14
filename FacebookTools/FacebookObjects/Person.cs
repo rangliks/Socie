@@ -16,6 +16,7 @@ namespace FacebookTools.FacebookObjects
         public string Token { get; set; }
         public string Name { get; set; }
         public string Relation { get; set; }
+        public string ProfilePicId { get; set; }
 
         public Person()
         {

@@ -18,14 +18,14 @@ namespace Analyst
             string imagesBase = string.Format("{0}\\Project\\Content\\images", Directory.GetParent(path).FullName);
 
             FacebookConnector connector = new FacebookConnector();
-            connector.FindPhotos(imagesBase);
+            //connector.FindPhotos(imagesBase);
 
-            PhotoResizer resizer = new PhotoResizer();
-            resizer.ResizePhotos(imagesBase);
+            //PhotoResizer resizer = new PhotoResizer();
+            //resizer.ResizePhotos(imagesBase);
 
             //connector.ImportData();
 
-            var v = await OxfordFaceService.FindFaces();
+            var v = await OxfordFaceService.FindFaces(false, imagesBase);
             DbDriver driver = new DbDriver();
             driver.SaveEmotions(v);
         }

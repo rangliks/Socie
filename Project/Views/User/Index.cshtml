@@ -12,16 +12,16 @@
     <br />
     <div class="happiest-wrapper">
         <div class="happiest-title">Your top <span class="emotion-str">happiest</span> photos</div>
-        <div id="happiest-div-@(ViewBag.personId)" class="happy-div"></div>
+        <div id="happiest-div-@(ViewBag.personId)" class="happy-div"><img style="margin-left: 40%;" src="@Url.Content("~/Content/Images/ajax-loader.gif")" height="40" width="40" /></div>
     </div>
 
     </div>
-    @foreach (var v in ViewBag.topF)
+    @foreach (var v in ViewBag.userFriends)
     {
         <div class="happiest-wrapper">
-            <img src="@Url.Content("~/Content/Images/" + v.userId + "/image_" + v.profilePicId + "_small.jpg")" height="50" width="50" class="emotions-click-img" />
-            <div class="happiest-title">@(v.userName)'s <span class="emotion-str">happiest</span> photos</div>
-            <div id="happiest-div-@(v.userId)" class="happy-div"></div>
+            <img src="@Url.Content("~/Content/Images/" + v.PersonId + "/image_" + v.ProfilePicId + "_small.jpg")" height="50" width="50" class="emotions-click-img" />
+            <div class="happiest-title">@(v.Name)'s <span class="emotion-str">happiest</span> photos</div>
+            <div id="happiest-div-@(v.PersonId)" class="happy-div"><img style="margin-left: 40%;" src="@Url.Content("~/Content/Images/ajax-loader.gif")" height="40" width="40" /></div>
         </div>
     }
 </div>

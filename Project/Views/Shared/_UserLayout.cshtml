@@ -12,21 +12,21 @@
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript">
-        function draw(sortby) {
-            $(".emotion-str").html(sortby);
-            var personid = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.personId);
-            var myImages = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.allPhotos);
-            var topFriendsImages = @Project.Controllers.JavaScriptConvert.SerializeObject(ViewBag.topF);
-        
-            console.log("********************************");
-            console.log(myImages);
-            console.log("================================");
-            console.log(topFriendsImages);
-            console.log("********************************");
 
+        var me, friends;
+        function drawMyFeelings(myImages, sortby) {
+            if (!myImages || !sortby) return;
+            $(".emotion-str").html(sortby);
+            var personid = myImages.userId;
             var top = sortEmotionsPhotos(myImages.photosEmotions, sortby);
             DrawCircleImage(personid, top.slice(0, 5));
+        }
 
+        function draw(topFriendsImages, sortby) {
+            if (!topFriendsImages || !sortby) return;
+            console.log(topFriendsImages);
+            $(".emotion-str").html(sortby);
+       
             for(var v in topFriendsImages) {
                 var friendPhotosEmotions = topFriendsImages[v];
                 console.log("friendPhotosEmotions length[" + friendPhotosEmotions.photosEmotions.length + "]");
@@ -38,38 +38,75 @@
                 }
             }
         }
-        function sortEmotionsPhotos(photosEmotions, sortby) {
-            if(!sortby) 
-                sortby = "happiness";
+    function sortEmotionsPhotos(photosEmotions, sortby) {
+        if(!sortby)
+            sortby = "happiness";
 
-            switch (sortby) {
-                case "happiness":
-                    console.log("sorting by happiness");
-                    return photosEmotions.sort(function(a, b) { return (a.emotions.happiness < b.emotions.happiness) ? 1 : (a.emotions.happiness > b.emotions.happiness) ? -1 : 0; });
-                case "surprised":
-                    console.log("sorting by surprised");
-                    return photosEmotions.sort(function(a, b) { return (a.emotions.surprise < b.emotions.surprise) ? 1 : (a.emotions.surprise > b.emotions.surprise) ? -1 : 0; });
-                case "neutral":
-                    console.log("sorting by neutral");
-                    return photosEmotions.sort(function(a, b) { return (a.emotions.neutral < b.emotions.neutral) ? 1 : (a.emotions.neutral > b.emotions.neutral) ? -1 : 0; });
-                case "angry":
-                    console.log("sorting by angry");
-                    return photosEmotions.sort(function(a, b) { return (a.emotions.anger < b.emotions.anger) ? 1 : (a.emotions.anger > b.emotions.anger) ? -1 : 0; });
-                default:
-                    console.log("sorting by defualt");
-                    return photosEmotions.sort(function(a, b) { return (a.emotions.surprise < b.emotions.surprise) ? 1 : (a.emotions.surprise > b.emotions.surprise) ? -1 : 0; });
-        
-            }
+        switch (sortby) {
+            case "happiness":
+                console.log("sorting by happiness");
+                return photosEmotions.sort(function(a, b) { return (a.emotions.happiness < b.emotions.happiness) ? 1 : (a.emotions.happiness > b.emotions.happiness) ? -1 : 0; });
+            case "surprised":
+                console.log("sorting by surprised");
+                return photosEmotions.sort(function(a, b) { return (a.emotions.surprise < b.emotions.surprise) ? 1 : (a.emotions.surprise > b.emotions.surprise) ? -1 : 0; });
+            case "neutral":
+                console.log("sorting by neutral");
+                return photosEmotions.sort(function(a, b) { return (a.emotions.neutral < b.emotions.neutral) ? 1 : (a.emotions.neutral > b.emotions.neutral) ? -1 : 0; });
+            case "angry":
+                console.log("sorting by angry");
+                return photosEmotions.sort(function(a, b) { return (a.emotions.anger < b.emotions.anger) ? 1 : (a.emotions.anger > b.emotions.anger) ? -1 : 0; });
+            default:
+                console.log("sorting by defualt");
+                return photosEmotions.sort(function(a, b) { return (a.emotions.surprise < b.emotions.surprise) ? 1 : (a.emotions.surprise > b.emotions.surprise) ? -1 : 0; });
+
         }
-        $(document).ready(function () {
-            draw("happiness");
+    }
+
+    function drawAll(emotion) {
+        drawMyFeelings(me, emotion);
+        draw(friends, emotion);
+    }
+    $(document).ready(function () {
+        console.log("ajax");
+        
+        $.ajax({
+            type: "GET",
+            url: "/user/getsessiondata",
+            success: function (result) {
+                console.log("got result from server");
+                var data = JSON.parse(result);
+                console.log(data);
+                me = data;
+                drawMyFeelings(data, "happiness");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert(thrownError);
+            }
+        })
+
+        $.ajax({
+            type: "GET",
+            url: "/user/getdata",
+            success: function(result){
+                console.log("got result from server");
+                var data = JSON.parse(result);
+                console.log(data);
+                friends = data;
+                draw(data, "happiness");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert(thrownError);
+            }
+        })
 
         $("a[rel='click-emotions']").click(function(){
             var emotion = $(this).attr('id').split('-')[1];
             console.log(emotion);
             $(".happy-div").empty();
-            draw(emotion);
-           
+            drawAll(emotion);
+
         });
     });
 </script>
@@ -78,13 +115,13 @@
 <body>
     <aside style="margin-left:80px;width:85px;">
         <div class="side-emotions">
+            <a rel="click-emotions" id="emotions-happiness" href="javascript:void(0);"><img src="@Url.Content("~/Content/Images/smilies/Blue.png")" height="50" width="50" class="emotions-click-img" /></a>
+        </div>
+        <div class="side-emotions">
             <a rel="click-emotions" id="emotions-neutral" href="javascript:void(0);"><img src="@Url.Content("~/Content/Images/smilies/SunGlasses.png")" height="50" width="50" class="emotions-click-img"/></a>
         </div>
         <div class="side-emotions">
             <a rel="click-emotions" id="emotions-surprised" href="javascript:void(0);" ><img src="@Url.Content("~/Content/Images/smilies/Surprised.png")" height="50" width="50" class="emotions-click-img" /></a>
-        </div>
-        <div class="side-emotions">
-            <a rel="click-emotions" id="emotions-happiness" href="javascript:void(0);"><img src="@Url.Content("~/Content/Images/smilies/Blue.png")" height="50" width="50" class="emotions-click-img" /></a>
         </div>
         <div class="side-emotions">
             <a rel="click-emotions" id="emotions-angry" href="javascript:void(0);"><img src="@Url.Content("~/Content/Images/smilies/Red.png")" height="50" width="50" class="emotions-click-img" /></a>

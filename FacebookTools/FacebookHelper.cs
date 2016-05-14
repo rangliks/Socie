@@ -178,7 +178,8 @@ namespace FacebookTools
                 {
                     DownloadProfilePicture(person);
                 }
-                
+
+                person.ProfilePicId = GetProfilePictureId(person);
                 friends.Add(person);
             }
 

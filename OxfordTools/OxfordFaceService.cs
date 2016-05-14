@@ -9,6 +9,7 @@ using Microsoft.ProjectOxford.Emotion;
 using System.Reflection;
 using System.Threading;
 using OxfordTools.OxfordObjects;
+using log4net;
 //using MyLogger;
 
 namespace OxfordTools
@@ -20,8 +21,9 @@ namespace OxfordTools
         //{
         //    db = new DbDriver();
         //}
+        private static ILog Logger = LogManager.GetLogger(typeof(OxfordFaceService));
 
-        public static async Task<List<EmotionScores>> FindFaces(bool viewPicturesInPaint = false)
+        public static async Task<List<EmotionScores>> FindFaces(bool viewPicturesInPaint = false, string imagesBase = @"C:\socie")
         {
             //Logger.Info("OxfordTools : Starting find faces and emotions");
             // object to return
@@ -32,12 +34,12 @@ namespace OxfordTools
             FaceServiceClient client = new FaceServiceClient("8a0b69482d234dffa7d425acc5b06ecc");
 
             // foreach of the pics directories pass over and recognize feelings
-            DirectoryInfo info = new DirectoryInfo(@"C:\socie");
+            DirectoryInfo info = new DirectoryInfo(imagesBase);
             var subDirectories = info.GetDirectories();
             foreach (var dir in subDirectories)
             {
                 var userId = dir.Name;
-                //Logger.Info(string.Format("OxfordTools : Analysing user [{0}]", userId));
+                Logger.Info(string.Format("OxfordTools : Analysing user [{0}]", userId));
 
                 var files = dir.GetFiles();
                 foreach (var file in files)
@@ -55,7 +57,7 @@ namespace OxfordTools
                                 if (emotions.Any())
                                 {
                                     var photoId = file.Name.Split('_')[1].Split('.')[0];
-                                    //Logger.Info(string.Format("OxfordTools : Found {0} emotions for photoId [{1}] user [{2}] ", emotions.Count(), photoId, userId));
+                                    Logger.Info(string.Format("OxfordTools : Found {0} emotions for photoId [{1}] user [{2}] ", emotions.Count(), photoId, userId));
                                     System.Diagnostics.Process paint = null;
 
                                     if (viewPicturesInPaint)
@@ -71,7 +73,7 @@ namespace OxfordTools
                                         var v = emo.Scores;
                                         EmotionScores scoresObj = new EmotionScores(emo, photoId);
                                         var msg = string.Format("-------------\n happy [{0}]\n surprise [{1}]\n sad[{2}]\n neutral [{3}]\n anger [{4}]\n disguast [{5}]\n", v.Happiness, v.Surprise, v.Sadness, v.Neutral, v.Anger, v.Disgust);
-                                        //Logger.Info(msg);
+                                        Logger.Info(msg);
                                         System.Threading.Thread.Sleep(3000);
                                         scores.Add(scoresObj);
                                     }
@@ -84,12 +86,12 @@ namespace OxfordTools
                                 }
                                 else
                                 {
-                                    //Logger.Info(string.Format("No Emotions found. file [{0}]", file.Name));
+                                    Logger.Info(string.Format("No Emotions found. file [{0}]", file.Name));
                                 }
                             }
                             else
                             {
-                                //Logger.Info(string.Format("Not valid image!!!!! [{0}]", file.Name));
+                                Logger.Info(string.Format("Not valid image!!!!! [{0}]", file.Name));
                             }
                         }
                     }

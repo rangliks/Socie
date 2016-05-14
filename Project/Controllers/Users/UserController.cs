@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using OxfordTools;
+using Newtonsoft.Json;
 
 namespace Project.Controllers.Users
 {
@@ -20,18 +21,47 @@ namespace Project.Controllers.Users
             var socieId = User.Identity.GetUserId();
             Person person = driver.GetPerson(socieId);
             ViewBag.personId = person.PersonId;
-            
-            Dictionary<string, List<PhotoAndEmotions>> topFriends = new Dictionary<string, List<PhotoAndEmotions>>();
+
+            if (!string.IsNullOrEmpty(person.Token))
+            {
+                FacebookTools.FacebookHelper helper = new FacebookTools.FacebookHelper(person.Token, socieId);
+                ViewBag.userFriends = helper.GetFriends(false);
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public string GetSessionData()
+        {
+            var socieId = User.Identity.GetUserId();
+            Person person = driver.GetPerson(socieId);
+            ViewBag.personId = person.PersonId;
+
+            if (!string.IsNullOrEmpty(person.Token))
+            {
+                FacebookTools.FacebookHelper helper = new FacebookTools.FacebookHelper(person.Token, socieId);
+
+                // get profilepicId for session user
+                UserPhotosEmotions sessionUserEmotions = driver.GetUserPhotos(socieId);
+                var profilePicId = helper.GetProfilePictureId(person);
+
+                return JsonConvert.SerializeObject(sessionUserEmotions);
+            }
+
+            return "{}";
+        }
+
+        [HttpGet]
+        public string GetData()
+        {
+            var socieId = User.Identity.GetUserId();
+            Person person = driver.GetPerson(socieId);
+
             List<UserPhotosEmotions> topF = new List<UserPhotosEmotions>();
             if (!string.IsNullOrEmpty(person.Token))
             {
                 FacebookTools.FacebookHelper helper = new FacebookTools.FacebookHelper(person.Token, socieId);
-                
-                // get profilepicId for session user
-                UserPhotosEmotions sessionUserEmotions = driver.GetUserPhotos(socieId);
-                var profilePicId = helper.GetProfilePictureId(person);
-                sessionUserEmotions.profilePicId = profilePicId;
-                ViewBag.allPhotos = sessionUserEmotions;
 
                 var userFriends = helper.GetFriends(false);
                 /*/ TODO : Get imaginary friends /*/
@@ -51,7 +81,8 @@ namespace Project.Controllers.Users
             }
 
             ViewBag.topF = topF;
-            return View();
+            string json = JsonConvert.SerializeObject(topF);
+            return json;
         }
     }
 }
