@@ -24,10 +24,16 @@ namespace Analyst
             resizer.ResizePhotos(imagesBase);
 
             //connector.ImportData();
+            /*
+                        var v = await OxfordFaceService.FindFaces();
+                        DbDriver driver = new DbDriver();
+                        driver.SaveEmotions(v);
+            */
 
-            var v = await OxfordFaceService.FindFaces();
-            DbDriver driver = new DbDriver();
-            driver.SaveEmotions(v);
+
+
+
+
         }
     }
 }
