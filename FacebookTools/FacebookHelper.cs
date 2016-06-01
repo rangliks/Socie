@@ -10,11 +10,14 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using System.IO;
+using log4net;
 
 namespace FacebookTools
 {
     public class FacebookHelper
     {
+        private static ILog logger;
+
         private string imagesBase = @"C:\socie\";
         private FacebookClient client = null;
         int i = 0;
@@ -34,6 +37,8 @@ namespace FacebookTools
 
         public FacebookHelper(string accToken, string socieId = "")
         {
+            logger = LogManager.GetLogger(typeof(FacebookHelper));
+
             me = new Person();
             accessToken = accToken;
             client = new FacebookClient(accToken);
@@ -481,7 +486,17 @@ namespace FacebookTools
             using (WebClient webClient = new WebClient())
             {
                 var path = string.Format(@"{0}\{1}\{2}", imagesBase, personid, fileName);
-                webClient.DownloadFile(url, path);
+                logger.Info(string.Format("I want to download [{0}]", path));
+                if(!File.Exists(path))
+                {
+                    webClient.DownloadFile(url, path);
+                    logger.Info(string.Format("Downloaded pic of personid [{0}]", personid));
+                }
+                else
+                {
+                    logger.Info(string.Format("Pic of personid already exists [{0}]", personid));
+                }
+                
             }
         }
 

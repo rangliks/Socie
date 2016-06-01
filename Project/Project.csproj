@@ -403,6 +403,7 @@
     <Content Include="Views\Shared\SmiliesLine.cshtml" />
     <Content Include="Views\Shared\_UserLayout.cshtml" />
     <Content Include="Views\User\TopFriends.cshtml" />
+    <Content Include="Views\User\AwaitingForData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

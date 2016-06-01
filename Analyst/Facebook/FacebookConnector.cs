@@ -90,6 +90,11 @@ namespace Analyst.Facebook
             logger.Info("Done finding photos");
         }
 
+
+        /// <summary>
+        /// Import external data with csv file
+        /// pics should be added manually
+        /// </summary>
         public void ImportData()
         {
             // read csv of the pics to import

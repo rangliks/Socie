@@ -21,6 +21,7 @@ namespace Project.Controllers.Users
             var socieId = User.Identity.GetUserId();
             Person person = driver.GetPerson(socieId);
             ViewBag.personId = person.PersonId;
+            ViewBag.isData = driver.GetUserPhotos(socieId).photosEmotions.Any();
 
             if (!string.IsNullOrEmpty(person.Token))
             {
