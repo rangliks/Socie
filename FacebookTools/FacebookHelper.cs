@@ -74,6 +74,12 @@ namespace FacebookTools
             return uid;
         }
 
+        public string getUserEmail()
+        {
+            dynamic me = client.Get("me?fields=email");
+            return (string) me.email;
+        }
+
         public void GetUserPosts(int numOfPostsBack)
         {
             var firstPage = client.Get(string.Format("/{0}/posts", userId));

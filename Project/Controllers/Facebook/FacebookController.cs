@@ -18,6 +18,7 @@ namespace Project.Controllers.Facebook
     public class FacebookController : Controller
     {
         private string facebookToken;
+        private FacebookHelper helper = null;
         // GET: Facebook
         // Here We Should always redirect to home!!!!
         public ActionResult Index()
@@ -73,7 +74,7 @@ namespace Project.Controllers.Facebook
 
                     token = responseParams.ContainsKey("access_token") ? responseParams["access_token"] : string.Empty;
                     facebookToken = token;
-                    
+
                     // will create the user or update token in db
                     CreatePerson(token);
                     RedirectToAction("Index", "User");
@@ -101,6 +102,15 @@ namespace Project.Controllers.Facebook
             
         }
 
+        private FacebookHelper getHelper(string token)
+        {
+            if(helper == null)
+            {
+                helper = new FacebookHelper(token, User.Identity.GetUserId());
+            }
+
+            return helper;
+        }
         /// <summary>
         /// Create Person entity for the user in current session
         /// </summary>
@@ -109,7 +119,7 @@ namespace Project.Controllers.Facebook
         private bool CreatePerson(string token)
         {
             ApplicationDbContext db = new ApplicationDbContext();
-            FacebookHelper helper = new FacebookHelper(token, User.Identity.GetUserId());
+            FacebookHelper helper = getHelper(token);
             DbDriver driver = new DbDriver();
             driver.SavePerson(helper.Me, User.Identity.GetUserId());
 

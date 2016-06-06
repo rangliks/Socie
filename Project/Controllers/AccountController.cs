@@ -374,7 +374,12 @@ namespace Project.Controllers
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+
+                    string newUserName = string.Format("{0}@socie.com", loginInfo.DefaultUserName.ToLower().Replace(" ", string.Empty));
+                    var user = new ApplicationUser { UserName = newUserName, Email = newUserName };
+                    var createUserResult = await UserManager.CreateAsync(user);
+                    return RedirectToLocal(returnUrl);
+                    //return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
         }
 

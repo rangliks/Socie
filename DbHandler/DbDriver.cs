@@ -143,7 +143,7 @@ namespace DbHandler.Db
             db.SaveChanges();
         }
 
-        public void SavePerson(Person person, string socieId)
+        public Person SavePerson(Person person, string socieId)
         {
             var personInDB = from me
                 in db.Person
@@ -171,6 +171,7 @@ namespace DbHandler.Db
             }
 
             db.SaveChanges();
+            return person;
         }
 
         public UserPhotosEmotions GetUserPhotos(string socieId)
