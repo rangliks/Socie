@@ -73,7 +73,7 @@
             type: "GET",
             url: "/user/getsessiondata",
             success: function (result) {
-                console.log("got result from server");
+                console.log("getsessiondata : got result from server");
                 var data = JSON.parse(result);
                 console.log(data);
                 me = data;
@@ -89,7 +89,7 @@
             type: "GET",
             url: "/user/getdata",
             success: function(result){
-                console.log("got result from server");
+                console.log("getdata : got result from server");
                 var data = JSON.parse(result);
                 console.log(data);
                 friends = data;

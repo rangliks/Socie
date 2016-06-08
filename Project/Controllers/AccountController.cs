@@ -375,9 +375,27 @@ namespace Project.Controllers
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
 
+                    
+                    var info = await AuthenticationManager.GetExternalLoginInfoAsync();
+                    if (info == null)
+                    {
+                        return View("ExternalLoginFailure");
+                    }
+
                     string newUserName = string.Format("{0}@socie.com", loginInfo.DefaultUserName.ToLower().Replace(" ", string.Empty));
                     var user = new ApplicationUser { UserName = newUserName, Email = newUserName };
                     var createUserResult = await UserManager.CreateAsync(user);
+                    if (createUserResult.Succeeded)
+                    {
+                        createUserResult = await UserManager.AddLoginAsync(user.Id, info.Login);
+                        if (createUserResult.Succeeded)
+                        {
+                            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                            return RedirectToLocal(returnUrl);
+                        }
+                    }
+                    AddErrors(createUserResult);
+
                     return RedirectToLocal(returnUrl);
                     //return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }

@@ -84,6 +84,7 @@
     <Compile Include="Facebook\FacebookConnector.cs" />
     <Compile Include="Facebook\PhotoCsvRecord.cs" />
     <Compile Include="Facebook\PhotoResizer.cs" />
+    <Compile Include="Importer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

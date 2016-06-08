@@ -3,8 +3,8 @@ function DrawCircleImage(userid, images) {
 
 
     var margin = { top: 10, right: 5, bottom: 10, left: 5 };
-    console.log("type [" + typeof userid + "]");
-    console.log("selecting [#happiest-div-" + parseInt(userid) + "]");
+    //console.log("type [" + typeof userid + "]");
+    //console.log("selecting [#happiest-div-" + parseInt(userid) + "]");
     $("#happiest-div-" + userid + " img:last-child").remove()
     var svg = d3.select("#happiest-div-" + userid)
         .append("svg")
@@ -24,17 +24,17 @@ function DrawCircleImage(userid, images) {
     for (var v in images) {
         var currentImage = images[v];
 
-        console.log("--------");
-        console.log(currentImage);
+        //console.log("--------");
+        //console.log(currentImage);
         
         var score = currentImage.emotions.happiness * 100;
         var imageid = currentImage.photo.PhotoId;
         var patternId = "ptr_img_" + imageid;
-        console.log(images[v]);
+        //console.log(images[v]);
 
         
-        console.log(imageid + " ==== " + patternId);
-        console.log("--------");
+        //console.log(imageid + " ==== " + patternId);
+        //console.log("--------");
 
         var scale = currentImage.emotions.left / config.avatar_size;
         var scaledCenter = currentImage.emotions.left / 2 * scale;
