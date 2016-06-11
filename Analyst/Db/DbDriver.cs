@@ -1,4 +1,5 @@
 ﻿using FacebookTools.FacebookObjects;
+using OxfordTools.OxfordObjects;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -120,7 +121,7 @@ namespace Analyst.Db
             db.SaveChanges();
         }
 
-        public void SaveEmotions(List<OxfordTools.OxfordObjects.EmotionScores> v)
+        public void SaveEmotions(List<EmotionScores> v)
         {
             var emotions = from emo
                            in db.EmotionScores
@@ -136,6 +137,15 @@ namespace Analyst.Db
             }
 
             db.SaveChanges();
+        }
+
+        public List<EmotionScores> GetEmotions()
+        {
+            var emotions = from emo
+                           in db.EmotionScores
+                           select emo;
+
+            return emotions.ToList();
         }
     }
 }

@@ -24,7 +24,6 @@ namespace Analyst
                 imagesBase = @"C:\socie\Content\images";
             }
 
-
             FacebookConnector connector = new FacebookConnector();
             connector.FindPhotos(imagesBase);
 
@@ -33,8 +32,11 @@ namespace Analyst
 
             //connector.ImportData();
 
-            var v = await OxfordFaceService.FindFaces(false, imagesBase);
             DbDriver driver = new DbDriver();
+            var photosAlreadyAnalyzed = driver.GetEmotions();
+
+            var v = await OxfordFaceService.FindFaces(photosAlreadyAnalyzed, false, imagesBase);
+            
             driver.SaveEmotions(v);
         }
     }

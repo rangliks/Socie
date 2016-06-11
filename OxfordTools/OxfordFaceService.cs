@@ -23,7 +23,7 @@ namespace OxfordTools
         //}
         private static ILog Logger = LogManager.GetLogger(typeof(OxfordFaceService));
 
-        public static async Task<List<EmotionScores>> FindFaces(bool viewPicturesInPaint = false, string imagesBase = @"C:\socie")
+        public static async Task<List<EmotionScores>> FindFaces(List<EmotionScores> oldScores, bool viewPicturesInPaint = false, string imagesBase = @"C:\socie")
         {
             //Logger.Info("OxfordTools : Starting find faces and emotions");
             // object to return
@@ -44,6 +44,20 @@ namespace OxfordTools
                 var files = dir.GetFiles();
                 foreach (var file in files)
                 {
+                    string photoIdFromFile = string.Empty;
+                    try
+                    {
+                        photoIdFromFile = file.Name.Split('_')[1].Split('.')[0];
+                        if (oldScores.Any(x => x.PhotoId.Equals(photoIdFromFile)))
+                        {
+                            continue;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        
+                    }
+
                     if (file.Name.Contains("small")) continue;
                     try
                     {
