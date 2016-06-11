@@ -25,6 +25,7 @@ namespace Analyst.Facebook
                     }
                 }
 
+                files = dir.GetFiles();
                 foreach(var file in files)
                 {
                    Resize(file.FullName, file.FullName.Replace(".jpg", "_small.jpg"));

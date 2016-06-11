@@ -31,6 +31,8 @@ namespace Analyst.Facebook
                     logger.Info(string.Format("Found socie user [{0}] id [{1}]", person.Name, person.PersonId));
                     logger.Info(string.Format("Creating Facebook Helper for [{0}]", person.Name));
                     FacebookHelper myHelper = new FacebookHelper(person.Token);
+
+                    // set the download path we got in the input params
                     myHelper.SetDownloadPath(imagesBase);
 
                     // update user credentials
@@ -79,6 +81,11 @@ namespace Analyst.Facebook
                     // download user family profile pics
                     logger.Info(string.Format("Getting {0}'s family", person.Name));
                     var family = myHelper.GetFamily();
+
+                    //foreach (var famMember in family)
+                    //{
+                    //    myHelper.GetMemberPhotos(famMember);
+                    //}
 
                     logger.Info(string.Format("Downloading {0}'s family profile pics", person.Name));
                     myHelper.DownloadProfilePictures(family);

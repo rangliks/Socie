@@ -14,6 +14,7 @@ namespace FacebookTools.FacebookObjects
         public DateTime CreationDate { get; set; }
         public string AlbumId { set; get; }
         public string Name { set; get; }
+        public string Source { get; set; }
 
         public Photo()
         {

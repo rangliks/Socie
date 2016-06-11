@@ -65,6 +65,10 @@ namespace FacebookTools
                     if (a.Name.Equals("created_time")) photo.CreationDate = DateTime.Parse(a.Value.ToString());
                     if (a.Name.Equals("id")) photo.PhotoId = a.Value.ToString();
                     if (a.Name.Equals("name")) photo.Name = a.Value.ToString();
+                    if (a.Name.Equals("images"))
+                    {
+                        photo.Source = a.Value.First["source"].ToString();
+                    }
 
                 }
                 

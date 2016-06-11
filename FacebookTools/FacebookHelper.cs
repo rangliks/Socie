@@ -134,7 +134,7 @@ namespace FacebookTools
             foreach (var album in albums)
             {
                 /* TODO : update db with name parameter (add field to the class PhotoAlbum */
-                var albumPhotos = client.Get(string.Format("/{0}/photos", album.AlbumId));
+                var albumPhotos = client.Get(string.Format("/{0}/photos?fields=images", album.AlbumId));
                 List<Photo> photos = ObjectParser.ParseAlbum(albumPhotos, album);
                 DownloadPics(photos);
             }
@@ -363,7 +363,7 @@ namespace FacebookTools
 
         private void DownloadPicture(Photo photo)
         {
-            var url = GetPhotoUrl(photo);
+            var url = string.IsNullOrEmpty(photo.Source) ? GetPhotoUrl(photo) : photo.Source;
             if(!string.IsNullOrEmpty(url))
             {
                 string filename = string.Format("image_{0}.jpg", photo.PhotoId);
@@ -536,6 +536,12 @@ namespace FacebookTools
         public void SetDownloadPath(string imagesBase)
         {
             this.imagesBase = imagesBase;
+        }
+
+        public void GetMemberPhotos(Person famMember)
+        {
+            var albums = client.Get(string.Format("/{0}/albums?fields=id&access_token={1}", famMember.PersonId, accessToken));
+            ObjectParser.ParseAlbums(albums, famMember.PersonId);
         }
     }
 }

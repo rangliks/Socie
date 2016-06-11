@@ -248,6 +248,10 @@
     <Compile Include="Migrations\201605141640516_AddPictureidToPerson.Designer.cs">
       <DependentUpon>201605141640516_AddPictureidToPerson.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606111205308_SourceAddedToPhoto.cs" />
+    <Compile Include="Migrations\201606111205308_SourceAddedToPhoto.Designer.cs">
+      <DependentUpon>201606111205308_SourceAddedToPhoto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -468,6 +472,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605141640516_AddPictureidToPerson.resx">
       <DependentUpon>201605141640516_AddPictureidToPerson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606111205308_SourceAddedToPhoto.resx">
+      <DependentUpon>201606111205308_SourceAddedToPhoto.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

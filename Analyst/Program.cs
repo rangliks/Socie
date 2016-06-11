@@ -16,6 +16,9 @@ namespace Analyst
     {
         static void Main(string[] args)
         {
+            //Importer importer = new Importer();
+            //importer.SetFilenames();
+
             Analyser.Run();
             System.Console.ReadLine();
         }
