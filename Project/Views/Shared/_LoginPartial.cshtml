@@ -12,13 +12,45 @@
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
     @Html.AntiForgeryToken()
-
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var notificationsOn = false;
+            $("#notify-alert-icon").click(function () {
+                if (notificationsOn) {
+                    $("#notifications-div").fadeOut(300);
+                    notificationsOn = false;
+                } else {
+                    $("#notifications-div").fadeIn(300);
+                    notificationsOn = true;
+                }
+            });
+        });
+    </script>
     <ul class="nav navbar-nav navbar-right">
-        @if (User.IsInRole("Admin")) { 
+        @if (User.IsInRole("Admin")) {
         <li>
             @Html.ActionLink("Admin Tools ", "Index", "Admin")
         </li>
         }
+        <li>
+            <div>
+                <div class="notify-alert-icon" id="notify-alert-icon">
+                    <a href="javascript:void(0);"><img src="@Url.Content("~/Content/images/notification.png")" height="25" width="25" /></a>
+                </div>
+                <div class="notifications-div" id="notifications-div">
+                    @if (ViewBag.notifications != null)
+                    {
+                        foreach (var item in ViewBag.notifications)
+                        {
+                            <div class="notification-text">@item.GetMessage()</div>
+                            //@Html.ActionLink("Socie", "Index", "Image", new { area = "" }, new { @class = "navbar-brand"})
+
+                            <a href="@Url.Action("Index", "Image", new { photoid = item.PhotoId })" type="submit" id="runReport" target="_blank" class="button Secondary"> hello</a>
+                        }
+                    }
+                </div>
+            </div>
+        </li>
         <li>
             @Html.ActionLink("Hello " + Name + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
         </li>

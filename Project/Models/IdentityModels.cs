@@ -7,6 +7,7 @@ using Project.Models.Store;
 //using Project.FacebookObjects;
 using FacebookTools.FacebookObjects;
 using OxfordTools.OxfordObjects;
+using FacebookTools.SocieObjects;
 
 namespace Project.Models
 {
@@ -29,6 +30,7 @@ namespace Project.Models
         public DbSet<Tag> Tags { get; set; }
         public DbSet<PhotoAlbum> PhotoAlbums { get; set; }
         public DbSet<EmotionScores> EmotionScores { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

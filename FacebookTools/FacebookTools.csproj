@@ -84,6 +84,7 @@
     <Compile Include="FacebookObjects\Photo.cs" />
     <Compile Include="FacebookObjects\PostsObject.cs" />
     <Compile Include="FacebookObjects\Tag.cs" />
+    <Compile Include="SocieObjects\Notification.cs" />
     <Compile Include="ToolsMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

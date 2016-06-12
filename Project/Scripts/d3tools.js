@@ -61,7 +61,7 @@ function DrawCircleImage(userid, images) {
             .attr("y", 10)
             .attr("viewBox", "0 0 450 450")
             .attr("preserveAspectRatio", "xMinYMin meet");
-
+        
         // set circle with pattern
         // actually cerates circle with image
         svg.append("circle")
@@ -71,7 +71,14 @@ function DrawCircleImage(userid, images) {
         .attr("cx", currentX)
         .attr("cy", 130)
         .attr("width", 300)
-        .attr("height", 300);
+        .attr("height", 300)
+        .attr("id", imageid)
+        .on('click', function () {
+            var clickedId = $(this).attr("id");
+            console.log("loading image : " + clickedId);
+            var win = window.open('/Image?photoid=' + clickedId, '_blank');
+            win.focus();
+        });
 
         // add score text rectangle (with percentages)
         // add rectangle
@@ -100,8 +107,4 @@ function DrawCircleImage(userid, images) {
     
 
     
-}
-
-function alo() {
-    alert();
 }

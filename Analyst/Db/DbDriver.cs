@@ -1,4 +1,6 @@
-﻿using FacebookTools.FacebookObjects;
+﻿using DbHandler.Objects;
+using FacebookTools.FacebookObjects;
+using FacebookTools.SocieObjects;
 using OxfordTools.OxfordObjects;
 using System;
 using System.Collections.Generic;
@@ -107,7 +109,7 @@ namespace Analyst.Db
                                     Token = me.Token
                                 };
             
-            // if not exist in db save it
+            // if selfNot exist in db save it
             // else update record
             if(!personInDB.Any())
             {
@@ -146,6 +148,47 @@ namespace Analyst.Db
                            select emo;
 
             return emotions.ToList();
+        }
+
+        public List<Person> GetSocieUsers()
+        {
+            var users = from person
+                        in db.Person
+                        where !string.IsNullOrEmpty(person.Token)
+                        select person;
+
+            return users.ToList();
+        }
+
+        /// <summary>
+        /// get the inPerson objects of the owners of input photoIds
+        /// </summary>
+        /// <param name="photoIds"></param>
+        /// <returns></returns>
+        public List<PersonPhotoWithAlbum> GetPersonsOfPhotos(List<string> photoIds)
+        {
+            List<PersonPhotoWithAlbum> output = new List<PersonPhotoWithAlbum>();
+            var users = from user
+                        in db.Person
+                        join photoAlbum in db.PhotoAlbum on user.PersonId equals photoAlbum.PersonId
+                        join photo in db.Photo on photoAlbum.AlbumId equals photo.AlbumId
+                        where photoIds.Contains(photo.PhotoId)
+                        select new { User = user, Album = photoAlbum, Photo = photo };
+
+            foreach (var item in users)
+            {
+                output.Add(new PersonPhotoWithAlbum(item.User, item.Album, item.Photo));
+            }
+
+            return output;
+        }
+
+        public void SaveNotification(Notification notify)
+        {
+            notify.NotificationId = Guid.NewGuid().ToString();
+            notify.CreationDate = DateTime.Now;
+            db.Notifications.Add(notify);
+            db.SaveChanges();
         }
     }
 }

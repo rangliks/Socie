@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using OxfordTools;
 using Newtonsoft.Json;
+using FacebookTools.SocieObjects;
 
 namespace Project.Controllers.Users
 {
@@ -29,7 +30,13 @@ namespace Project.Controllers.Users
                 ViewBag.userFriends = helper.GetFriends(false);
             }
 
+            ViewBag.notifications = GetNotifications(person);
             return View();
+        }
+
+        private List<Notification> GetNotifications(Person person)
+        {
+            return driver.GetUserNotifications(person.PersonId);
         }
 
         [HttpGet]

@@ -496,11 +496,11 @@ namespace FacebookTools
                 if(!File.Exists(path))
                 {
                     webClient.DownloadFile(url, path);
-                    logger.Info(string.Format("Downloaded pic of personid [{0}]", personid));
+                    logger.Info(string.Format("Downloaded pic of personid [{0}] ++++++++++++", personid));
                 }
                 else
                 {
-                    logger.Info(string.Format("Pic of personid already exists [{0}]", personid));
+                    logger.Info(string.Format("Pic of personid already exists [{0}] ---------", personid));
                 }
                 
             }

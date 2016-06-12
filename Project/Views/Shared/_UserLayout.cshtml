@@ -24,15 +24,15 @@
 
         function draw(topFriendsImages, sortby) {
             if (!topFriendsImages || !sortby) return;
-            console.log(topFriendsImages);
+            //console.log(topFriendsImages);
             $(".emotion-str").html(sortby);
        
             for(var v in topFriendsImages) {
                 var friendPhotosEmotions = topFriendsImages[v];
-                console.log("friendPhotosEmotions length[" + friendPhotosEmotions.photosEmotions.length + "]");
-                console.log(friendPhotosEmotions);
+                //console.log("friendPhotosEmotions length[" + friendPhotosEmotions.photosEmotions.length + "]");
+                //console.log(friendPhotosEmotions);
                 if(friendPhotosEmotions.photosEmotions.length > 0) {
-                    console.log("Drawing " + friendPhotosEmotions.userName + "'s top pics");
+                    //console.log("Drawing " + friendPhotosEmotions.userName + "'s top pics");
                     var top = sortEmotionsPhotos(friendPhotosEmotions.photosEmotions, sortby);
                     DrawCircleImage(friendPhotosEmotions.userId, top.slice(0,5));
                 }
@@ -73,15 +73,13 @@
             type: "GET",
             url: "/user/getsessiondata",
             success: function (result) {
-                console.log("getsessiondata : got result from server");
+                console.log("get user session data : got result from server");
                 var data = JSON.parse(result);
                 console.log(data);
                 me = data;
                 drawMyFeelings(data, "happiness");
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-                alert(thrownError);
             }
         })
 
@@ -89,15 +87,13 @@
             type: "GET",
             url: "/user/getdata",
             success: function(result){
-                console.log("getdata : got result from server");
+                console.log("get friends data : got result from server");
                 var data = JSON.parse(result);
                 console.log(data);
                 friends = data;
                 draw(data, "happiness");
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-                alert(thrownError);
             }
         })
 
@@ -114,45 +110,65 @@
 
 <body>
     <div id="socie-version" style="display: none;">1.1</div>
-    <aside style="margin-left:80px;width:85px;">
-        <div class="side-emotions">
-            <a rel="click-emotions" id="emotions-happiness" href="javascript:void(0);"><img src="@Url.Content("~/Content/Images/smilies/Blue.png")" height="50" width="50" class="emotions-click-img" /></a>
-        </div>
-        <div class="side-emotions">
-            <a rel="click-emotions" id="emotions-neutral" href="javascript:void(0);"><img src="@Url.Content("~/Content/Images/smilies/SunGlasses.png")" height="50" width="50" class="emotions-click-img"/></a>
-        </div>
-        <div class="side-emotions">
-            <a rel="click-emotions" id="emotions-surprised" href="javascript:void(0);" ><img src="@Url.Content("~/Content/Images/smilies/Surprised.png")" height="50" width="50" class="emotions-click-img" /></a>
-        </div>
-        <div class="side-emotions">
-            <a rel="click-emotions" id="emotions-angry" href="javascript:void(0);"><img src="@Url.Content("~/Content/Images/smilies/Red.png")" height="50" width="50" class="emotions-click-img" /></a>
-        </div>
-    </aside>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Socie", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+    
+    @if (ViewBag.emotions == null)
+    {
+        <aside class="user-aside">
+            <div class="side-emotions">
+                <a rel="click-emotions" id="emotions-happiness" href="javascript:void(0);"><img src="@Url.Content("~/Content/Images/smilies/Blue.png")" height="50" width="50" class="emotions-click-img" /></a>
             </div>
-            <div class="navbar-collapse collapse" style="margin-left:50px;">
-                <ul class="nav navbar-nav">
-                </ul>
-                @Html.Partial("_LoginPartial")
+            <div class="side-emotions">
+                <a rel="click-emotions" id="emotions-neutral" href="javascript:void(0);"><img src="@Url.Content("~/Content/Images/smilies/SunGlasses.png")" height="50" width="50" class="emotions-click-img" /></a>
             </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        <div id="ajax-body">
-            @RenderBody()
-        </div>
-    </div>
+            <div class="side-emotions">
+                <a rel="click-emotions" id="emotions-surprised" href="javascript:void(0);"><img src="@Url.Content("~/Content/Images/smilies/Surprised.png")" height="50" width="50" class="emotions-click-img" /></a>
+            </div>
+            <div class="side-emotions">
+                <a rel="click-emotions" id="emotions-angry" href="javascript:void(0);"><img src="@Url.Content("~/Content/Images/smilies/Red.png")" height="50" width="50" class="emotions-click-img" /></a>
+            </div>
+        </aside>
+    }
+    
+        @if (ViewBag.emotions != null)
+        {
+            <aside class="image-aside">
+                @foreach (var item in ViewBag.emotions)
+                {
+                    <div class="side-emotions-data">
+                        <div class="emotion-data-header">Emotion Found</div>
+                        <div>happiness @item.happiness.ToString("0.##%")</div>
+                        <div>surprise @item.surprise.ToString("0.##%")</div>
+                        <div>anger @item.anger.ToString("0.##%")</div>
+                        <div>neutral @item.neutral.ToString("0.##%")</div>
+                    </div>
+                }
+            </aside>
+        }
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+                <div class="navbar navbar-inverse navbar-fixed-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            @Html.ActionLink("Socie", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                        </div>
+                        <div class="navbar-collapse collapse" style="margin-left:50px;">
+                            <ul class="nav navbar-nav"></ul>
+                            @Html.Partial("_LoginPartial")
+                        </div>
+                    </div>
+                </div>
+                <div class="container body-content">
+                    <div id="ajax-body">
+                        @RenderBody()
+                    </div>
+                </div>
+
+                @Scripts.Render("~/bundles/jquery")
+                @Scripts.Render("~/bundles/bootstrap")
+                @RenderSection("scripts", required: false)
 </body>
 </html>

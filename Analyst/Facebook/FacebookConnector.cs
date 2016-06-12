@@ -24,7 +24,7 @@ namespace Analyst.Facebook
             var persons = driver.getPersons();
             foreach (var person in persons)
             {
-                logger.Info(string.Format("Checking person name [{0}]", person.Name));
+                logger.Info(string.Format("Checking inPerson name [{0}]", person.Name));
                 if (!string.IsNullOrEmpty(person.Token))
                 {
                     // create api session with this user
@@ -36,17 +36,17 @@ namespace Analyst.Facebook
                     myHelper.SetDownloadPath(imagesBase);
 
                     // update user credentials
-                    logger.Info(string.Format("Saving person name [{0}]", person.Name));
-                    //driver.SavePerson(myHelper.Me, person.SocieId);
+                    logger.Info(string.Format("Saving inPerson name [{0}]", person.Name));
+                    //driver.SavePerson(myHelper.Me, inPerson.SocieId);
 
-                    // get albums and save to db if not already exists
-                    logger.Info(string.Format("Finding person albums. name [{0}]", person.Name));
+                    // get albums and save to db if selfNot already exists
+                    logger.Info(string.Format("Finding inPerson albums. name [{0}]", person.Name));
                     List<PhotoAlbum> albums = myHelper.GetUserAlbums();
-                    logger.Info(string.Format("Saving person albums. name [{0}]", person.Name));
+                    logger.Info(string.Format("Saving inPerson albums. name [{0}]", person.Name));
                     driver.SaveAlbums(albums);
 
-                    // download all pics from each album
-                    logger.Info(string.Format("Downloading person albums. name [{0}]", person.Name));
+                    // download all pics from each inAlbum
+                    logger.Info(string.Format("Downloading inPerson albums. name [{0}]", person.Name));
                     myHelper.DownloadAlbums(albums);
 
                     // get from api a list of all pics in the albums
@@ -64,10 +64,10 @@ namespace Analyst.Facebook
                     logger.Info("Downloading tagged people profile pics");
                     myHelper.DownloadProfilePictures(taggedPeersons);
 
-                    logger.Info(string.Format("Getting tags of all photo albums. name [{0}]", person.Name));
+                    logger.Info(string.Format("Getting tags of all inPhoto albums. name [{0}]", person.Name));
                     var tags = myHelper.GetMyPhotosTags(albumPhotos);
 
-                    // save the pics to db if not already exists
+                    // save the pics to db if selfNot already exists
                     logger.Info(string.Format("Saving all photos to db. name [{0}]", person.Name));
                     driver.SavePhotos(albumPhotos);
 

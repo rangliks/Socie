@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "Image";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<h2>Image</h2>
+
+<div>
+    <div>
+        <img src="@Url.Content("~/Content/images/" + ViewBag.userid + "/image_" + ViewBag.photoId + ".jpg")" />
+    </div>
+</div>

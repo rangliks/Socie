@@ -145,11 +145,11 @@ namespace Project.Helpers
 
         //    while (photosJson["paging"]["next"] != null)
         //    {
-        //        foreach (var photo in photosJson["data"].Children())
+        //        foreach (var inPhoto in photosJson["data"].Children())
         //        {
         //            Photo currentPhoto = new Photo();
-        //            currentPhoto.CreationDate = DateTime.Parse(photo["created_time"].ToString());
-        //            currentPhoto.PhotoId = photo["id"].ToString();
+        //            currentPhoto.CreationDate = DateTime.Parse(inPhoto["created_time"].ToString());
+        //            currentPhoto.PhotoId = inPhoto["id"].ToString();
 
         //            var taggedInMyPhoto = client.Get(string.Format("/{0}/tags", currentPhoto.PhotoId));
         //            JObject taggedJson = JObject.Parse(taggedInMyPhoto.ToString());
@@ -221,7 +221,7 @@ namespace Project.Helpers
             string pictureUrl = string.Empty;
             try
             {
-                WebRequest request = WebRequest.Create(string.Format("https://facebook.com/photo/download/?fbid={0}", photo.PhotoId));
+                WebRequest request = WebRequest.Create(string.Format("https://facebook.com/inPhoto/download/?fbid={0}", photo.PhotoId));
                 response = request.GetResponse();
                 pictureUrl = response.ResponseUri.ToString();
             }

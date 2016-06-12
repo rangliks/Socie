@@ -196,6 +196,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JavaScriptConvert.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\Users\ImageController.cs" />
     <Compile Include="Controllers\Users\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -251,6 +252,26 @@
     <Compile Include="Migrations\201606111205308_SourceAddedToPhoto.cs" />
     <Compile Include="Migrations\201606111205308_SourceAddedToPhoto.Designer.cs">
       <DependentUpon>201606111205308_SourceAddedToPhoto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606111628360_AddedNotificationObject.cs" />
+    <Compile Include="Migrations\201606111628360_AddedNotificationObject.Designer.cs">
+      <DependentUpon>201606111628360_AddedNotificationObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606121209104_AddedSeenToNotifications.cs" />
+    <Compile Include="Migrations\201606121209104_AddedSeenToNotifications.Designer.cs">
+      <DependentUpon>201606121209104_AddedSeenToNotifications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606121217010_AddedAutoIncrementId.cs" />
+    <Compile Include="Migrations\201606121217010_AddedAutoIncrementId.Designer.cs">
+      <DependentUpon>201606121217010_AddedAutoIncrementId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606121236295_RemovedAutoIncrementId.cs" />
+    <Compile Include="Migrations\201606121236295_RemovedAutoIncrementId.Designer.cs">
+      <DependentUpon>201606121236295_RemovedAutoIncrementId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606121313122_AddedCreationDateToNotification.cs" />
+    <Compile Include="Migrations\201606121313122_AddedCreationDateToNotification.Designer.cs">
+      <DependentUpon>201606121313122_AddedCreationDateToNotification.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -408,6 +429,7 @@
     <Content Include="Views\Shared\_UserLayout.cshtml" />
     <Content Include="Views\User\TopFriends.cshtml" />
     <Content Include="Views\User\AwaitingForData.cshtml" />
+    <Content Include="Views\Image\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -475,6 +497,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606111205308_SourceAddedToPhoto.resx">
       <DependentUpon>201606111205308_SourceAddedToPhoto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606111628360_AddedNotificationObject.resx">
+      <DependentUpon>201606111628360_AddedNotificationObject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606121209104_AddedSeenToNotifications.resx">
+      <DependentUpon>201606121209104_AddedSeenToNotifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606121217010_AddedAutoIncrementId.resx">
+      <DependentUpon>201606121217010_AddedAutoIncrementId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606121236295_RemovedAutoIncrementId.resx">
+      <DependentUpon>201606121236295_RemovedAutoIncrementId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606121313122_AddedCreationDateToNotification.resx">
+      <DependentUpon>201606121313122_AddedCreationDateToNotification.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

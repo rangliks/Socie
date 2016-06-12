@@ -347,6 +347,15 @@ aside {
     background-color: #c7eae5;
 }
 
+.side-emotions-data {
+    margin : 2%;
+    width:100%;
+    padding : 10px;
+    border-radius : 30px;
+    transition: background-color 0.5s ease;
+    background-color: #c7eae5;
+}
+
 .emotions-click-img {
     left: 0;
     opacity: 0.8;
@@ -399,4 +408,41 @@ aside {
 
 .advantage-ul {
     width : 100%;
+}
+
+.notify-alert-icon {
+    margin-top : 50%;
+}
+
+.notifications-div {
+    margin-right : 100%;
+    background: #1d91c0;
+    border-radius : 10px;
+    border : groove 2px;
+    position:fixed;
+    display: none;
+    width: 20%;
+}
+
+.notification-text {
+    margin-top : 1%;
+    margin-left: 2%;
+}
+
+.user-aside {
+    margin-left: 80px;
+    width: 2%;
+}
+
+.image-aside {
+    float:right;
+    width: 10%;
+}
+
+.emotion-data-header {
+    font-weight:bold;
+}
+
+.emotion-data-txt {
+
 }

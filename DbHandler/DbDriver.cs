@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using DbHandler.Extensions;
 using DbHandler.Objects;
 using log4net;
+using FacebookTools.SocieObjects;
 
 namespace DbHandler.Db
 {
@@ -41,9 +42,9 @@ namespace DbHandler.Db
 
         //public Photo GetPhoto(string photoId)
         //{
-        //    var photos = from photo
+        //    var photos = from inPhoto
         //                 in db.Photo
-        //                 where photo.PhotoId == photoId
+        //                 where inPhoto.PhotoId == photoId
         //                 select new { }
         //}
 
@@ -84,13 +85,13 @@ namespace DbHandler.Db
             //List<Person> persons = new List<Person>();
             //foreach (var user in users)
             //{
-            //    Person person = new Person();
-            //    person.Name = user.Name;
-            //    person.Token = user.Token;
-            //    person.PersonId = user.PersonId;
-            //    person.SocieId = user.PersonId;
+            //    Person inPerson = new Person();
+            //    inPerson.Name = user.Name;
+            //    inPerson.Token = user.Token;
+            //    inPerson.PersonId = user.PersonId;
+            //    inPerson.SocieId = user.PersonId;
 
-            //    persons.Add(person);
+            //    persons.Add(inPerson);
             //}
 
             //return persons;
@@ -189,7 +190,7 @@ namespace DbHandler.Db
             userPhotosEmotions.userId = user.PersonId;
             userPhotosEmotions.userName = user.Name;
 
-            // get the current user photo albums
+            // get the current user inPhoto albums
             //var albums = from photoAlbums in db.PhotoAlbum
             //             where photoAlbums.PersonId == user.PersonId
             //             select photoAlbums;
@@ -206,7 +207,7 @@ namespace DbHandler.Db
             //List<string> photoIds = photos.Select(x => x.PhotoId).ToList();
             //List<Photo> allPhotos = photos.ToList();
 
-            // get all emotions connected to the photo ids
+            // get all emotions connected to the inPhoto ids
             var photosEmotions = from emotion in db.EmotionScores
                 join photo in photos on emotion.PhotoId equals photo.PhotoId
                 select emotion;
@@ -329,6 +330,14 @@ namespace DbHandler.Db
 
         }
 
+        public List<EmotionScores> GetPhotoEmotions(string photoId)
+        {
+            var myEmotions = from emotions
+                           in db.EmotionScores
+                           where emotions.PhotoId == photoId
+                           select emotions;
+            return myEmotions.ToList();
+        }
         public void SaveTags(List<Tag> tags)
         {
             var allPhotos = from photo
@@ -402,6 +411,36 @@ namespace DbHandler.Db
                     break;
             }
             return orderedPhotos.Take(takeCount).ToList();
+        }
+
+        public List<Notification> GetUserNotifications(string personId, int totalRecords = 5)
+        {
+            var notifications = (from notification
+                                in db.Notifications
+                                 where notification.ToPerson == personId
+                                 orderby notification.CreationDate descending
+                                 select notification).Take(totalRecords);
+
+            return notifications.ToList();
+                                
+        }
+
+        /// <summary>
+        /// get the inPerson objects of the owners of input photoIds
+        /// </summary>
+        /// <param name="photoIds"></param>
+        /// <returns></returns>
+        public PersonPhotoWithAlbum GetPersonsOfPhotos(string photoId)
+        {
+            var myUser = (from user
+                        in db.Person
+                        join photoAlbum in db.PhotoAlbum on user.PersonId equals photoAlbum.PersonId
+                        join photo in db.Photo on photoAlbum.AlbumId equals photo.AlbumId
+                        where photoId == photo.PhotoId
+                        select new { User = user, Album = photoAlbum, Photo = photo }).FirstOrDefault();
+
+
+            return myUser != null ? new PersonPhotoWithAlbum(myUser.User, myUser.Album, myUser.Photo) : null;
         }
     }
 

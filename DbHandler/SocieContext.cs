@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FacebookTools.FacebookObjects;
 using OxfordTools.OxfordObjects;
+using FacebookTools.SocieObjects;
 
 namespace DbHandler.Db
 {
@@ -26,5 +27,6 @@ namespace DbHandler.Db
         public virtual DbSet<Photo> Photo { get; set; }
         public virtual DbSet<PhotoAlbum> PhotoAlbum { get; set; }
         public virtual DbSet<EmotionScores> EmotionScores { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
     }
 }
