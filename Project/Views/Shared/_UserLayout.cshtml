@@ -131,18 +131,21 @@
     
         @if (ViewBag.emotions != null)
         {
-            <aside class="image-aside">
+            int counter = 1;
+            <div class="image-aside-main-div">
+                <h3>Emotions Found</h3>
                 @foreach (var item in ViewBag.emotions)
                 {
                     <div class="side-emotions-data">
-                        <div class="emotion-data-header">Emotion Found</div>
+                        <div class="emotion-data-header">Emotion #@counter</div>
                         <div>happiness @item.happiness.ToString("0.##%")</div>
                         <div>surprise @item.surprise.ToString("0.##%")</div>
                         <div>anger @item.anger.ToString("0.##%")</div>
                         <div>neutral @item.neutral.ToString("0.##%")</div>
                     </div>
+                    counter++;
                 }
-            </aside>
+            </div>
         }
 
                 <div class="navbar navbar-inverse navbar-fixed-top">

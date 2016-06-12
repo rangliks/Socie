@@ -25,12 +25,23 @@ namespace Analyst
             var path = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory()));
 
             var production = ConfigurationManager.AppSettings["production"].Equals("true");
-            string imagesBase = string.Format("{0}\\Project\\Content\\images", Directory.GetParent(path).FullName);
-            if(production)
+            string imagesBase = string.Empty;
+
+            if (production)
             {
                 imagesBase = @"C:\socie\Content\images";
             }
-
+            else
+            {
+                try
+                {
+                    imagesBase = string.Format("{0}\\Project\\Content\\images", Directory.GetParent(path).FullName);
+                }
+                catch (Exception e)
+                {
+                }
+            }
+            
             FacebookConnector connector = new FacebookConnector();
             connector.FindPhotos(imagesBase);
 

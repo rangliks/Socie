@@ -413,16 +413,24 @@ namespace DbHandler.Db
             return orderedPhotos.Take(takeCount).ToList();
         }
 
-        public List<Notification> GetUserNotifications(string personId, int totalRecords = 5)
+        public List<NotificationAndPhotoOwner> GetUserNotifications(string personId, int totalRecords = 5)
         {
+            List<NotificationAndPhotoOwner> outPutotifications = new List<NotificationAndPhotoOwner>();
             var notifications = (from notification
-                                in db.Notifications
+                                 in db.Notifications
+                                 join person in db.Person on notification.FromPerson equals person.PersonId
                                  where notification.ToPerson == personId
                                  orderby notification.CreationDate descending
-                                 select notification).Take(totalRecords);
+                                 select new { Notification = notification, User = person }).Take(totalRecords);
 
-            return notifications.ToList();
-                                
+            foreach (var item in notifications)
+            {
+		        NotificationAndPhotoOwner currentNotification = new NotificationAndPhotoOwner();
+                currentNotification.Notification = item.Notification;
+                currentNotification.Person = item.User;
+                outPutotifications.Add(currentNotification);
+            }
+            return outPutotifications;                  
         }
 
         /// <summary>

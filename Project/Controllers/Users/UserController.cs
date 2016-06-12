@@ -34,7 +34,7 @@ namespace Project.Controllers.Users
             return View();
         }
 
-        private List<Notification> GetNotifications(Person person)
+        private List<NotificationAndPhotoOwner> GetNotifications(Person person)
         {
             return driver.GetUserNotifications(person.PersonId);
         }

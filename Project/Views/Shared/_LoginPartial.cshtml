@@ -42,10 +42,10 @@
                     {
                         foreach (var item in ViewBag.notifications)
                         {
-                            <div class="notification-text">@item.GetMessage()</div>
-                            //@Html.ActionLink("Socie", "Index", "Image", new { area = "" }, new { @class = "navbar-brand"})
-
-                            <a href="@Url.Action("Index", "Image", new { photoid = item.PhotoId })" type="submit" id="runReport" target="_blank" class="button Secondary"> hello</a>
+                            <div class="notification-box">
+                                <div class="notification-text">@item.Notification.GetMessage()</div>
+                                <a href="@Url.Action("Index", "Image", new { photoid = item.Notification.PhotoId })" target="_blank" style="color:black;margin-left:1%;"> view photo of @item.Person.Name</a>
+                            </div>
                         }
                     }
                 </div>
