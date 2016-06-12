@@ -32,25 +32,28 @@
             @Html.ActionLink("Admin Tools ", "Index", "Admin")
         </li>
         }
-        <li>
-            <div>
-                <div class="notify-alert-icon" id="notify-alert-icon">
-                    <a href="javascript:void(0);"><img src="@Url.Content("~/Content/images/notification.png")" height="25" width="25" /></a>
-                </div>
-                <div class="notifications-div" id="notifications-div">
-                    @if (ViewBag.notifications != null)
-                    {
-                        foreach (var item in ViewBag.notifications)
+        @if (ViewBag.notifications != null)
+        {
+            <li>
+                <div>
+                    <div class="notify-alert-icon" id="notify-alert-icon">
+                        <a href="javascript:void(0);"><img src="@Url.Content("~/Content/images/notification.png")" height="25" width="25" /></a>
+                    </div>
+                    <div class="notifications-div" id="notifications-div">
+                        @if (ViewBag.notifications != null)
                         {
-                            <div class="notification-box">
-                                <div class="notification-text">@item.Notification.GetMessage()</div>
-                                <a href="@Url.Action("Index", "Image", new { photoid = item.Notification.PhotoId })" target="_blank" style="color:black;margin-left:1%;"> view photo of @item.Person.Name</a>
-                            </div>
+                            foreach (var item in ViewBag.notifications)
+                            {
+                                <div class="notification-box">
+                                    <div class="notification-text">@item.Notification.GetMessage()</div>
+                                    <a href="@Url.Action("Index", "Image", new { photoid = item.Notification.PhotoId })" target="_blank" style="color:black;margin-left:1%;"> view photo of @item.Person.Name</a>
+                                </div>
+                            }
                         }
-                    }
+                    </div>
                 </div>
-            </div>
-        </li>
+            </li>
+        }
         <li>
             @Html.ActionLink("Hello " + Name + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
         </li>
