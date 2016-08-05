@@ -35,12 +35,19 @@ namespace FacebookTools
             } 
         }
 
+        /// <summary>
+        /// given token to access facebook with user credentials
+        /// </summary>
+        /// <param name="accToken">access token of socie user</param>
+        /// <param name="socieId">optional - to add the socie data</param>
         public FacebookHelper(string accToken, string socieId = "")
         {
             logger = LogManager.GetLogger(typeof(FacebookHelper));
 
             me = new Person();
             accessToken = accToken;
+
+            // create facebook client using the Facebook sdk tools
             client = new FacebookClient(accToken);
             userId = getUserId();
 
@@ -56,30 +63,14 @@ namespace FacebookTools
             }
         }
 
-        private string getUserId()
-        {
-            if (!string.IsNullOrEmpty(this.userId)) return this.userId;
-
-            string uid = string.Empty;
-            if (string.IsNullOrEmpty(userId))
-            {
-                dynamic me = client.Get("me");
-                uid = me.id;
-                name = me.name;
-
-                me = client.Get("me?fields=email");
-                email = me.email;
-            }
-
-            return uid;
-        }
-
+        // grab user's email
         public string getUserEmail()
         {
             dynamic me = client.Get("me?fields=email");
             return (string) me.email;
         }
 
+        // get posts published by a user
         public void GetUserPosts(int numOfPostsBack)
         {
             var firstPage = client.Get(string.Format("/{0}/posts", userId));
@@ -90,32 +81,20 @@ namespace FacebookTools
             }
         }
 
-        public void GetUserFeed()
-        {
-            var firstPage = client.Get(string.Format("/{0}/feed", userId));
-            PostsObject pObject = JsonConvert.DeserializeObject<PostsObject>(firstPage.ToString());
-            foreach (var datum in pObject.data)
-            {
-                break;
-            }
-        }
-
-        public void GetUserScores()
-        {
-            var scores = client.Get(string.Format("/{0}/scores", userId));
-            //PostsObject pObject = JsonConvert.DeserializeObject<PostsObject>(firstPage.ToString());
-            //foreach (var datum in pObject.data)
-            //{
-            //    var story = datum.story;
-            //}
-        }
-
+        /// <summary>
+        /// get a list of user's albums
+        /// </summary>
+        /// <returns></returns>
         public List<PhotoAlbum> GetUserAlbums()
         {
             var albums = client.Get(string.Format("/me/albums?fields=id&access_token={0}", accessToken));
             return ObjectParser.ParseAlbums(albums, me.PersonId);
         }
 
+
+        /// <summary>
+        /// retrieve a list of all photos inside the input albums
+        /// </summary>
         public List<Photo> GetAlbumsPhotos(List<PhotoAlbum> albums)
         {
             List<Photo> photos = new List<Photo>();
@@ -129,6 +108,10 @@ namespace FacebookTools
             return photos;
         }
 
+        /// <summary>
+        /// Download a list of albums to hard drive
+        /// </summary>
+        /// <param name="albums">The albums to download</param>
         public void DownloadAlbums(List<PhotoAlbum> albums)
         {
             foreach (var album in albums)
@@ -140,27 +123,15 @@ namespace FacebookTools
             }
         }
 
+        /// <summary>
+        /// Download into disk the given list of photos
+        /// </summary>
         public void DownloadPics(List<Photo> photos)
         {
             foreach (var photo in photos)
             {
                 DownloadPicture(photo);
             }
-        }
-
-        public void GetUserHome()
-        {
-            var newsFeed = client.Get(string.Format("/{0}/home", userId));
-            //PostsObject pObject = JsonConvert.DeserializeObject<PostsObject>(firstPage.ToString()); 
-            //foreach (var datum in pObject.data) 
-            //{ 
-            //    var story = datum.story;
-            //}
-        }
-
-        public void GetUploadedPhotos()
-        {
-            var photos = client.Get(string.Format("/{0}/photos/uploaded", userId));
         }
 
         /// <summary>
@@ -176,6 +147,10 @@ namespace FacebookTools
             return extractPicIdFromUrl(pictureUrl);
         }
 
+        /// <summary>
+        /// get the user list of friends (returns onlt friends who use the app)
+        /// </summary>
+        /// <param name="downloadProfilePics">allow downloading all friends profile pictures</param>
         public List<Person> GetFriends(bool downloadProfilePics = true)
         {
             var friendListData = client.Get("/me/friends");
@@ -223,6 +198,9 @@ namespace FacebookTools
             return persons;
         }
 
+        /// <summary>
+        /// Get the tags of the given photos
+        /// </summary>
         public List<Tag> GetMyPhotosTags(List<Photo> inputPhotos)
         {
             List<Tag> tags = new List<Tag>();
@@ -244,43 +222,9 @@ namespace FacebookTools
             return tags;
         }
 
-        //public void GetMyPhotos()
-        //{
-        //    var myPhotos = client.Get("/me/photos");
-        //    JObject photosJson = JObject.Parse(myPhotos.ToString());
-        //    Dictionary<string, Photo> photos = new Dictionary<string, Photo>();
-
-        //    while (photosJson["paging"]["next"] != null)
-        //    {
-        //        foreach (var photo in photosJson["data"].Children())
-        //        {
-        //            Photo currentPhoto = new Photo();
-        //            currentPhoto.CreationDate = DateTime.Parse(photo["created_time"].ToString());
-        //            currentPhoto.PhotoId = photo["id"].ToString();
-
-        //            var taggedInMyPhoto = client.Get(string.Format("/{0}/tags", currentPhoto.PhotoId));
-        //            JObject taggedJson = JObject.Parse(taggedInMyPhoto.ToString());
-        //            foreach (var tag in taggedJson["data"].Children())
-        //            {
-        //                Tag t = new Tag(tag.ToString());
-        //                currentPhoto.Tags.Add(t);
-        //                DownloadProfilePicture(t.PersonTagged);
-        //            }
-
-        //            photos.Add(currentPhoto.PhotoId, currentPhoto);
-        //            DownloadPicture(currentPhoto);
-        //        }
-
-        //        myPhotos = client.Get(photosJson["paging"]["next"].ToString());
-        //        photosJson = JObject.Parse(myPhotos.ToString());
-        //    }
-
-
-        //    //var taggedInMyPhoto = client.Get("/579827528750261/tags");
-
-        //    var fr = client.Get("me?fields=friends");
-        //}
-
+        /// <summary>
+        /// Get the user's family facebook users
+        /// </summary>
         public List<Person> GetFamily()
         {
             var results = new List<Person>();
@@ -304,10 +248,12 @@ namespace FacebookTools
                 }
             }
             
-
             return results;
         }
 
+        /// <summary>
+        /// Download to disk all profile pics of given list of persons
+        /// </summary>
         public void DownloadProfilePictures(List<Person> persons)
         {
             foreach (var person in persons)
@@ -316,6 +262,9 @@ namespace FacebookTools
             }
         }
 
+        /// <summary>
+        /// Download to disk profil pic of given person
+        /// </summary>
         public void DownloadProfilePicture(Person person)
         {
             var picId = string.Empty;
@@ -337,40 +286,12 @@ namespace FacebookTools
            
         }
 
-        private string extractPicIdFromUrl(string url)
-        {
-            string picId = string.Empty;
-
-            var splitted = url.Split('/');
-            try
-            {
-                foreach (var item in splitted)
-                {
-                    var innerSplit = item.Split('_');
-                    if (innerSplit.Count() >= 2)
-                    {
-                        picId = innerSplit[1];
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                picId = splitted[6].Split('_')[1];
-            }
-
-            return picId;
-        }
-
-        private void DownloadPicture(Photo photo)
-        {
-            var url = string.IsNullOrEmpty(photo.Source) ? GetPhotoUrl(photo) : photo.Source;
-            if(!string.IsNullOrEmpty(url))
-            {
-                string filename = string.Format("image_{0}.jpg", photo.PhotoId);
-                DownloadFromUrl(url, filename);
-            }
-        }
-
+        /// <summary>
+        /// resize the photo to a box fixed size
+        /// </summary>
+        /// <param name="imageFile">the input image</param>
+        /// <param name="outputFile">output file name</param>
+        /// <param name="scaleFactor">scale of the resize</param>
         public void Resize(string imageFile, string outputFile, double scaleFactor)
         {
             using (var srcImage = System.Drawing.Image.FromFile(imageFile))
@@ -391,6 +312,9 @@ namespace FacebookTools
             }
         }
 
+        /// <summary>
+        /// Download Photo to disk using photo id (facebook photo id)
+        /// </summary>
         public void DownloadPhoto(string photoId)
         {
             Photo photo = new Photo();
@@ -398,6 +322,9 @@ namespace FacebookTools
             DownloadPicture(photo);
         }
 
+        /// <summary>
+        /// Get the url used to do the atually downloading of the input photo
+        /// </summary>
         public static string GetPhotoUrl(Photo photo)
         {
             WebResponse response = null;
@@ -427,6 +354,9 @@ namespace FacebookTools
             return pictureUrl;
         }
 
+        /// <summary>
+        /// Get the url for downloading profile pic of a person
+        /// </summary>
         public static string GetProfilePictureUrl(Person person)
         {
             WebResponse response = null;
@@ -446,6 +376,58 @@ namespace FacebookTools
                 if (response != null) response.Close();
             }
             return pictureUrl;
+        }
+
+        /// <param name="url">the url of the image to download</param>
+        /// <param name="fileName">the filename to save</param>
+        /// <param name="person">using person to add to it's own directory</param>
+        public void DownloadFromUrl(string url, string fileName, Person person = null)
+        {
+            var personid = string.Empty;
+            if (person == null)
+            {
+                personid = Me.PersonId;
+            }
+            else
+            {
+                personid = person.PersonId;
+            }
+
+            makeSureTheresAlreadyUserDirectory(personid);
+            using (WebClient webClient = new WebClient())
+            {
+                var path = string.Format(@"{0}\{1}\{2}", imagesBase, personid, fileName);
+                logger.Info(string.Format("I want to download [{0}]", path));
+                if (!File.Exists(path))
+                {
+                    webClient.DownloadFile(url, path);
+                    logger.Info(string.Format("Downloaded pic of personid [{0}] ++++++++++++", personid));
+                }
+                else
+                {
+                    logger.Info(string.Format("Pic of personid already exists [{0}] ---------", personid));
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// helper function to get a random string of the given length
+        /// </summary>
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        /// <summary>
+        /// set the path to which the photos will be downloaded to
+        /// </summary>
+        public void SetDownloadPath(string imagesBase)
+        {
+            this.imagesBase = imagesBase;
         }
 
         private WebResponse callUrl(string url)
@@ -470,39 +452,55 @@ namespace FacebookTools
             return null;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="url">the url of the image to download</param>
-        /// <param name="fileName">the filename to save</param>
-        /// <param name="person">using person to add to it's own directory</param>
-        public void DownloadFromUrl(string url, string fileName, Person person = null)
+        private string extractPicIdFromUrl(string url)
         {
-            var personid = string.Empty;
-            if(person == null)
+            string picId = string.Empty;
+
+            var splitted = url.Split('/');
+            try
             {
-                personid = Me.PersonId;
+                foreach (var item in splitted)
+                {
+                    var innerSplit = item.Split('_');
+                    if (innerSplit.Count() >= 2)
+                    {
+                        picId = innerSplit[1];
+                    }
+                }
             }
-            else
+            catch (Exception)
             {
-                personid = person.PersonId;
+                picId = splitted[6].Split('_')[1];
             }
 
-            makeSureTheresAlreadyUserDirectory(personid);
-            using (WebClient webClient = new WebClient())
+            return picId;
+        }
+
+        private string getUserId()
+        {
+            if (!string.IsNullOrEmpty(this.userId)) return this.userId;
+
+            string uid = string.Empty;
+            if (string.IsNullOrEmpty(userId))
             {
-                var path = string.Format(@"{0}\{1}\{2}", imagesBase, personid, fileName);
-                logger.Info(string.Format("I want to download [{0}]", path));
-                if(!File.Exists(path))
-                {
-                    webClient.DownloadFile(url, path);
-                    logger.Info(string.Format("Downloaded pic of personid [{0}] ++++++++++++", personid));
-                }
-                else
-                {
-                    logger.Info(string.Format("Pic of personid already exists [{0}] ---------", personid));
-                }
-                
+                dynamic me = client.Get("me");
+                uid = me.id;
+                name = me.name;
+
+                me = client.Get("me?fields=email");
+                email = me.email;
+            }
+
+            return uid;
+        }
+
+        private void DownloadPicture(Photo photo)
+        {
+            var url = string.IsNullOrEmpty(photo.Source) ? GetPhotoUrl(photo) : photo.Source;
+            if (!string.IsNullOrEmpty(url))
+            {
+                string filename = string.Format("image_{0}.jpg", photo.PhotoId);
+                DownloadFromUrl(url, filename);
             }
         }
 
@@ -523,25 +521,6 @@ namespace FacebookTools
             {
                 Directory.CreateDirectory(string.Format(@"{0}\{1}", imagesBase, personid));
             }
-        }
-
-        public static string RandomString(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random();
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
-        public void SetDownloadPath(string imagesBase)
-        {
-            this.imagesBase = imagesBase;
-        }
-
-        public void GetMemberPhotos(Person famMember)
-        {
-            var albums = client.Get(string.Format("/{0}/albums?fields=id&access_token={1}", famMember.PersonId, accessToken));
-            ObjectParser.ParseAlbums(albums, famMember.PersonId);
         }
     }
 }

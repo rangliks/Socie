@@ -31,8 +31,8 @@ namespace OxfordTools
             List<EmotionScores> scores = new List<EmotionScores>();
 
             // open connection to microsoft services
-            EmotionServiceClient emotionClient = new EmotionServiceClient("4c37362995694b17b93e259ba9087bbf");
-            FaceServiceClient client = new FaceServiceClient("8a0b69482d234dffa7d425acc5b06ecc");
+            EmotionServiceClient emotionClient = new EmotionServiceClient("4c3736xxxxxxxxxxxxxxxxxx87bbf");
+            FaceServiceClient client = new FaceServiceClient("4c3736xxxxxxxxxxxxxxxxxx87bbf");
 
             // foreach of the pics directories pass over and recognize feelings
             DirectoryInfo info = new DirectoryInfo(imagesBase);

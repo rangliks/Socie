@@ -20,8 +20,14 @@ namespace Analyst
     public static class Analyser
     {
         private static ILog Logger = LogManager.GetLogger(typeof(Analyser));
+
+        /// <summary>
+        /// The main analysis program
+        /// Will run periodically and will analyse then add/update the data to db
+        /// </summary>
         public static async void Run()
         {
+            // unfortunatley hard coded :( get the current images directory path (for dev and production)
             var path = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory()));
 
             var production = ConfigurationManager.AppSettings["production"].Equals("true");
@@ -42,17 +48,27 @@ namespace Analyst
                 }
             }
             
+
+            // create a facebook connector which will handle the data access from facebook
+            // the data will be saved to db and photos will be downloaded to the drive
             FacebookConnector connector = new FacebookConnector();
             connector.FindPhotos(imagesBase);
 
+            // resize photos for UI needs
             PhotoResizer resizer = new PhotoResizer();
             resizer.ResizePhotos(imagesBase);
 
+            // Find the photos not already analysed and send them to be analysed
             DbDriver driver = new DbDriver();
             var photosAlreadyAnalyzed = driver.GetEmotions();
             var socieUsers = driver.GetSocieUsers();
+
+            // async operation - go analyse the photos
             List<EmotionScores> newEmotions = await OxfordFaceService.FindFaces(photosAlreadyAnalyzed, socieUsers, false, imagesBase);
 
+
+            // Create the notifications - find high avg emotions and add new notifications to db
+            // This actually - send a notification to a user from user
             List<PersonPhotoWithAlbum> emotionsOwners = GetUsersOfNewEmotions(newEmotions);
             var dictNewEmotions = newEmotions.GroupBy(x => x.PhotoId).ToDictionary(x => x.Key, y => y.ToList());
             foreach (var item in dictNewEmotions)
@@ -65,10 +81,17 @@ namespace Analyst
                 }
             }
             
+            // save the new emotions to db
             driver.SaveEmotions(newEmotions);
             Logger.Info(string.Format("Completed saving emotions to db. [{0}] emotions added", newEmotions.Count));
         }
 
+        /// <summary>
+        /// creates a notification to send to all friends of a person about highly emotional photo
+        /// </summary>
+        /// <param name="emotionsOwners">the person/album/photo which is the owner of the image</param>
+        /// <param name="avgs">the scores of this photo</param>
+        /// <param name="photoId">the highly emotional photo</param>
         private static void AddNotification(List<PersonPhotoWithAlbum> emotionsOwners, List<double> avgs, string photoId)
         {
             DbDriver driver = new DbDriver();

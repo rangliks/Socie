@@ -82,19 +82,6 @@ namespace DbHandler.Db
                 select person;
 
             return users.ToList();
-            //List<Person> persons = new List<Person>();
-            //foreach (var user in users)
-            //{
-            //    Person inPerson = new Person();
-            //    inPerson.Name = user.Name;
-            //    inPerson.Token = user.Token;
-            //    inPerson.PersonId = user.PersonId;
-            //    inPerson.SocieId = user.PersonId;
-
-            //    persons.Add(inPerson);
-            //}
-
-            //return persons;
         }
 
         public void SaveAlbums(List<PhotoAlbum> albums)

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace DbHandler.Extensions
 {
+    /// <summary>
+    /// This class is used to convert any c# object into dynamic type
+    /// </summary>
     public static class DynamicExtensions
     {
         public static dynamic ToDynamic(this object value)

@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace Analyst
 {
+    /// <summary>
+    /// this class is used for debug needs, it can import raw data to insert into db
+    /// used to insert data that is not real from facebook like external photo albums of a user
+    /// </summary>
     public class Importer
     {
         string DownloadsDirectory = @"C:\Users\Ran\Downloads";

@@ -11,6 +11,11 @@ using System.Threading.Tasks;
 
 namespace Analyst.Db
 {
+    /// <summary>
+    /// Here you can find the db interactions, mostly using LINQ queries
+    /// To use this you must have a set up db 
+    /// Configuration file of the exe should contain your db connection string
+    /// </summary>
     public class DbDriver
     {
         private readonly string connectionString;
@@ -53,17 +58,24 @@ namespace Analyst.Db
             return persons;
         }
 
+        /// <summary>
+        /// save the given album objects to db
+        /// </summary>
+        /// <param name="albums">List of album objects</param>
         public void SaveAlbums(List<PhotoAlbum> albums)
         {
+            // bring all albums from db
             var currentAlbums = from photoAlbum
                                 in db.PhotoAlbum
                                 select new { AlbumId = photoAlbum.AlbumId, Name = photoAlbum.Name, PersonId = photoAlbum.PersonId };
             var currentAlbumsDictionary = currentAlbums.ToDictionary(x => x.AlbumId);
+
+            // loop the albums, if not exists, add to db
             foreach (var album in albums)
             {
                 if(currentAlbumsDictionary.ContainsKey(album.AlbumId))
                 {
-                    /*/ UPDATE EXISTING /*/
+                    /* TODO : UPDATE EXISTING */
                 }
                 else
                 {
@@ -74,12 +86,19 @@ namespace Analyst.Db
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// Save the input photos to db
+        /// </summary>
+        /// <param name="albumPhotos">List of photo objects</param>
         public void SavePhotos(List<Photo> albumPhotos)
         {
+            // bring all photos from db
             var currentPhotos = from photo
                                 in db.Photo
                                 select new { PhotoId = photo.PhotoId, Name = photo.Name, CreationDate = photo.CreationDate };
             var currentPhotosDictionary = currentPhotos.ToDictionary(x => x.PhotoId);
+
+            // loop the photos, if not exists, add to db
             foreach (var photo in albumPhotos)
             {
                 if (currentPhotosDictionary.ContainsKey(photo.PhotoId))
@@ -95,6 +114,10 @@ namespace Analyst.Db
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// save the person object to db
+        /// if exist update else create new
+        /// </summary>
         public void SavePerson(Person person)
         {
             var personInDB =    from me
@@ -123,6 +146,9 @@ namespace Analyst.Db
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// Save the input emotions to db
+        /// </summary>
         public void SaveEmotions(List<EmotionScores> v)
         {
             var emotions = from emo
@@ -141,6 +167,9 @@ namespace Analyst.Db
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// Get all emotions from db
+        /// </summary>
         public List<EmotionScores> GetEmotions()
         {
             var emotions = from emo
@@ -150,6 +179,9 @@ namespace Analyst.Db
             return emotions.ToList();
         }
 
+        /// <summary>
+        /// Get all app users from db
+        /// </summary>
         public List<Person> GetSocieUsers()
         {
             var users = from person
@@ -183,6 +215,9 @@ namespace Analyst.Db
             return output;
         }
 
+        /// <summary>
+        /// Add a new notification to db
+        /// </summary>
         public void SaveNotification(Notification notify)
         {
             notify.NotificationId = Guid.NewGuid().ToString();

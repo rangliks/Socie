@@ -10,6 +10,9 @@ using FacebookTools.SocieObjects;
 
 namespace Analyst.Db
 {
+    /// <summary>
+    /// The context from which the db entities are taken when connecting to db
+    /// </summary>
     public class SocieContext : DbContext
     {
         public SocieContext()
@@ -22,6 +25,7 @@ namespace Analyst.Db
         {
 
         }
+
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<Photo> Photo { get; set; }
         public virtual DbSet<PhotoAlbum> PhotoAlbum { get; set; }
